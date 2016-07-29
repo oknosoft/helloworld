@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html manifest='cache.appcache' lang='ru'>
+<head>
+	<meta charset='UTF-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+	<title>Hello world</title>
+
+	<link rel="manifest" href="manifest.json">
+	<meta name="application-name" content="Hello world">
+	<link rel="icon" sizes="16x16 32x32 48x48" href="dist/imgs/fav-md32.png" type="image/icon">
+	<link rel="icon" sizes="144x144" href="dist/imgs/fav-md144.png" type="image/png">
+	<link rel="shortcut icon" href="dist/imgs/fav-md144.png" type="image/png">
+	<link rel="apple-touch-icon-precomposed" href="dist/imgs/fav-okn144.png">
+
+	<!--стили-->
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/g/metadata(dhx_terrace.css+metadata.css)">
+	<link rel="stylesheet" type="text/css" href="dist/orders.css">
+
+</head>
+<body>
+
+<div id="splash"></div>
+
+<!-- библиотеки из jsdelivr -->
+<script src="//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,metadata(dhtmlx.min.js+metadata.js)"></script>
+
+<!-- код нашего приложения -->
+<script src="dist/helloworld.js"></script>
+
+</body>
+</html>

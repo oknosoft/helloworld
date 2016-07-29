@@ -1,0 +1,45 @@
+CACHE MANIFEST
+# 000000000131
+
+# Additional resources to cache
+CACHE:
+
+# Заголовок и библиотеки
+# /
+
+
+# Эти позиции включаем только в продакшене
+#
+//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,metadata@0.10.214(dhtmlx.min.js)
+dist/orders.min.js
+
+# А эти - только в дебагере
+#
+
+
+# css и картинки
+#
+//cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css
+//cdn.jsdelivr.net/fontawesome/4.6.3/fonts/fontawesome-webfont.woff2?v=4.6.3
+//cdn.jsdelivr.net/g/metadata@0.10.214(dhx_terrace.css+metadata.css)
+dist/orders.css
+
+#
+dist/imgs/fav-md32.png
+dist/imgs/fav-md144.png
+dist/imgs/about_48.png
+dist/imgs/settings_48.png
+dist/imgs/events_48.png
+dist/imgs/projects_48.png
+
+
+# offline.html will be displayed if the user is offline
+# FALLBACK:
+# / offline.html
+
+# All other resources (e.g. sites) require the user to be online.
+NETWORK:
+
+# данные - xml-ки форм, панелей и менюшек
+
+*

@@ -1,0 +1,30 @@
+{
+  "name": "helloworld",
+  "description": "Hello world",
+  "version": "0.0.1",
+  "dependencies": {
+    "metadata-js": ">=0.10.214"
+  },
+  "devDependencies": {
+    "gulp": ">=3.9",
+    "gulp-concat": ">=2.6",
+    "gulp-csso": ">=2.0",
+    "gulp-rename": ">=1.2",
+    "gulp-uglify": ">=1.4",
+    "gulp-umd": ">=0.2",
+    "gulp-replace": ">=0.5",
+    "gulp-base64": ">=0.1",
+    "jasmine": ">=2.4"
+  },
+  "engines": {
+    "node": ">=6.0"
+  },
+  "homepage": "http://www.oknosoft.ru/metadata/",
+  "license": "AGPL-3.0",
+  "config": {
+    "couchdb": "http://localhost:5984/oo_",
+    "zone": 0,
+    "prefix": "oo_",
+    "suffix": ""
+  }
+}

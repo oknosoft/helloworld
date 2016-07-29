@@ -1,0 +1,99 @@
+.md_column320 {
+	width: 48%;
+	min-width: 320px;
+	float: left;
+	padding: 8px;
+}
+
+.md_column320 h3 {
+	margin: 0 0 8px 0;
+}
+
+.md_column300 {
+	width: 24%;
+	min-width: 300px;
+	float: left;
+	padding: 4px;
+}
+
+.md_column1300 {
+	width: 92%;
+	max-width: 1300px;
+	position: relative;
+	left: 50%;
+	margin-left: -46%;
+	font-size: 90%;
+	line-height: normal;
+}
+.md_column1300>ul {
+	padding-left: 20px;
+	margin: 0 0 0.5em 0;
+}
+.md_column1300>p{
+	margin: 0 0 0.5em 0;
+}
+.md_column1300>h1, .md_column1300>h2, .md_column1300>h3, .md_column1300>h4 {
+	margin: 1em 0 0.2em 0;
+}
+
+.md_muted_color {
+	color: #636773;
+}
+
+.md_otbnav {
+	position: fixed;
+	padding: 0;
+	margin: 0;
+	background: transparent;
+}
+
+.md-fa-lg {
+	font-size: 130%;
+	vertical-align: 25%;
+}
+
+.label_options{
+	padding-top: 12px !important;
+	/* border-bottom: 1px solid #ddd; */
+}
+
+.dhx_cell_editor .dhx_cell_stb{
+	display: none;
+}
+
+.span_user {
+	font-size: smaller;
+	text-decoration: underline;
+	float: right;
+	line-height: 22px;
+	padding-right: 2px;
+	word-break: break-all;
+}
+
+
+.handsontable_wrapper {
+	width: 100%;
+	height: 100%;
+	font-size: 90%;
+}
+
+/* заставка при загрузке страницы */
+#splash {
+	width: 512px;
+	height: 128px;
+	position: relative;
+	left: 48%;
+	margin-left: -255px;
+	margin-top: 140px;
+	background-image:url(/imgs/splash.gif);
+}
+@media (max-width: 640px) {
+	#splash {
+		width: 256px;
+		height: 64px;
+		left: 48%;
+		margin-left: -128px;
+		margin-top: 100px;
+		background-size: cover;
+	}
+}
