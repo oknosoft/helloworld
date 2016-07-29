@@ -209,10 +209,14 @@ module.exports = function (package_data) {
 					joinedFile.contents = new Buffer(text);
 					t.push(joinedFile);
 
-					cb();
-
 					// отключаем все подписки и выгружаем менеджеров
 					$p.off();
+					for(var s in $p.wsql.pouch.local.sync)
+						$p.wsql.pouch.local.sync[s].cancel();
+					$p = null;
+
+					// информируем внешний скрипт о завершении нашей работы
+					cb();
 				})
 
 			})

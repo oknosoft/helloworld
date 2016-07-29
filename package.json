@@ -22,9 +22,9 @@
   "homepage": "http://www.oknosoft.ru/metadata/",
   "license": "AGPL-3.0",
   "config": {
-    "couchdb": "http://localhost:5984/oo_",
+    "couchdb": "http://localhost:5984/hw_",
     "zone": 0,
-    "prefix": "oo_",
+    "prefix": "hw_",
     "suffix": ""
   }
 }
