@@ -11,7 +11,7 @@ var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	rename = require('gulp-rename'),
 	resources = require('./src/utils/resource-concat.js'),
-	prebuild = require('./src/utils/prebuild.js')
+	prebuild = require('./src/utils/prebuild.js'),
 	umd = require('gulp-umd'),
 	package_data = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));  // данные файла package.json
 
