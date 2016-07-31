@@ -182,11 +182,11 @@ module.exports = function (package_data) {
 
 		// if file opt was a file path
 		// clone everything from the latest file
-		if (typeof package_data === 'string') {
+		if (firstFile) {
 			joinedFile = firstFile.clone({contents: false});
-			joinedFile.path = path.join(firstFile.base, package_data);
+			joinedFile.path = path.join(firstFile.base, 'prebuild.js');
 		} else {
-			joinedFile = new File(package_data);
+			joinedFile = new File(path.join(__dirname, 'prebuild.js'));
 		}
 
 		$p.md.init($p.wsql.pouch.local._meta)
@@ -209,14 +209,18 @@ module.exports = function (package_data) {
 					joinedFile.contents = new Buffer(text);
 					t.push(joinedFile);
 
-					// отключаем все подписки и выгружаем менеджеров
-					$p.off();
-					for(var s in $p.wsql.pouch.local.sync)
-						$p.wsql.pouch.local.sync[s].cancel();
-					$p = null;
-
 					// информируем внешний скрипт о завершении нашей работы
 					cb();
+
+					// отключаем все подписки и выгружаем менеджеров
+					$p.off();
+					for(var s in $p.wsql.pouch.local.sync){
+						try{
+							$p.wsql.pouch.local.sync[s].cancel();
+						}catch(e){}
+					}
+					$p = null;
+
 				})
 
 			})

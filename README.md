@@ -12,7 +12,6 @@
 #### Серверная часть
 - [couchDB](http://couchdb.apache.org/), NoSQL база данных с поддержкой master-master репликации
 - [nginx](http://nginx.org/ru/), высокопроизводительный HTTP-сервер
-- [1c_enterprise](http://1c-dn.com/1c_enterprise/), ORM сервер 1С:Предприятие
 
 #### Управление данными в памяти браузера
 - [metadata.js](http://www.oknosoft.ru/metadata/), движок ссылочной типизации для браузера и Node.js

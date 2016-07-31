@@ -17,14 +17,15 @@ $p.iface.view_settings = function (cell) {
 		t.tabs = cell.attachTabbar({
 			arrows_mode:    "auto",
 			tabs: [
-				{id: "const", text: '<i class="fa fa-key"></i> Общее', active: true}
+				{id: "const", text: '<i class="fa fa-key"></i> Общее', active: true},
+				{id: "data", text: '<i class="fa fa-sitemap"></i> Все объекты'}
 			]
 		});
 
 		// обработчик при смене закладки
 		t.tabs.attachEvent("onSelect", function(id){
-			if(t[id] && t[id].tree && t[id].tree.getSelectedItemId()){
-				t[id].tree.callEvent("onSelect", [t[id].tree.getSelectedItemId()]);
+			if(t[id] && t[id].tree && t[id].tree.getSelectedId()){
+				t[id].tree.callEvent("onSelect", [t[id].tree.getSelectedId()]);
 			}
 			return true;
 		});
@@ -156,6 +157,35 @@ $p.iface.view_settings = function (cell) {
 			};
 
 		})(t.const.querySelector("[name=form2]").firstChild);
+
+
+		// закладка справочников и регистров
+		t.data = {
+			layout: t.tabs.cells("data").attachLayout({
+				pattern: "2U",
+				cells: [{
+					id: "a",
+					text: "Разделы",
+					collapsed_text: "Разделы",
+					width: 200
+				}, {
+					id: "b",
+					text: "Раздел",
+					header: false
+				}],
+				offsets: { top: 0, right: 0, bottom: 0, left: 0}
+			})
+		};
+		// дерево технологических справочников
+		t.data.tree = t.data.layout.cells("a").attachTreeView();
+		//t.data.tree.enableTreeImages(false);
+		t.data.tree.attachEvent("onSelect", function (name) {
+			$p.md.mgr_by_class_name(name).form_list(t.industry.layout.cells("b"), {hide_header: true});
+		});
+		["cat","cch","cacc","ireg"].forEach(function (id) {
+			t.data.tree.addItem(id, $p.msg["meta_"+id]);
+			t.data.tree.setItemIcons(id, {file: "icon_1c_"+id, folder_opened: "icon_1c_"+id, folder_closed: "icon_1c_"+id});
+		});
 
 	}
 

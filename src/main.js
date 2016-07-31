@@ -1,5 +1,6 @@
 /**
- * Главное окно интерфейса
+ * ### Главное окно интерфейса
+ * Сайдбар со страницами "Документы", "Отчеты", "Настройки", "О программе"
  *
  * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
  */
@@ -12,15 +13,14 @@ $p.on({
 	 * Процедура устанавливает параметры работы программы, специфичные для текущей сборки
 	 *
 	 * @param prm {Object} - в свойствах этого объекта определяем параметры работы программы
-	 * @param modifiers {Array} - сюда можно добавить обработчики, переопределяющие функциональность объектов данных
 	 */
-	settings: function (prm, modifiers) {
+	settings: function (prm) {
 
 		prm.__define({
 
 			// разделитель для localStorage
 			local_storage_prefix: {
-				value: "oo_"
+				value: "PACKAGE_PREFIX"
 			},
 
 			// скин по умолчанию
@@ -28,25 +28,10 @@ $p.on({
 				value: "dhx_terrace"
 			},
 
-			// фильтр для репликации с CouchDB
-			pouch_filter: {
-				value: (function () {
-					var filter = {};
-					filter.__define({
-						doc: {
-							value: "auth/by_partner",
-							writable: false
-						}
-					});
-					return filter;
-				})(),
-				writable: false
-			},
-
 			// гостевые пользователи для демо-режима
 			guests: {
 				value: [{
-					username: "Алгоритм",
+					username: "Гость",
 					password: "hQI7OhIGlVeOWi8="
 				}]
 			},
@@ -66,26 +51,26 @@ $p.on({
 				value: true
 			},
 
-			// логин гостевого пользователя couchdb
+			// логин гостевого пользователя базы "meta" couchdb
 			guest_name: {
 				value: "guest"
 			},
 
-			// пароль гостевого пользователя couchdb
+			// пароль гостевого пользователя базы "meta" couchdb
 			guest_pwd: {
 				value: "meta"
 			}
 
 		});
 
-		// по умолчанию, обращаемся к зоне 1
-		prm.zone = 0;
+		// по умолчанию, обращаемся к зоне 0
+		prm.zone = PACKAGE_ZONE;
 
 		// объявляем номер демо-зоны
 		prm.zone_demo = 0;
 
 		// расположение couchdb
-		prm.couch_path = "/couchdb/oo_";
+		prm.couch_path = "PACKAGE_COUCHDB";
 		//prm.couchdb = "http://i980:5984/oo_";
 
 		// разрешаем сохранение пароля
@@ -102,7 +87,8 @@ $p.on({
 
 		// разделы интерфейса
 		$p.iface.sidebar_items = [
-			{id: "orders", text: "Заказы", icon: "projects_48.png"},
+			{id: "doc", text: "Документы", icon: "projects_48.png"},
+			{id: "rep", text: "Отчеты", icon: "graph_up_48.png"},
 			{id: "settings", text: "Настройки", icon: "settings_48.png"},
 			{id: "about", text: "О программе", icon: "about_48.png"}
 		];
@@ -119,7 +105,8 @@ $p.on({
 				buttons: [
 					{name: 'about', text: '<i class="fa fa-info-circle md-fa-lg"></i>', tooltip: 'О программе', float: 'right'},
 					{name: 'settings', text: '<i class="fa fa-cog md-fa-lg"></i>', tooltip: 'Настройки', float: 'right'},
-					{name: 'orders', text: '<i class="fa fa-suitcase md-fa-lg"></i>', tooltip: 'Заказы', float: 'right'},
+					{name: 'rep', text: '<i class="fa fa-line-chart md-fa-lg"></i>', tooltip: 'Отчеты', float: 'right'},
+					{name: 'doc', text: '<i class="fa fa-suitcase md-fa-lg"></i>', tooltip: 'Документы', float: 'right'},
 					{name: 'sep_0', text: '', float: 'right'},
 					{name: 'sync', text: '', float: 'right'},
 					{name: 'auth', text: '', width: '80px', float: 'right'}
@@ -165,7 +152,7 @@ $p.on({
 		// активируем страницу
 		hprm = $p.job_prm.parse_url();
 		if(!hprm.view || $p.iface.main.getAllItems().indexOf(hprm.view) == -1){
-			$p.iface.set_hash(hprm.obj, hprm.ref, hprm.frm, "orders");
+			$p.iface.set_hash(hprm.obj, hprm.ref, hprm.frm, "doc");
 		} else
 			setTimeout($p.iface.hash_route);
 

@@ -1,13 +1,13 @@
 /**
- * ### Раздел интерфейса _Заказы_
- * Содержит карусель с двумя страницами: list и doc
+ * ### Раздел интерфейса _Отчеты_
+ * Содержит список отчетов
  *
  * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
  */
 
-$p.iface.view_orders = function (cell) {
+$p.iface.view_rep = function (cell) {
 
-	function OViewOrders(){
+	function OViewReports(){
 
 		var t = this;
 
@@ -15,54 +15,22 @@ $p.iface.view_orders = function (cell) {
 		function show_list(){
 			
 			t.carousel.cells("list").setActive();
-			cell.setText({text: "Заказы"});
+			cell.setText({text: "Отчеты"});
 
 			if(!t.list){
 				t.carousel.cells("list").detachObject(true);
-				t.list = $p.doc.buyers_order.form_list(t.carousel.cells("list"));
+				t.list = $p.doc.cash_moving.form_list(t.carousel.cells("list"));
 			}
 
 		}
 
-		// показывает форму заказа
-		function show_doc(ref){
-
-			var _cell = t.carousel.cells("doc");
-
-			_cell.setActive();
-
-			if(!_cell.ref || _cell.ref != ref)
-
-				$p.doc.buyers_order.form_obj(_cell, {
-						ref: ref,
-						bind_pwnd: true,
-						on_close: function () {
-							setTimeout(function () {
-								$p.iface.set_hash(undefined, "", "list");
-							});
-						},
-						set_text: function (text) {
-							if(t.carousel.getActiveCell() == _cell)
-								cell.setText({text: "<b>" + text + "</b>"});
-						}
-					})
-					.then(function (wnd) {
-						t.doc = wnd;
-						setTimeout(t.doc.wnd.set_text.bind(t.doc.wnd, true), 200);
-					});
-
-			else if(t.doc && t.doc.wnd){
-				setTimeout(t.doc.wnd.set_text.bind(t.doc.wnd, true), 200);
-			}
-
-		}
 
 		// обработчик маршрутизации url
 		function hash_route(hprm) {
 
-			if(hprm.view == "orders"){
+			if(hprm.view == "rep"){
 
-				if(hprm.obj == "doc.buyers_order" && !$p.utils.is_empty_guid(hprm.ref)){
+				if(hprm.obj == "doc.cash_moving" && !$p.utils.is_empty_guid(hprm.ref)){
 
 					if(hprm.frm != "doc")
 						setTimeout(function () {
@@ -74,9 +42,9 @@ $p.iface.view_orders = function (cell) {
 
 				} else{
 
-					if(hprm.obj != "doc.buyers_order")
+					if(hprm.obj != "doc.cash_moving")
 						setTimeout(function () {
-							$p.iface.set_hash("doc.buyers_order", "", "list");
+							$p.iface.set_hash("doc.cash_moving", "", "list");
 						});
 					else
 						show_list();
@@ -95,7 +63,7 @@ $p.iface.view_orders = function (cell) {
 			$p.off(go_go);
 
 			setTimeout(function () {
-				$p.iface.set_hash($p.job_prm.parse_url().obj || "doc.buyers_order");
+				$p.iface.set_hash($p.job_prm.parse_url().obj || "doc.cash_moving");
 			});
 		}
 
@@ -131,6 +99,6 @@ $p.iface.view_orders = function (cell) {
 
 	}
 
-	return $p.iface._orders || ($p.iface._orders = new OViewOrders());
+	return $p.iface._reports || ($p.iface._reports = new OViewReports());
 
 };
