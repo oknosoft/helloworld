@@ -9,7 +9,13 @@ $p.iface.view_rep = function (cell) {
 
 	function OViewReports(){
 
-		var t = this;
+		var t = this,
+			rep_attr = {
+				bind_pwnd: true,
+				set_text: function (text) {
+					cell.setText({text: "<b>" + text + "</b>"});
+				}
+			};
 
 		// показывает форму списка
 		function show_report(obj){
@@ -18,12 +24,12 @@ $p.iface.view_rep = function (cell) {
 
 			// если форму еще не рисовали
 			if(!t.report)
-				t.report = $p.rep[obj].form_list(t.rep_cell);
+				t.report = $p.rep[obj].form_rep(t.rep_cell, rep_attr);
 
 			else if(t.report._mgr != $p.rep[obj]){
 				t.report.close();
 				t.rep_cell.detachObject(true);
-				t.report = $p.rep[obj].form_list(t.rep_cell);
+				t.report = $p.rep[obj].form_rep(t.rep_cell, rep_attr);
 			}
 		}
 
