@@ -12,16 +12,19 @@ $p.iface.view_rep = function (cell) {
 		var t = this;
 
 		// показывает форму списка
-		function show_list(){
-			
-			t.carousel.cells("list").setActive();
+		function show_report(obj){
+
 			cell.setText({text: "Отчеты"});
 
-			if(!t.list){
-				t.carousel.cells("list").detachObject(true);
-				t.list = $p.doc.cash_moving.form_list(t.carousel.cells("list"));
-			}
+			// если форму еще не рисовали
+			if(!t.report)
+				t.report = $p.rep[obj].form_list(t.rep_cell);
 
+			else if(t.report._mgr != $p.rep[obj]){
+				t.report.close();
+				t.rep_cell.detachObject(true);
+				t.report = $p.rep[obj].form_list(t.rep_cell);
+			}
 		}
 
 
@@ -30,25 +33,14 @@ $p.iface.view_rep = function (cell) {
 
 			if(hprm.view == "rep"){
 
-				if(hprm.obj == "doc.cash_moving" && !$p.utils.is_empty_guid(hprm.ref)){
+				var obj = hprm.obj ? hprm.obj.split(".")[1] : t.default_obj;
 
-					if(hprm.frm != "doc")
-						setTimeout(function () {
-							$p.iface.set_hash(undefined, undefined, "doc");
-						});
-					else
-						show_doc(hprm.ref);
-
-
-				} else{
-
-					if(hprm.obj != "doc.cash_moving")
-						setTimeout(function () {
-							$p.iface.set_hash("doc.cash_moving", "", "list");
-						});
-					else
-						show_list();
+				if($p.md.get_classes().rep.indexOf(obj) == -1){
+					$p.iface.set_hash("rep." + t.default_obj);
+					return;
 				}
+
+				show_report(obj);
 
 				return false;
 			}
@@ -63,24 +55,47 @@ $p.iface.view_rep = function (cell) {
 			$p.off(go_go);
 
 			setTimeout(function () {
-				$p.iface.set_hash($p.job_prm.parse_url().obj || "doc.cash_moving");
+				hash_route($p.job_prm.parse_url());
 			});
 		}
 
 		// Рисуем дополнительные элементы навигации
 		t.tb_nav = $p.iface.btns_nav(cell.cell.querySelector(".dhx_cell_sidebar_hdr"));
 
-		// Создаём страницы карусели
-		t.carousel = cell.attachCarousel({
-			keys:           false,
-			touch_scroll:   false,
-			offset_left:    0,
-			offset_top:     0,
-			offset_item:    0
-		});
-		t.carousel.hideControls();
-		t.carousel.addCell("list");
-		t.carousel.addCell("doc");
+
+		// Если отчетов к показу больше 1, layout с деревом и списком иначе - просто список
+		if($p.md.get_classes().rep.reduce(function (sum, name) {
+				if(!$p.md.get("rep."+name).hide){
+					if(!t.default_obj)
+						t.default_obj = name;
+					sum+=1;
+				}
+			}, 0) > 1){
+
+			t.rep_layout = cell.attachLayout({
+				pattern: "2U",
+				cells: [{
+					id: "a",
+					text: "Отчеты",
+					collapsed_text: "Отчеты",
+					width: 180
+				}, {
+					id: "b",
+					text: "Отчеты",
+					header: false
+				}],
+				offsets: { top: 0, right: 0, bottom: 0, left: 0}
+			});
+
+			t.objs_tree = t.rep_layout.cells("a").attachTree();
+			t.rep_cell = t.rep_layout.cells("b");
+
+		}else{
+			if(t.default_obj)
+				t.rep_cell = cell;
+			else
+				return;
+		}
 
 
 		// Дожидаемся инициализации констант

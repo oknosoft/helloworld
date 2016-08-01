@@ -83,10 +83,12 @@ $p.iface.view_doc = function (cell) {
 
 			if(hprm.view == "doc"){
 
-				var obj = hprm.obj ? hprm.obj.split(".")[1] : "cash_moving";
+				var obj = hprm.obj ? hprm.obj.split(".")[1] : t.default_obj;
 
-				if($p.md.get_classes().doc.indexOf(obj) == -1)
-					$p.iface.set_hash("doc.cash_moving");
+				if($p.md.get_classes().doc.indexOf(obj) == -1){
+					$p.iface.set_hash("doc." + t.default_obj);
+					return;
+				}
 
 				if(!$p.utils.is_empty_guid(hprm.ref)){
 
@@ -137,16 +139,19 @@ $p.iface.view_doc = function (cell) {
 
 		// Если документов к показу больше 1, layout с деревом и списком иначе - просто список
 		if($p.md.get_classes().doc.reduce(function (sum, name) {
-			if(!$p.md.get("doc."+name).hide)
+			if(!$p.md.get("doc."+name).hide){
+				if(!t.default_obj)
+					t.default_obj = name;
 				sum+=1;
+			}
 		}, 0) > 1){
 
 			t.list_layout = t.carousel.cells("list").attachLayout({
 					pattern: "2U",
 					cells: [{
 						id: "a",
-						text: "Фильтр",
-						collapsed_text: "Фильтр",
+						text: "Документы",
+						collapsed_text: "Документы",
 						width: 180
 					}, {
 						id: "b",
@@ -156,11 +161,14 @@ $p.iface.view_doc = function (cell) {
 					offsets: { top: 0, right: 0, bottom: 0, left: 0}
 				});
 
-			t.docs_tree = t.list_layout.cells("a").attachTree();
+			t.objs_tree = t.list_layout.cells("a").attachTree();
 			t.list_cell = t.list_layout.cells("b");
 
 		}else{
-			t.list_cell = t.carousel.cells("list");
+			if(t.default_obj)
+				t.list_cell = t.carousel.cells("list");
+			else
+				return;
 		}
 
 
