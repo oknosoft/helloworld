@@ -167,7 +167,7 @@ $p.iface.view_settings = function (cell) {
 					id: "a",
 					text: "Разделы",
 					collapsed_text: "Разделы",
-					width: 200
+					width: 220
 				}, {
 					id: "b",
 					text: "Раздел",
@@ -176,15 +176,24 @@ $p.iface.view_settings = function (cell) {
 				offsets: { top: 0, right: 0, bottom: 0, left: 0}
 			})
 		};
-		// дерево технологических справочников
+		// дерево используемых метаданных
 		t.data.tree = t.data.layout.cells("a").attachTreeView();
-		//t.data.tree.enableTreeImages(false);
 		t.data.tree.attachEvent("onSelect", function (name) {
-			$p.md.mgr_by_class_name(name).form_list(t.industry.layout.cells("b"), {hide_header: true});
+			var mgr = $p.md.mgr_by_class_name(name);
+			if(mgr)
+				mgr.form_list(t.data.layout.cells("b"), {hide_header: true});
 		});
-		["cat","cch","cacc","ireg"].forEach(function (id) {
+		["cat","doc","cch","ireg"].forEach(function (id) {
 			t.data.tree.addItem(id, $p.msg["meta_"+id]);
 			t.data.tree.setItemIcons(id, {file: "icon_1c_"+id, folder_opened: "icon_1c_"+id, folder_closed: "icon_1c_"+id});
+			$p.md.get_classes()[id].forEach(function (name) {
+				var key = id+"."+name,
+					meta = $p.md.get(key);
+				if(!meta.hide){
+					t.data.tree.addItem(key, meta.list_presentation || meta.synonym, id);
+					t.data.tree.setItemIcons(key, {file: "icon_1c_"+id});
+				}
+			});
 		});
 
 	}

@@ -28,13 +28,18 @@ $p.iface.view_doc = function (cell) {
 			t.carousel.cells("list").setActive();
 			cell.setText({text: "Документы"});
 
-			if(t.list){
-				t.list.close();
+			// если указан несуществующий документ
+			if(!$p.doc[obj]){
+				return;
 			}
 
-			t.list_cell.detachObject(true);
+			// если форму еще не рисовали
+			if(!t.list)
+				t.list = $p.doc[obj].form_list(t.list_cell, list_attr);
 
-			if($p.doc[obj]){
+			else if(t.list._mgr != $p.doc[obj]){
+				t.list.close();
+				t.list_cell.detachObject(true);
 				t.list = $p.doc[obj].form_list(t.list_cell, list_attr);
 			}
 
