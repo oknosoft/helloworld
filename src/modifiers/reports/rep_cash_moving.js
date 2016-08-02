@@ -6,7 +6,7 @@
  * Created 01.08.2016
  */
 
-$p.rep.cash_moving.form_rep = function (pwnd, attr) {
+function form_rep(pwnd, attr) {
 
 	var _mgr = this,
 		_meta = _mgr.metadata(),
@@ -162,16 +162,16 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 			wnd.report.build().then(show).catch(show);
 
 		else if(btn_id=="btn_print")
-			_mgr.import(null, o);
+			_mgr.import(null, wnd.report);
 
 		else if(btn_id=="btn_save")
-			_mgr.import(null, o);
+			_mgr.import(null, wnd.report);
 
 		else if(btn_id=="btn_load")
-			_mgr.import(null, o);
+			_mgr.import(null, wnd.report);
 
 		else if(btn_id=="btn_export")
-			_mgr.export({items: [o], pwnd: wnd, obj: true} );
+			_mgr.export({items: [wnd.report], pwnd: wnd, obj: true} );
 
 	}
 
@@ -209,6 +209,82 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 	frm_create();
 
 	return wnd;
+
+}
+
+
+function ODateRangePicker(container, attr) {
+
+}
+
+$p.rep.cash_moving.form_rep = function (pwnd, attr) {
+
+	var wnd = form_rep.call(this, pwnd, attr),
+		cont = document.createElement("DIV");
+
+	//cont.style.width = "100%";
+	cont.style.height = "100%";
+	cont.style.minHeight = "300px";
+
+	wnd.elmnts.layout.cells("b").attachObject(cont);
+
+
+	// закладка с параметрами
+	wnd.elmnts.frm_prm = new dhtmlXLayoutObject({
+		parent: cont,
+		pattern: "2E",
+		cells: [{
+			id: "a",
+			text: "Период",
+			header: false,
+			height: 40
+		}, {
+			id: "b",
+			text: "Кассы",
+			header: false
+
+		}],
+		offsets: { top: 8, right: 0, bottom: 0, left: 0}
+	});
+
+	wnd.elmnts.frm_prm.cells("a").fixSize(false, true);
+	wnd.elmnts.frm_prm.cells("a").setMinHeight(24);
+	wnd.elmnts.frm_prm.cells("a").setHeight(26);
+
+	wnd.elmnts.layout.cells("b").showHeader();
+	wnd.elmnts.layout.attachEvent("onResizeFinish", function(){
+		wnd.elmnts.frm_prm.setSizes();
+	});
+	wnd.elmnts.layout.attachEvent("onPanelResizeFinish", function(){
+		wnd.elmnts.frm_prm.setSizes();
+	});
+
+	// список касс
+	var grid_cashboxes = wnd.elmnts.frm_prm.cells("b").attachGrid(),
+		data={
+			rows:[]
+		};
+	grid_cashboxes.setHeader(" ,Касса");
+	grid_cashboxes.setInitWidths("50,*");
+	grid_cashboxes.setColumnMinWidth("40,200");
+	grid_cashboxes.setColSorting("na,na");
+	grid_cashboxes.setColTypes("ch,ro");
+	grid_cashboxes.enableAutoWidth(true, 600, 180);
+	grid_cashboxes.init();
+	$p.wsql.alasql("select ref, name from cat_cashboxes where not(ref = '00000000-0000-0000-0000-000000000000') order by name").forEach(function (row, ind, arr) {
+		data.rows.push({ id:row.ref, data: [(ind+1) < arr.length ? 1 : 0, row.name]});
+	});
+	grid_cashboxes.parse(data,"json");
+
+	wnd.report.cashboxes = function () {
+		var res = [];
+		grid_cashboxes.forEachRow(function(id){
+			if(grid_cashboxes.cells(id,0).isChecked())
+				res.push(id);
+		});
+		return res;
+	}
+
 };
 
 // методы объекта отчет
@@ -236,7 +312,7 @@ $p.RepCash_moving.prototype.__define({
 					data: [],
 					readOnly: true,
 					wordWrap: false,
-					colWidths: [200, 100, 100, 100, 100],
+					colWidths: [220, 120, 120, 120, 120],
 					colHeaders: ['Касса', 'Нач. ост.', 'Приход', 'Расход', 'Кон. ост'],
 					columns: [
 						{type: 'text'},
@@ -246,7 +322,8 @@ $p.RepCash_moving.prototype.__define({
 						{type: 'numeric', format: '0 0.00'}
 					]
 				},
-				start_total = {};
+				start_total = {},
+				cashboxes = this.cashboxes();
 
 			return $p.wsql.pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
 
@@ -254,6 +331,9 @@ $p.RepCash_moving.prototype.__define({
 
 					if(data.rows){
 						data.rows.forEach(function (row) {
+
+							if(cashboxes.indexOf(row.key[3]) == -1)
+								return;
 
 							if(!start_total.hasOwnProperty(row.key[3]))
 								start_total[row.key[3]] = [0,0,0,0];
@@ -274,6 +354,9 @@ $p.RepCash_moving.prototype.__define({
 					if(data.rows){
 
 						data.rows.forEach(function (row) {
+
+							if(cashboxes.indexOf(row.key[3]) == -1)
+								return;
 
 							if(!start_total.hasOwnProperty(row.key[3]))
 								start_total[row.key[3]] = [0,row.value.debit,row.value.credit,row.value.total];
