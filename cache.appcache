@@ -10,7 +10,8 @@ CACHE:
 
 # Эти позиции включаем только в продакшене
 #
-//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,metadata(dhtmlx.min.js+metadata.min.js)
+#//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,metadata(dhtmlx.min.js+metadata.min.js)
+//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2,bootstrap.daterangepicker@2.1
 dist/app.min.js
 
 # А эти - только в дебагере

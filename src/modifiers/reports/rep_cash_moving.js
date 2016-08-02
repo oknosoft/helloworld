@@ -215,6 +215,56 @@ function form_rep(pwnd, attr) {
 
 function ODateRangePicker(container, attr) {
 
+	if(container instanceof dhtmlXCellObject){
+		this._cont = document.createElement('div');
+		container.detachObject(true);
+		container.attachObject(this._cont);
+	}else{
+		this._cont = container;
+	}
+
+	//this._cont.className = "pull-right";
+	this._cont.style="cursor: pointer; padding: 3px; 4px; width: 100%; font-size: 90%";
+	this._cont.innerHTML = '<i class="fa fa-calendar"></i>&nbsp; <span></span> &nbsp;<i class="fa fa-caret-down"></i>';
+
+
+	var _cont = this._cont;
+	var start = moment().subtract(29, 'days');
+	var end = moment();
+
+	function cb(start, end) {
+		$('span', _cont).html(start.format('DD MMM YY') + ' - ' + end.format('DD MMM YY'));
+	}
+
+	$(_cont).daterangepicker({
+		startDate: start,
+		endDate: end,
+		ranges: {
+			'Сегодня': [moment(), moment()],
+			'Вчера': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			'Последние 7 дней': [moment().subtract(6, 'days'), moment()],
+			'Последние 30 дней': [moment().subtract(29, 'days'), moment()],
+			'Этот месяц': [moment().startOf('month'), moment().endOf('month')],
+			'Прошлый месяц': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		}
+	}, cb);
+
+	cb(start, end);
+
+	this.__define({
+		on: {
+			value: function (event, fn) {
+				return $(_cont).on(event, fn);
+			}
+		},
+
+		start: {
+			get: function () {
+
+			}
+		}
+	})
+
 }
 
 $p.rep.cash_moving.form_rep = function (pwnd, attr) {
@@ -248,8 +298,8 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 	});
 
 	wnd.elmnts.frm_prm.cells("a").fixSize(false, true);
-	wnd.elmnts.frm_prm.cells("a").setMinHeight(24);
-	wnd.elmnts.frm_prm.cells("a").setHeight(26);
+	wnd.elmnts.frm_prm.cells("a").setMinHeight(28);
+	wnd.elmnts.frm_prm.cells("a").setHeight(28);
 
 	wnd.elmnts.layout.cells("b").showHeader();
 	wnd.elmnts.layout.attachEvent("onResizeFinish", function(){
@@ -276,14 +326,20 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 	});
 	grid_cashboxes.parse(data,"json");
 
-	wnd.report.cashboxes = function () {
+	// метод для получения списка касс объектом отчета
+	wnd.report.cashboxes_filter = function () {
 		var res = [];
 		grid_cashboxes.forEachRow(function(id){
 			if(grid_cashboxes.cells(id,0).isChecked())
 				res.push(id);
 		});
 		return res;
-	}
+	};
+
+
+	// daterangepicker
+	var drp = new ODateRangePicker(wnd.elmnts.frm_prm.cells("a"), {});
+
 
 };
 
@@ -323,7 +379,7 @@ $p.RepCash_moving.prototype.__define({
 					]
 				},
 				start_total = {},
-				cashboxes = this.cashboxes();
+				cashboxes = this.cashboxes_filter();
 
 			return $p.wsql.pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
 
