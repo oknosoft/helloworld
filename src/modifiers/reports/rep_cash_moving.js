@@ -72,6 +72,11 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 			wnd = $p.iface.dat_blank(null, options.wnd);
 		}
 
+		// указатели на объект и менеджер
+		wnd._mgr = _mgr;
+		wnd.report = _mgr.create();
+
+
 		if(!wnd.set_text)
 			wnd.__define({
 
@@ -100,7 +105,7 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 		/**
 		 *	Разбивка на отчет и параметры
 		 */
-		wnd.elmnts.rep_layout = wnd.attachLayout({
+		wnd.elmnts.layout = wnd.attachLayout({
 			pattern: "2U",
 			cells: [{
 				id: "a",
@@ -130,48 +135,55 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 
 		});
 
-		/**
-		 * Устанавливаем текст заголовка формы
-		 */
+		// устанавливаем текст заголовка формы
 		wnd.set_text();
 		if(!attr.hide_header && wnd.showHeader)
 			wnd.showHeader();
 
-		wnd._mgr = _mgr;
-		wnd.o = _mgr.create();
+		// создаём HandsontableDocument
+		wnd.elmnts.table = new $p.HandsontableDocument(wnd.elmnts.layout.cells("a"),
+			{allow_offline: wnd.report.allow_offline, autorun: false})
+			.then(function (rep) {
+				if(!rep._online)
+					return wnd.elmnts.table = null;
+			});
+
 	}
 
 	/**
 	 * обработчик нажатия кнопок командных панелей
 	 */
 	function toolbar_click(btn_id){
-		if(btn_id=="btn_save_close")
-			save("close");
 
-		else if(btn_id=="btn_save")
-			save("save");
-
-		else if(btn_id=="btn_post")
-			save("post");
-
-		else if(btn_id=="btn_unpost")
-			save("unpost");
-
-		else if(btn_id=="btn_close")
+		if(btn_id=="btn_close")
 			wnd.close();
 
-		else if(btn_id=="btn_go_connection")
-			go_connection();
+		else if(btn_id=="btn_run")
+			wnd.report.build().then(show).catch(show);
 
-		else if(btn_id.substr(0,4)=="prn_")
-			_mgr.print(o, btn_id, wnd);
+		else if(btn_id=="btn_print")
+			_mgr.import(null, o);
 
-		else if(btn_id=="btn_import")
+		else if(btn_id=="btn_save")
+			_mgr.import(null, o);
+
+		else if(btn_id=="btn_load")
 			_mgr.import(null, o);
 
 		else if(btn_id=="btn_export")
 			_mgr.export({items: [o], pwnd: wnd, obj: true} );
 
+	}
+
+	/**
+	 * показывает отчет
+	 */
+	function show(data) {
+		if(data instanceof Error){
+
+		}else{
+			wnd.elmnts.table.requery(data);
+		}
 	}
 
 	/**
@@ -184,10 +196,118 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 
 		if(!on_create){
 			delete wnd.set_text;
-			wnd.o = null;
+
+			if(wnd.elmnts.table)
+				wnd.elmnts.table.hot.destroy();
+
+			wnd.report = null;
+
 			_mgr = wnd = _meta = options = pwnd = attr = null;
 		}
 	}
 
 	frm_create();
+
+	return wnd;
 };
+
+// методы объекта отчет
+$p.RepCash_moving.prototype.__define({
+
+	/**
+	 * ### Формирует отчет
+	 * @param obj
+	 * @return Promise.<T>
+	 */
+	build: {
+		value: function() {
+
+			var date_from = new Date((new Date()).getFullYear().toFixed() + "-01-01"),
+				date_till = new Date((new Date()).getFullYear().toFixed() + "-12-31"),
+				query_options = {
+					reduce: true,
+					limit: 10000,
+					group: true,
+					group_level: 4,
+					startkey: [],
+					endkey: [date_from.getFullYear(), date_from.getMonth()+1, date_from.getDate(),"\uffff"]
+				},
+				res = {
+					data: [],
+					readOnly: true,
+					wordWrap: false,
+					colWidths: [200, 100, 100, 100, 100],
+					colHeaders: ['Касса', 'Нач. ост.', 'Приход', 'Расход', 'Кон. ост'],
+					columns: [
+						{type: 'text'},
+						{type: 'numeric', format: '0 0.00'},
+						{type: 'numeric', format: '0 0.00'},
+						{type: 'numeric', format: '0 0.00'},
+						{type: 'numeric', format: '0 0.00'}
+					]
+				},
+				start_total = {};
+
+			return $p.wsql.pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
+
+				.then(function (data) {
+
+					if(data.rows){
+						data.rows.forEach(function (row) {
+
+							if(!start_total.hasOwnProperty(row.key[3]))
+								start_total[row.key[3]] = [0,0,0,0];
+
+							start_total[row.key[3]][0] += row.value.total;
+							start_total[row.key[3]][3] = start_total[row.key[3]][0];
+
+						});
+					}
+
+					query_options.startkey = [date_from.getFullYear(), date_from.getMonth()+1, date_from.getDate(), ""];
+					query_options.endkey = [date_till.getFullYear(), date_till.getMonth()+1, date_till.getDate(),"\uffff"]
+
+					return $p.wsql.pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
+				})
+				.then(function (data) {
+
+					if(data.rows){
+
+						data.rows.forEach(function (row) {
+
+							if(!start_total.hasOwnProperty(row.key[3]))
+								start_total[row.key[3]] = [0,row.value.debit,row.value.credit,row.value.total];
+							else{
+								start_total[row.key[3]][1] += row.value.debit;
+								start_total[row.key[3]][2] += row.value.credit;
+								start_total[row.key[3]][3] += row.value.debit - row.value.credit;
+							}
+
+						});
+
+						for(var key in start_total){
+							var row = start_total[key];
+							res.data.push([
+								$p.cat.cashboxes.get(key),
+								row[0],
+								row[1],
+								row[2],
+								row[3]
+							]);
+						}
+
+
+					}
+
+					return res;
+				});
+		}
+	},
+
+	allow_offline: {
+		value: true
+	}
+
+});
+
+

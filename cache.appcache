@@ -24,13 +24,19 @@ dist/app.min.js
 //cdn.jsdelivr.net/g/metadata(dhx_terrace.css+metadata.css)
 dist/app.css
 
-#
+# сайдбар + иконы
 dist/imgs/fav-md32.png
 dist/imgs/fav-md144.png
 dist/imgs/about_48.png
 dist/imgs/settings_48.png
+dist/imgs/graph_up_48.png
 dist/imgs/events_48.png
 dist/imgs/projects_48.png
+
+# handsontable
+//cdn.jsdelivr.net/handsontable/0.25/handsontable.min.css
+//cdn.jsdelivr.net/g/zeroclipboard,handsontable@0.25(handsontable.min.js)
+//cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/pikaday.min.js
 
 
 # offline.html will be displayed if the user is offline
@@ -39,7 +45,4 @@ dist/imgs/projects_48.png
 
 # All other resources (e.g. sites) require the user to be online.
 NETWORK:
-
-# данные - xml-ки форм, панелей и менюшек
-
 *
