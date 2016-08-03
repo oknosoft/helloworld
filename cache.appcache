@@ -10,8 +10,8 @@ CACHE:
 
 # Эти позиции включаем только в продакшене
 #
-#//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,metadata(dhtmlx.min.js+metadata.min.js)
-//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2,bootstrap.daterangepicker@2.1
+#//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2,metadata(dhtmlx.min.js+metadata.min.js)
+//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2
 dist/app.min.js
 
 # А эти - только в дебагере
@@ -35,8 +35,8 @@ dist/imgs/events_48.png
 dist/imgs/projects_48.png
 
 # handsontable
-//cdn.jsdelivr.net/handsontable/0.25/handsontable.min.css
-//cdn.jsdelivr.net/g/zeroclipboard,handsontable@0.25(handsontable.min.js)
+//cdn.jsdelivr.net/handsontable/0.26/handsontable.min.css
+//cdn.jsdelivr.net/g/zeroclipboard,handsontable@0.26(handsontable.min.js)
 //cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/pikaday.min.js
 
 
