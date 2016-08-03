@@ -6,7 +6,7 @@
 
 (function (msg){
 
-	msg.main_title = "Заказы онлайн ";
+	msg.main_title = "Hello world ";
 	
 	
 })($p.msg);

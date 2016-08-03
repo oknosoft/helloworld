@@ -2,15 +2,16 @@
 <html manifest='cache.appcache' lang='ru'>
 <head>
 	<meta charset='UTF-8'>
-	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="mobile-web-app-capable" content="yes">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
 	<title>Hello world</title>
 
-	<link rel="manifest" href="manifest.json">
+	<!--манифест для мобильных устройств-->
 	<meta name="application-name" content="Hello world">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="manifest" href="manifest.json">
 	<link rel="icon" sizes="16x16 32x32 48x48" href="dist/imgs/fav-md32.png" type="image/icon">
 	<link rel="icon" sizes="144x144" href="dist/imgs/fav-md144.png" type="image/png">
 	<link rel="shortcut icon" href="dist/imgs/fav-md144.png" type="image/png">
@@ -18,8 +19,7 @@
 
 	<!--стили-->
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/g/metadata(dhx_terrace.css)">
-	<link rel="stylesheet" type="text/css" href="lib/metadata.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/g/metadata@0.11(dhx_terrace.css+metadata.css)">
 	<link rel="stylesheet" type="text/css" href="dist/app.css">
 
 </head>
@@ -27,10 +27,10 @@
 
 <div id="splash"></div>
 
-<!-- библиотеки из jsdelivr -->
-<script src="//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2"></script>
-<script src="lib/dhtmlx_debug.js"></script>
-<script src="lib/metadata.js"></script>
+<!-- библиотеки из jsdelivr с отладочным файлом metadata.js-->
+<script src="//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2,metadata@0.11(dhtmlx.min.js+metadata.js)"></script>
+<!--script src="lib/dhtmlx_debug.js"></script>
+<script src="lib/metadata.js"></script-->
 
 <!-- код нашего приложения -->
 <script src="dist/app.js"></script>

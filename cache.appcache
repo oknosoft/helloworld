@@ -10,8 +10,7 @@ CACHE:
 
 # Эти позиции включаем только в продакшене
 #
-#//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2,metadata(dhtmlx.min.js+metadata.min.js)
-//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2
+//cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2,metadata@0.11(dhtmlx.min.js+metadata.min.js)
 dist/app.min.js
 
 # А эти - только в дебагере
@@ -22,7 +21,7 @@ dist/app.min.js
 #
 //cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css
 //cdn.jsdelivr.net/fontawesome/4.6.3/fonts/fontawesome-webfont.woff2?v=4.6.3
-//cdn.jsdelivr.net/g/metadata(dhx_terrace.css+metadata.css)
+//cdn.jsdelivr.net/g/metadata@0.11(dhx_terrace.css+metadata.css)
 dist/app.css
 
 # сайдбар + иконы
