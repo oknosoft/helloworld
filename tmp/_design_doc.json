@@ -1,0 +1,41 @@
+[
+  {
+    "_id": "_design/auth",
+    "language": "javascript",
+    "validate_doc_update": "function(newDoc, oldDoc, userCtx, secObj){if (!userCtx || userCtx.roles.indexOf('_admin')!==-1 || userCtx.roles.indexOf('doc_editor')!==-1){return;}else{throw({forbidden: 'Только полноправные пользователи могут изменять документы'});}}",
+    "filters": {
+      "by_partner": "function(doc, req){if(['_design/server','registers_correction','purchase','credit_cash_order','debit_bank_order','credit_bank_order','debit_cash_order','credit_cash_order','selling'].some(function(name){return doc._id.indexOf(name)!=-1;})){return false;} if(!req.userCtx){ return true; } return doc._id[0]=='_' || !doc.partner || doc.partner=='00000000-0000-0000-0000-000000000000' || req.userCtx.roles.indexOf(doc.partner)!=-1 || req.userCtx.roles.indexOf('_admin') != -1 || req.userCtx.roles.indexOf('doc_full')!=-1;}"
+    }
+  },
+
+  {
+    "_id": "_design/doc",
+    "language": "javascript",
+    "views": {
+      "number_doc": {
+        "map": "function(doc){var c=doc._id.split('|')[0];if(c.substr(0, 3)=='doc') emit([c,doc.number_doc], null);else if(c.substr(0, 3)=='cat'&&doc.id) emit([c,doc.id], null);}"
+      },
+      "doc_buyers_order_date": {
+        "map": "function(doc) {\nvar key;\nif (doc._id.substr(0, 16)=='doc.buyers_order') {\n  if(doc.obj_delivery_state=='Шаблон') key='template';\n  else if(doc.obj_delivery_state=='Отправлен') key='sent';\n  else if(doc.obj_delivery_state=='Отклонен') key='declined';\n  else if(doc.obj_delivery_state=='Подтвержден') key='confirmed';\n  else if(doc.obj_delivery_state=='Архив') key='zarchive';\n  else key='draft';\n  var d=doc.date.split('T')[0].split('-');\n  emit([key,Number(d[0]),Number(d[1]),Number(d[2]),(doc.number_doc||'')+(doc.note ? ' ' + doc.note : '')], null);\n}}"
+      },
+      "doc_nom_prices_setup_slice_last": {
+        "map": "function(doc) {\n  if(doc._id.substr(0, 20)=='doc.nom_prices_setup'&&doc.posted){\n  doc.goods.forEach(function(row){\n  emit([row.nom,row.nom_characteristic,row.price_type],{\n  price: row.price,\n  currency: row.currency,\n  date:doc.date\n  });\n  });\n  }\n}"
+      }
+    }
+  },
+
+  {
+    "_id": "_design/server",
+    "language": "javascript",
+    "views": {
+      "by_cashbox": {
+        "map": "function(doc) {\nif ((doc._id.substr(0, 20)=='doc.debit_cash_order'||\n\tdoc._id.substr(0, 21)=='doc.credit_card_order'||\n\tdoc._id.substr(0, 20)=='doc.debit_bank_order')&&doc.posted){\n\n  var d=doc.date.split('T')[0].split('-');\n  emit([doc.cashbox,Number(d[0]),Number(d[1]),Number(d[2]),doc.partner],{debit: doc.doc_amount});\n\n\n}else if ((doc._id.substr(0, 21)=='doc.credit_cash_order'||\n\tdoc._id.substr(0, 21)=='doc.credit_bank_order')&&doc.posted){\n  \n  var d=doc.date.split('T')[0].split('-');\n  emit([doc.cashbox,Number(d[0]),Number(d[1]),Number(d[2]),doc.partner],{credit: doc.doc_amount});\n\n}\nelse if (doc._id.substr(0, 15)=='doc.cash_moving'&&doc.posted){\n  \n  var d=doc.date.split('T')[0].split('-');\n  emit([doc.recipient,Number(d[0]),Number(d[1]),Number(d[2]),doc.sender],{debit: doc.doc_amount});\n  emit([doc.sender,Number(d[0]),Number(d[1]),Number(d[2]),doc.recipient],{credit: doc.doc_amount});\n\n}\n}",
+        "reduce": "function (key, values, rereduce) {\nreturn values.reduce(function(sum, row){\n  if(row.debit){sum.debit+=row.debit;sum.total+=row.debit;}\n  if(row.credit){sum.credit+=row.credit;sum.total-=row.credit;}\n  return sum;\n},{debit:0,credit:0,total:0});\n}"
+      },
+      "by_date": {
+        "map": "function(doc) {\nif (doc._id.substr(0, 15)=='doc.cash_moving'&&doc.posted){\n  \n  var d=doc.date.split('T')[0].split('-');\n  emit([Number(d[0]),Number(d[1]),Number(d[2]),doc.recipient],{debit: doc.doc_amount});\n  emit([Number(d[0]),Number(d[1]),Number(d[2]),doc.sender],{credit: doc.doc_amount});\n\n}\n}",
+        "reduce": "function (key, values, rereduce) {\nreturn values.reduce(function(sum, row){\n  if(row.debit){sum.debit+=row.debit;sum.total+=row.debit;}\n  if(row.credit){sum.credit+=row.credit;sum.total-=row.credit;}\n  return sum;\n},{debit:0,credit:0,total:0});\n}"
+      }
+    }
+  }
+]
