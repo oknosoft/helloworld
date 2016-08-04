@@ -29,7 +29,7 @@
 - [fontawesome](https://fortawesome.github.io/Font-Awesome/), набор шрифторвых иконок
 
 ### Лицензия
-- Для некоммерческих Open Source проектов, разрешено использование и распространение исходного кода приложения _Заказы онлайн_ и библиотеки [Metadata.js](http://www.oknosoft.ru/metadata/) на условиях [GNU Affero General Public License v.3](http://www.gnu.org/licenses/agpl.html)
+- Для некоммерческих Open Source проектов, разрешено использование и распространение библиотеки [Metadata.js](http://www.oknosoft.ru/metadata/) на условиях [GNU Affero General Public License v.3](http://www.gnu.org/licenses/agpl.html)
 - Коммерческая [лицензия на разработчика](http://www.oknosoft.ru/programmi-oknosoft/metadata.html) позволяет использовать и распространять ПО в любом количестве неконкурирующих продуктов, без ограничений на количество копий
 
 Данная лицензия распространяется на все содержимое репозитория, но не заменеют существующие лицензии для продуктов, используемых библиотекой metadata.js
