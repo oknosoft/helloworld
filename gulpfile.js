@@ -14,12 +14,12 @@ var gulp = require('gulp'),
 	prebuild = require('./src/utils/prebuild.js'),
 	umd = require('gulp-umd'),
 	replace = require('gulp-replace'),
-	package_data = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));  // данные файла package.json
+	package_data = JSON.parse(require('fs').readFileSync('./package.json', 'utf8'));  // данные файла package.json
 
 module.exports = gulp;
 
 // Основная сборка проекта
-gulp.task('main', function(){
+function main(){
 
 	return gulp.src([
 		'./tmp/prebuild.js',
@@ -42,7 +42,8 @@ gulp.task('main', function(){
 		.pipe(rename('app.min.js'))
 		.pipe(uglify())
 		.pipe(gulp.dest('./dist'));
-});
+}
+gulp.task('main', main);
 
 // Сборка метаданных
 gulp.task('prebuild', function(){
@@ -70,8 +71,8 @@ gulp.task('injected', function(){
 gulp.task('css-base64', function () {
 
 	return gulp.src([
-			'./src/templates/*.css'
-		])
+		'./src/templates/*.css'
+	])
 		.pipe(base64({
 			maxImageSize: 32*1024 // bytes
 		}))
@@ -80,5 +81,5 @@ gulp.task('css-base64', function () {
 		.pipe(gulp.dest('./dist'));
 });
 
-
-gulp.task('full', ['injected', 'css-base64', 'prebuild', 'main'], function(){});
+// Пересборка всех частей
+gulp.task('full', ['prebuild', 'injected', 'css-base64'], main);
