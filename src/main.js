@@ -49,31 +49,7 @@ $p.on({
 				{name: 'auth', text: '', width: '80px', float: 'right'}
 
 			]
-		)
-
-	},
-
-	/**
-	 * ### При окончании загрузки локальных данных
-	 */
-	predefined_elmnts_inited: function predefined_elmnts_inited() {
-
-		$p.iface.main.progressOff();
-		$p.off(predefined_elmnts_inited);
-
-		// если разрешено сохранение пароля - сразу пытаемся залогиниться
-		if(!$p.wsql.pouch.authorized && navigator.onLine &&
-			$p.wsql.get_user_param("enable_save_pwd") &&
-			$p.wsql.get_user_param("user_name") &&
-			$p.wsql.get_user_param("user_pwd")){
-
-			setTimeout(function () {
-				$p.iface.frm_auth({
-					modal_dialog: true,
-					try_auto: true
-				});
-			}, 100);
-		}
+		);
 
 	}
 

@@ -1,7 +1,7 @@
 {
   "name": "helloworld",
   "description": "Hello world",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "metadata-js": ">=0.11"
   },

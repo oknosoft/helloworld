@@ -420,7 +420,8 @@ $p.on({
 
 			// разделитель для localStorage
 			local_storage_prefix: {
-				value: "PACKAGE_PREFIX"
+				value: "PACKAGE_PREFIX",
+				writable: true
 			},
 
 			// скин по умолчанию
@@ -434,7 +435,8 @@ $p.on({
 				value: [{
 					username: "Гость",
 					password: "hQI7OhIGlVeOWi8="
-				}]
+				}],
+				writable: true
 			},
 
 			// если понадобится обратиться к 1С, будем использовать irest
@@ -463,12 +465,14 @@ $p.on({
 
 			// логин гостевого пользователя базы "meta" couchdb
 			guest_name: {
-				value: "guest"
+				value: "guest",
+				writable: true
 			},
 
 			// пароль гостевого пользователя базы "meta" couchdb
 			guest_pwd: {
-				value: "meta"
+				value: "meta",
+				writable: true
 			},
 
 			// по умолчанию, обращаемся к зоне 0
@@ -516,6 +520,32 @@ $p.on({
 				try_auto: $p.wsql.get_user_param("zone") == $p.job_prm.zone_demo && $p.wsql.get_user_param("enable_save_pwd")
 			});
 
+		}
+
+		if($p.iface.main && $p.iface.main.progressOff)
+			$p.iface.main.progressOff();
+
+	},
+
+	/**
+	 * ### При окончании загрузки локальных данных
+	 */
+	predefined_elmnts_inited: function predefined_elmnts_inited() {
+
+		$p.off(predefined_elmnts_inited);
+
+		// если разрешено сохранение пароля - сразу пытаемся залогиниться
+		if(!$p.wsql.pouch.authorized && navigator.onLine &&
+			$p.wsql.get_user_param("enable_save_pwd") &&
+			$p.wsql.get_user_param("user_name") &&
+			$p.wsql.get_user_param("user_pwd")){
+
+			setTimeout(function () {
+				$p.iface.frm_auth({
+					modal_dialog: true,
+					try_auto: true
+				});
+			}, 100);
 		}
 
 		if($p.iface.main && $p.iface.main.progressOff)
