@@ -23,6 +23,7 @@
   "license": "AGPL-3.0",
   "config": {
     "couchdb": "http://localhost:5984/hw_",
+    "rest_1c": "",
     "zone": 0,
     "prefix": "hw_",
     "suffix": ""

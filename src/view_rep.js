@@ -10,7 +10,7 @@ $p.iface.view_rep = function (cell) {
 	function OViewReports(){
 
 		var t = this,
-			rep_attr = {
+			frm_attr = {
 				bind_pwnd: true,
 				set_text: function (text) {
 					cell.setText({text: "<b>" + text + "</b>"});
@@ -24,12 +24,12 @@ $p.iface.view_rep = function (cell) {
 
 			// если форму еще не рисовали
 			if(!t.report)
-				t.report = $p.rep[obj].form_rep(t.rep_cell, rep_attr);
+				t.report = $p.rep[obj].form_rep(t._cell, frm_attr);
 
 			else if(t.report._mgr != $p.rep[obj]){
 				t.report.close();
-				t.rep_cell.detachObject(true);
-				t.report = $p.rep[obj].form_rep(t.rep_cell, rep_attr);
+				t._cell.detachObject(true);
+				t.report = $p.rep[obj].form_rep(t._cell, frm_attr);
 			}
 		}
 
@@ -55,7 +55,7 @@ $p.iface.view_rep = function (cell) {
 
 		}
 
-		// cюда попадаем после всех приготовлений - можно рисовать форму заказов
+		// сюда попадаем после всех приготовлений - можно рисовать форму отчета
 		function go_go(){
 
 			$p.off(go_go);
@@ -74,31 +74,16 @@ $p.iface.view_rep = function (cell) {
 				if(!$p.md.get("rep."+name).hide){
 					if(!t.default_obj)
 						t.default_obj = name;
-					sum+=1;
+					return sum+=1;
 				}
 			}, 0) > 1){
 
-			t.rep_layout = cell.attachLayout({
-				pattern: "2U",
-				cells: [{
-					id: "a",
-					text: "Отчеты",
-					collapsed_text: "Отчеты",
-					width: 180
-				}, {
-					id: "b",
-					text: "Отчеты",
-					header: false
-				}],
-				offsets: { top: 0, right: 0, bottom: 0, left: 0}
-			});
-
-			t.objs_tree = t.rep_layout.cells("a").attachTree();
-			t.rep_cell = t.rep_layout.cells("b");
+			t.meta_objs = new $p.iface.All_meta_objs(cell, ["rep"], frm_attr);
+			t._cell = t.meta_objs.layout.cells("b");
 
 		}else{
 			if(t.default_obj)
-				t.rep_cell = cell;
+				t._cell = cell;
 			else
 				return;
 		}

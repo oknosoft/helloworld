@@ -10,7 +10,7 @@ $p.iface.view_doc = function (cell) {
 	function OViewDocs(){
 
 		var t = this,
-			list_attr = {
+			frm_attr = {
 				hide_header: true,
 				date_from: new Date((new Date()).getFullYear().toFixed() + "-01-01"),
 				date_till: new Date((new Date()).getFullYear().toFixed() + "-12-31"),
@@ -35,12 +35,12 @@ $p.iface.view_doc = function (cell) {
 
 			// если форму еще не рисовали
 			if(!t.list)
-				t.list = $p.doc[obj].form_list(t.list_cell, list_attr);
+				t.list = $p.doc[obj].form_list(t._cell, frm_attr);
 
 			else if(t.list._mgr != $p.doc[obj]){
 				t.list.close();
-				t.list_cell.detachObject(true);
-				t.list = $p.doc[obj].form_list(t.list_cell, list_attr);
+				t._cell.detachObject(true);
+				t.list = $p.doc[obj].form_list(t._cell, frm_attr);
 			}
 
 		}
@@ -112,7 +112,7 @@ $p.iface.view_doc = function (cell) {
 
 		}
 
-		// cюда попадаем после всех приготовлений - можно рисовать форму списка документов
+		// сюда попадаем после всех приготовлений - можно рисовать форму списка документов
 		function go_go(){
 
 			$p.off(go_go);
@@ -137,36 +137,21 @@ $p.iface.view_doc = function (cell) {
 		t.carousel.addCell("list");
 		t.carousel.addCell("doc");
 
-		// Если документов к показу больше 1, layout с деревом и списком иначе - просто список
+		// Если документов к показу больше 1, layout с деревом и списком. иначе - просто список
 		if($p.md.get_classes().doc.reduce(function (sum, name) {
 			if(!$p.md.get("doc."+name).hide){
 				if(!t.default_obj)
 					t.default_obj = name;
-				sum+=1;
+				return sum+=1;
 			}
 		}, 0) > 1){
 
-			t.list_layout = t.carousel.cells("list").attachLayout({
-					pattern: "2U",
-					cells: [{
-						id: "a",
-						text: "Документы",
-						collapsed_text: "Документы",
-						width: 180
-					}, {
-						id: "b",
-						text: "Документы",
-						header: false
-					}],
-					offsets: { top: 0, right: 0, bottom: 0, left: 0}
-				});
-
-			t.objs_tree = t.list_layout.cells("a").attachTree();
-			t.list_cell = t.list_layout.cells("b");
+			t.meta_objs = new $p.iface.All_meta_objs(t.carousel.cells("list"), ["doc"], frm_attr);
+			t._cell = t.meta_objs.layout.cells("b");
 
 		}else{
 			if(t.default_obj)
-				t.list_cell = t.carousel.cells("list");
+				t._cell = t.carousel.cells("list");
 			else
 				return;
 		}

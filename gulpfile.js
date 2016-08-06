@@ -1,5 +1,5 @@
 /**
- * gulpfile.js for order-online
+ * gulpfile.js for metadata-based projects
  *
  * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
  */
@@ -10,6 +10,7 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
 	rename = require('gulp-rename'),
+	//inject = require('gulp-inject-string'),
 	resources = require('./src/utils/resource-concat.js'),
 	prebuild = require('./src/utils/prebuild.js'),
 	umd = require('gulp-umd'),
@@ -30,14 +31,16 @@ function main(){
 		'./src/view_*.js'
 	])
 		.pipe(concat('app.js'))
-		.pipe(replace(/PACKAGE_PREFIX/g, package_data.config.prefix))
-		.pipe(replace(/PACKAGE_ZONE/g, package_data.config.zone))
-		.pipe(replace(/PACKAGE_COUCHDB/g, package_data.config.couchdb))
 		.pipe(umd({
 			exports: function(file) {
 				return 'undefined';
 			}
 		}))
+		.pipe(replace(/PACKAGE_VERSION/g, package_data.version))
+		.pipe(replace(/PACKAGE_PREFIX/g, package_data.config.prefix))
+		.pipe(replace(/PACKAGE_ZONE/g, package_data.config.zone))
+		.pipe(replace(/PACKAGE_COUCHDB/g, package_data.config.couchdb))
+		.pipe(replace(/PACKAGE_REST_1C/g, package_data.config.rest_1c))
 		.pipe(gulp.dest('./dist'))
 		.pipe(rename('app.min.js'))
 		.pipe(uglify())
@@ -48,7 +51,7 @@ gulp.task('main', main);
 // Сборка метаданных
 gulp.task('prebuild', function(){
 
-	return gulp.src(['./src/utils/prebuild.js'])
+	return gulp.src(['./src/utils/default_settings.js'])
 		.pipe(prebuild(package_data))
 		.pipe(gulp.dest('./tmp'));
 
