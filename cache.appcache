@@ -10,7 +10,7 @@ CACHE:
 
 # Скрипты из jsdelivr + локальный
 #
-https://cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2,metadata@0.11.216(dhtmlx.min.js+metadata.min.js)
+https://cdn.jsdelivr.net/g/momentjs,alasql,pouchdb,jquery@2.2,metadata@0.11.217(dhtmlx.min.js+metadata.min.js)
 dist/app.min.js
 
 # handsontable
@@ -25,7 +25,7 @@ https://cdnjs.cloudflare.com/ajax/libs/numbro/1.9.2/languages/ru-RU.min.js
 #
 https://cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css
 https://cdn.jsdelivr.net/fontawesome/4.6.3/fonts/fontawesome-webfont.woff2?v=4.6.3
-https://cdn.jsdelivr.net/g/metadata@0.11.216(dhx_terrace.css+metadata.css)
+https://cdn.jsdelivr.net/g/metadata@0.11.217(dhx_terrace.css+metadata.css)
 dist/app.css
 
 # сайдбар + иконы

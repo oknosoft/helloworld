@@ -15,7 +15,8 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 
 	// добавляем элементы управления отчетом. в нашем случае - список касс
 	var cont_cashboxes = document.createElement("DIV");
-	cont_cashboxes.style = "height: 100%; min-height: 300px; width: 100%";
+	cont_cashboxes.style.width = "100%";
+	cont_cashboxes.style.height = "100%";
 	wnd.elmnts.frm_prm.appendChild(cont_cashboxes);
 
 	var grid_cashboxes = new dhtmlXGridObject(cont_cashboxes),
@@ -28,6 +29,7 @@ $p.rep.cash_moving.form_rep = function (pwnd, attr) {
 	grid_cashboxes.setColSorting("na,na");
 	grid_cashboxes.setColTypes("ch,ro");
 	grid_cashboxes.enableAutoWidth(true, 600, 180);
+	grid_cashboxes.enableAutoHeight(true, 280);
 	grid_cashboxes.init();
 	$p.wsql.alasql("select ref, name from cat_cashboxes where not(ref = '00000000-0000-0000-0000-000000000000') order by name").forEach(function (row, ind, arr) {
 		data.rows.push({ id:row.ref, data: [(ind+1) < arr.length ? 1 : 0, row.name]});
