@@ -12,12 +12,21 @@
 $p.doc.cash_moving.on({
 
 	/**
-	 * Обработчик при создании документа
+	 * Обработчик перед записью документа
 	 */
-	after_create: function (attr) {
+	before_save: function (attr) {
 
-		//Номер документа
-		return this.new_number_doc();
+		// как минимум, одна касса должна быть заполнена
+		if(this.sender.empty() && this.recipient.empty()){
+
+			$p.msg.show_msg({
+				title: $p.msg.mandatory_title,
+				type: "alert-error",
+				text: $p.msg.mandatory_one_cashbox
+			});
+
+			return false
+		}
 
 	}
 });

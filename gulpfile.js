@@ -26,6 +26,7 @@ function main(){
 		'./tmp/prebuild.js',
 		'./tmp/injected.js',
 		'./src/modifiers/**/*.js',
+		'./src/i18n.ru.js',
 		'./src/main.js',
 		'./src/wdg_*.js',
 		'./src/view_*.js'
@@ -38,9 +39,11 @@ function main(){
 		}))
 		.pipe(replace(/PACKAGE_VERSION/g, package_data.version))
 		.pipe(replace(/PACKAGE_PREFIX/g, package_data.config.prefix))
-		.pipe(replace(/PACKAGE_ZONE/g, package_data.config.zone))
+		.pipe(replace(/PACKAGE_ZONE_DEMO/g, package_data.config.zone_demo || 0))
+		.pipe(replace(/PACKAGE_ZONE/g, package_data.config.zone || 0))
 		.pipe(replace(/PACKAGE_COUCHDB/g, package_data.config.couchdb))
 		.pipe(replace(/PACKAGE_REST_1C/g, package_data.config.rest_1c))
+		.pipe(replace(/PACKAGE_ATT_MAX_SIZE/g, package_data.config.attachment_max_size || 0))
 		.pipe(gulp.dest('./dist'))
 		.pipe(rename('app.min.js'))
 		.pipe(uglify())

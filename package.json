@@ -25,7 +25,9 @@
     "couchdb": "http://localhost:5984/hw_",
     "rest_1c": "",
     "zone": 0,
+    "zone_demo": 0,
     "prefix": "hw_",
-    "suffix": ""
+    "suffix": "",
+    "attachment_max_size": 10000000
   }
 }

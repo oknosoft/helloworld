@@ -483,7 +483,13 @@ $p.on({
 
 			// объявляем номер демо-зоны
 			zone_demo: {
-				value: 0,
+				value: PACKAGE_ZONE_DEMO,
+				writable: true
+			},
+
+			// объявляем номер демо-зоны
+			attachment_max_size: {
+				value: PACKAGE_ATT_MAX_SIZE,
 				writable: true
 			},
 

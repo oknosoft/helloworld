@@ -32,6 +32,10 @@ module.exports = function (package_data) {
 		// по умолчанию, обращаемся к зоне 0
 		prm.zone = package_data.config.zone;
 
+		// расположение 1C
+		if(package_data.config.rest_1c)
+			prm.rest_path = package_data.config.rest_1c;
+
 		// расположение couchdb
 		prm.couch_path = package_data.config.couchdb;
 
