@@ -1,7 +1,7 @@
 {
   "name": "helloworld",
   "description": "Hello world",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "dependencies": {
     "metadata-js": ">=0.11"
   },
@@ -25,7 +25,7 @@
     "couchdb": "http://localhost:5984/hw_",
     "rest_1c": "",
     "zone": 0,
-    "zone_demo": 0,
+    "zone_demo": 1,
     "prefix": "hw_",
     "suffix": "",
     "attachment_max_size": 10000000
