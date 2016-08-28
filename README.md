@@ -1,5 +1,5 @@
 # helloworld
-Шаблон пустого проекта на metadata.js
+Шаблон пустого проекта на metadata.js  
 Подробнее см. http://infostart.ru/public/540168/ 
 
 ### Назначение и возможности
