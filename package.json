@@ -1,9 +1,9 @@
 {
   "name": "helloworld",
   "description": "Hello world",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "dependencies": {
-    "metadata-js": ">=0.11"
+    "metadata-js": "^0.11"
   },
   "devDependencies": {
     "gulp": ">=3.9",
@@ -14,10 +14,10 @@
     "gulp-umd": ">=0.2",
     "gulp-replace": ">=0.5",
     "gulp-base64": ">=0.1",
-    "jasmine": ">=2.4"
+    "jasmine": ">=2.5"
   },
   "engines": {
-    "node": ">=6.0"
+    "node": "^6.0"
   },
   "homepage": "http://www.oknosoft.ru/metadata/",
   "license": "AGPL-3.0",
