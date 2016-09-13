@@ -64,20 +64,6 @@ $p.cat.users_acl.__define({
 $p.CatUsers_acl.prototype.__define({
 
 	/**
-	 * ### Роль доступна
-	 *
-	 * @param name {String}
-	 * @returns {Boolean}
-	 */
-	role_available: {
-		value: function (name) {
-			return this.acl_objs._obj.some(function (row) {
-				return row.type == name;
-			});
-		}
-	},
-
-	/**
 	 * ### Идентификаторы доступных контрагентов
 	 * Для пользователей с ограниченным доступом
 	 *
