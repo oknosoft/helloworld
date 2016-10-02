@@ -1,7 +1,7 @@
 {
   "name": "helloworld",
-  "description": "Hello world",
-  "version": "0.0.5",
+  "description": "Hello world for metadata.js",
+  "version": "0.0.6",
   "dependencies": {
     "metadata-js": "^0.11"
   },
@@ -20,6 +20,10 @@
     "node": "^6.0"
   },
   "homepage": "http://www.oknosoft.ru/metadata/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oknosoft/helloworld.git"
+  },
   "license": "AGPL-3.0",
   "config": {
     "couchdb": "http://localhost:5984/hw_",
