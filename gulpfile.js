@@ -15,8 +15,7 @@ var gulp = require('gulp'),
 	prebuild = require('./src/utils/prebuild.js'),
 	umd = require('gulp-umd'),
 	replace = require('gulp-replace'),
-	package_data = JSON.parse(require('fs').readFileSync('./package.json', 'utf8'));  // данные файла package.json
-
+	package_data = require('./package.json');// данные файла package.json
 module.exports = gulp;
 
 // Основная сборка проекта
