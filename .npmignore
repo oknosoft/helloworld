@@ -1,6 +1,4 @@
 node_modules
 localstorage
 src/metadata-react-ui
-lib
 dist
-tmp

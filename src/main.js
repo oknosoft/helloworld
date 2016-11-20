@@ -1,56 +1,96 @@
-/**
- * ### Главное окно интерфейса
- * Сайдбар со страницами "Документы", "Отчеты", "Настройки", "О программе"
- *
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
- */
+import React from 'react'
+import ReactDOM from 'react-dom'
+import createBrowserHistory from 'history/lib/createBrowserHistory'
+import { useRouterHistory } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
+import createStore from './store/createStore'
 
-// Назначим обработчики событий
-$p.on({
+import AppContainer from './components/AppContainer'
 
-	/**
-	 * ### При установке параметров сеанса
-	 * В демо-приложении не используется, т.к. у него нет специфичных параметров
-	 *
-	 * @param prm {Object} - в свойствах этого объекта определяем параметры работы программы
-	 *
-	 * @example
-	 *     prm.skin = "dhx_web";
-	 *     prm.keep_hash = false;
-	 */
-	settings: function(prm) {
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
-	},
 
-	/**
-	 * ### При инициализации интерфейса
-	 * Вызывается после готовности DOM и установки параметров сеанса
-	 *
-	 */
-	iface_init: function() {
+// ========================================================
+// Browser History Setup
+// ========================================================
+const browserHistory = useRouterHistory(createBrowserHistory)({
+  basename: __BASENAME__
+})
 
-		// используем стандартный сайдбар, в который передаём списки закладок и кнопок
-		// первый параметр - список закладок
-		// второй параметр - список кнопок дополнительной навигации
-		$p.iface.init_sidebar(
-			[
-				{id: "doc", text: "Документы", icon: "projects_48.png"},
-				{id: "rep", text: "Отчеты", icon: "graph_up_48.png"},
-				{id: "settings", text: "Настройки", icon: "settings_48.png"},
-				{id: "about", text: "О программе", icon: "about_48.png"}
-			],
-			[
-				{name: 'about', text: '<i class="fa fa-info-circle md-fa-lg"></i>', tooltip: 'О программе', float: 'right'},
-				{name: 'settings', text: '<i class="fa fa-cog md-fa-lg"></i>', tooltip: 'Настройки', float: 'right'},
-				{name: 'rep', text: '<i class="fa fa-line-chart md-fa-lg"></i>', tooltip: 'Отчеты', float: 'right'},
-				{name: 'doc', text: '<i class="fa fa-suitcase md-fa-lg"></i>', tooltip: 'Документы', float: 'right'},
-				{name: 'sep_0', text: '', float: 'right'},
-				{name: 'sync', text: '', float: 'right'},
-				{name: 'auth', text: '', width: '80px', float: 'right'}
+// ========================================================
+// Store and History Instantiation
+// ========================================================
+// Create redux store and sync with react-router-redux. We have installed the
+// react-router-redux reducer under the routerKey "router" in src/routes/index.js,
+// so we need to provide a custom `selectLocationState` to inform
+// react-router-redux of its location.
+const initialState = window.___INITIAL_STATE__
+const store = createStore(initialState, browserHistory)
+const history = syncHistoryWithStore(browserHistory, store, {
+  selectLocationState: (state) => state.router
+})
 
-			]
-		);
+// ========================================================
+// Developer Tools Setup
+// ========================================================
+if (__DEBUG__) {
+  if (window.devToolsExtension) {
+    window.devToolsExtension.open()
+  }
+}
 
-	}
+// ========================================================
+// Render Setup
+// ========================================================
+const MOUNT_NODE = document.getElementById('root')
 
-});
+let render = () => {
+  const routes = require('./routes/index').default(store)
+
+  ReactDOM.render(
+    <AppContainer
+      store={store}
+      history={history}
+      routes={routes}
+    />,
+    MOUNT_NODE
+  )
+}
+
+// This code is excluded from production bundle
+if (__DEV__) {
+  if (module.hot) {
+    // Development render functions
+    const renderApp = render
+    const renderError = (error) => {
+      const RedBox = require('redbox-react').default
+
+      ReactDOM.render(<RedBox error={error} />, MOUNT_NODE)
+    }
+
+    // Wrap render in try/catch
+    render = () => {
+      try {
+        renderApp()
+      } catch (error) {
+        renderError(error)
+      }
+    }
+
+    // Setup hot module replacement
+    module.hot.accept('./routes/index', () => {
+      setTimeout(() => {
+        ReactDOM.unmountComponentAtNode(MOUNT_NODE)
+        render()
+      })
+    })
+  }
+}
+
+// ========================================================
+// Go!
+// ========================================================
+render()
