@@ -56,54 +56,50 @@ export default class NavList extends Component {
           docked={false}
           width={300}
           open={this.props.navlist_open}
-          onRequestChange={(open) => this.props.handleNavlistOpen(open)}
-        >
+          onRequestChange={(open) => this.props.handleNavlistOpen(open)}>
 
-        <AppBar
-          onLeftIconButtonTouchTap={this.handleClose}
-          title={this.props.title}
-          titleStyle={{fontSize: 18}}
-        />
+          <AppBar
+            onLeftIconButtonTouchTap={this.handleClose}
+            title={this.props.title}
+            titleStyle={{fontSize: 18}} />
 
-      <List>
+          <List>
 
-        <ListItem
-          primaryText="Заказы"
-          leftIcon={<IconInbox />}
-          initiallyOpen={false}
-          primaryTogglesNestedList={true}
-          nestedItems={[
-            <ListItem key={0} primaryText="Черновики" onTouchTap={this.handleNavigate('/doc_calc_order/list/draft')} leftIcon={<IconDrafts />} />,
-            <ListItem key={1} primaryText="Отправлено" onTouchTap={this.handleNavigate('/doc_calc_order/list/sent')} leftIcon={<IconSend />} />,
-            <ListItem key={2} primaryText="Согласовано" onTouchTap={this.handleNavigate('/doc_calc_order/list/confirmed')} leftIcon={<IconThumbUp />} />,
-            <ListItem key={3} primaryText="Отклонено" onTouchTap={this.handleNavigate('/doc_calc_order/list/declined')} leftIcon={<IconThumbDown />} />,
-            <ListItem key={4} primaryText="Сервис" onTouchTap={this.handleNavigate('/doc_calc_order/list/service')} leftIcon={<IconLocalPharmacy />} />,
-            <ListItem key={5} primaryText="Рекламации" onTouchTap={this.handleNavigate('/doc_calc_order/list/complaints')} leftIcon={<IconMoodBad />} />,
-            <ListItem key={6} primaryText="Шаблоны" onTouchTap={this.handleNavigate('/doc_calc_order/list/template')} leftIcon={<IconDrafts />} />,
-            <ListItem key={7} primaryText="Архив" onTouchTap={this.handleNavigate('/doc_calc_order/list/zarchive')} leftIcon={<IconDrafts />} />,
-            <ListItem key={8} primaryText="Все" onTouchTap={this.handleNavigate('/doc_calc_order/list/all')} leftIcon={<IconDrafts />} />,
-          ]}
-        />
+            <ListItem
+              primaryText="Заказы"
+              leftIcon={<IconInbox />}
+              initiallyOpen={false}
+              primaryTogglesNestedList={true}
+              nestedItems={[
+                <ListItem key={0} primaryText="Черновики" onTouchTap={this.handleNavigate('/doc_calc_order/list/draft')} leftIcon={<IconDrafts />} />,
+                  <ListItem key={1} primaryText="Отправлено" onTouchTap={this.handleNavigate('/doc_calc_order/list/sent')} leftIcon={<IconSend />} />,
+                  <ListItem key={2} primaryText="Согласовано" onTouchTap={this.handleNavigate('/doc_calc_order/list/confirmed')} leftIcon={<IconThumbUp />} />,
+                  <ListItem key={3} primaryText="Отклонено" onTouchTap={this.handleNavigate('/doc_calc_order/list/declined')} leftIcon={<IconThumbDown />} />,
+                  <ListItem key={4} primaryText="Сервис" onTouchTap={this.handleNavigate('/doc_calc_order/list/service')} leftIcon={<IconLocalPharmacy />} />,
+                  <ListItem key={5} primaryText="Рекламации" onTouchTap={this.handleNavigate('/doc_calc_order/list/complaints')} leftIcon={<IconMoodBad />} />,
+                  <ListItem key={6} primaryText="Шаблоны" onTouchTap={this.handleNavigate('/doc_calc_order/list/template')} leftIcon={<IconDrafts />} />,
+                  <ListItem key={7} primaryText="Архив" onTouchTap={this.handleNavigate('/doc_calc_order/list/zarchive')} leftIcon={<IconDrafts />} />,
+                  <ListItem key={8} primaryText="Все" onTouchTap={this.handleNavigate('/doc_calc_order/list/all')} leftIcon={<IconDrafts />} />,
+              ]}/>
 
-    </List>
+          </List>
 
-    <List>
+          <List>
 
-      <ListItem
-        primaryText="Отчеты"
-        leftIcon={<IconInbox />}
-        initiallyOpen={true}
-        primaryTogglesNestedList={true}
-        nestedItems={[
-          <ListItem key={0} primaryText="Потребность" onTouchTap={this.handleNavigate('/rep_materials_demand/main')} leftIcon={<IconList />} />,
-        ]}
-      />
+            <ListItem
+              primaryText="Отчеты"
+              leftIcon={<IconInbox />}
+              initiallyOpen={true}
+              primaryTogglesNestedList={true}
+              nestedItems={[
+                <ListItem key={0} primaryText="Потребность" onTouchTap={this.handleNavigate('/rep_materials_demand/main')} leftIcon={<IconList />} />,
+              ]} />
 
-  </List>
+          </List>
 
-  <ListItem primaryText="Профиль" onTouchTap={this.handleNavigate('login')} leftIcon={<IconPerson />} />
-  <ListItem primaryText="О программе" onTouchTap={this.handleNavigate('about')} leftIcon={<IconInfo />} />
-</Drawer>
+          <ListItem primaryText="Профиль" onTouchTap={this.handleNavigate('login')} leftIcon={<IconPerson />} />
+          <ListItem primaryText="О программе" onTouchTap={this.handleNavigate('about')} leftIcon={<IconInfo />} />
+        </Drawer>
       </div>
     );
   }
