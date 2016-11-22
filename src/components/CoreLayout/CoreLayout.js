@@ -4,15 +4,15 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+
 import { AutoSizer } from "react-virtualized"
 
-import Header from "components/Header";
+import Header from 'components/Header';
+import navlist_items from './navlist_items';
+import { navlist_open } from '../../store/ifaceReducer'
 
 import classes from "./CoreLayout.scss";
 import "../../styles/core.scss";
-
-
-import { navlist_open } from '../../store/ifaceReducer'
 
 let data_empty_timer
 
@@ -49,7 +49,7 @@ class CoreLayout extends Component {
         {({width, height}) => {
           return (
             <div style={{width: width}}>
-              <Header {...props} />
+              <Header {...props} navlist_items={navlist_items} />
               <div className={classes.mainContainer}>
                 {React.cloneElement(props.children, {
                   height,
