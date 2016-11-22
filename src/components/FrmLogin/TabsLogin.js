@@ -10,10 +10,25 @@ import Divider from 'material-ui/Divider';
 import classes from "./FrmLogin.scss";
 
 export default class TabsLogin extends React.Component {
+  static get propTypes() {
+    return {
+      zone: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.number
+      ]).isRequired,
+      couch_path: React.PropTypes.string.isRequired,
+      enable_save_pwd: React.PropTypes.bool.isRequired,
+      handleSetPrm: React.PropTypes.func.isRequired
+    };
+  }
 
   constructor(props) {
     super(props);
+
     this.state = {
+      zone: this.props.zone,
+      couch_path: this.props.couch_path,
+      enable_save_pwd: this.props.enable_save_pwd,
       tab_value: 'a',
       btn_login_disabled: !this.props.login || !this.props.password
     };
@@ -45,7 +60,6 @@ export default class TabsLogin extends React.Component {
     this.props.handleLogin(this.refs.login.input.value, this.refs.password.input.value)
   }
 
-
   render() {
     return (
 
@@ -55,8 +69,8 @@ export default class TabsLogin extends React.Component {
 
           <Tabs
             value={this.state.tab_value}
-            onChange={this.tabChange}
-          >
+            onChange={this.tabChange} >
+
             <Tab label="Вход" value="a" >
 
               <div className={classes.sub_paper} >
@@ -99,27 +113,24 @@ export default class TabsLogin extends React.Component {
               <div className={classes.sub_paper} >
 
                 <TextField
-                  ref="zone"
                   floatingLabelText="Область данных"
                   hintText="zone"
                   fullWidth={true}
-                  defaultValue={this.props.zone}
-                />
+                  onChange={(event) => this.setState({ zone: event.target.value })}
+                  value={this.state.zone} />
 
                 <TextField
-                  ref="couch_path"
                   floatingLabelText="Адрес CouchDB"
                   hintText="couch_path"
                   fullWidth={true}
-                  defaultValue={this.props.couch_path}
-                />
+                  onChange={(event) => this.setState({ couch_path: event.target.value })}
+                  value={this.state.couch_path}/>
 
                 <Toggle
-                  ref="enable_save_pwd"
                   label="Разрешить сохранение пароля"
                   className={classes.toggle}
-                  defaultToggled={this.props.enable_save_pwd}
-                />
+                  onToggle={() => this.setState({ enable_save_pwd: !this.state.enable_save_pwd })}
+                  toggled={this.state.enable_save_pwd} />
 
                 <Divider />
 
