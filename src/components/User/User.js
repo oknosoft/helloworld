@@ -12,18 +12,6 @@ import CircularProgress from "material-ui/CircularProgress";
 
 import classes from "./User.scss";
 
-const styles = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    padding: '8px'
-  },
-  block: {
-    //flex: '1 100%',
-    fontWeight: 'bold'
-  }
-}
 
 export default class UserObj extends Component {
 

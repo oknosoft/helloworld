@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component, PropTypes} from "react";
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
@@ -9,28 +9,28 @@ import Divider from 'material-ui/Divider';
 
 import classes from "./FrmLogin.scss";
 
-export default class TabsLogin extends React.Component {
-  static get propTypes() {
-    return {
-      zone: React.PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.number
-      ]).isRequired,
-      couch_path: React.PropTypes.string.isRequired,
-      enable_save_pwd: React.PropTypes.bool.isRequired,
-      handleSetPrm: React.PropTypes.func.isRequired
-    };
+export default class TabsLogin extends Component {
+
+  static propTypes = {
+    zone: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]).isRequired,
+    couch_path: PropTypes.string.isRequired,
+    enable_save_pwd: PropTypes.bool.isRequired,
+    handleSetPrm: PropTypes.func.isRequired
   }
 
   constructor(props) {
+
     super(props);
 
     this.state = {
-      zone: this.props.zone,
-      couch_path: this.props.couch_path,
-      enable_save_pwd: this.props.enable_save_pwd,
+      zone: props.zone,
+      couch_path: props.couch_path,
+      enable_save_pwd: props.enable_save_pwd,
       tab_value: 'a',
-      btn_login_disabled: !this.props.login || !this.props.password
+      btn_login_disabled: !props.login || !props.password
     };
   }
 
@@ -40,14 +40,15 @@ export default class TabsLogin extends React.Component {
         tab_value: tab_value,
       });
     }
-  };
+  }
 
   handleSetPrm(){
-    this.props.handleSetPrm({
-      zone: this.state.zone,
-      couch_path: this.state.couch_path,
-      enable_save_pwd: this.state.enable_save_pwd
-    })
+    const { zone, couch_path, enable_save_pwd} = this.state
+    this.props.handleSetPrm({ zone, couch_path, enable_save_pwd})
+  }
+
+  valueToState(name){
+    return (event) => this.setState({ [name]: event.target.value })
   }
 
   handleTextChange = () => {
@@ -116,14 +117,14 @@ export default class TabsLogin extends React.Component {
                   floatingLabelText="Область данных"
                   hintText="zone"
                   fullWidth={true}
-                  onChange={(event) => this.setState({ zone: event.target.value })}
+                  onChange={this.valueToState("zone")}
                   value={this.state.zone} />
 
                 <TextField
                   floatingLabelText="Адрес CouchDB"
                   hintText="couch_path"
                   fullWidth={true}
-                  onChange={(event) => this.setState({ couch_path: event.target.value })}
+                  onChange={this.valueToState("couch_path")}
                   value={this.state.couch_path}/>
 
                 <Toggle
@@ -148,6 +149,6 @@ export default class TabsLogin extends React.Component {
 
       </div>
 
-    );
+    )
   }
 }
