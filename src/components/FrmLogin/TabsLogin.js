@@ -3,9 +3,8 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Toggle from 'material-ui/Toggle';
-import Divider from 'material-ui/Divider';
 
+import CnnSettings from './CnnSettings';
 
 import classes from "./FrmLogin.scss";
 
@@ -23,15 +22,12 @@ export default class TabsLogin extends Component {
 
   constructor(props) {
 
-    super(props);
+    super(props)
 
     this.state = {
-      zone: props.zone,
-      couch_path: props.couch_path,
-      enable_save_pwd: props.enable_save_pwd,
       tab_value: 'a',
       btn_login_disabled: !props.login || !props.password
-    };
+    }
   }
 
   tabChange = (tab_value) => {
@@ -40,15 +36,6 @@ export default class TabsLogin extends Component {
         tab_value: tab_value,
       });
     }
-  }
-
-  handleSetPrm(){
-    const { zone, couch_path, enable_save_pwd} = this.state
-    this.props.handleSetPrm({ zone, couch_path, enable_save_pwd})
-  }
-
-  valueToState(name){
-    return (event) => this.setState({ [name]: event.target.value })
   }
 
   handleTextChange = () => {
@@ -62,6 +49,9 @@ export default class TabsLogin extends Component {
   }
 
   render() {
+
+    const { props } = this;
+
     return (
 
       <div className={classes.paper}>
@@ -81,7 +71,7 @@ export default class TabsLogin extends Component {
                   hintText="login"
                   floatingLabelText="Имя пользователя"
                   fullWidth={true}
-                  defaultValue={this.props.login}
+                  defaultValue={props.login}
                   onChange={this.handleTextChange}
                 />
 
@@ -91,7 +81,7 @@ export default class TabsLogin extends Component {
                   floatingLabelText="Пароль"
                   fullWidth={true}
                   type="password"
-                  defaultValue={this.props.password}
+                  defaultValue={props.password}
                   onChange={this.handleTextChange}
                 />
                 <br />
@@ -111,35 +101,7 @@ export default class TabsLogin extends Component {
 
             <Tab label="Подключение" value="b">
 
-              <div className={classes.sub_paper} >
-
-                <TextField
-                  floatingLabelText="Область данных"
-                  hintText="zone"
-                  fullWidth={true}
-                  onChange={this.valueToState("zone")}
-                  value={this.state.zone} />
-
-                <TextField
-                  floatingLabelText="Адрес CouchDB"
-                  hintText="couch_path"
-                  fullWidth={true}
-                  onChange={this.valueToState("couch_path")}
-                  value={this.state.couch_path}/>
-
-                <Toggle
-                  label="Разрешить сохранение пароля"
-                  className={classes.toggle}
-                  onToggle={() => this.setState({ enable_save_pwd: !this.state.enable_save_pwd })}
-                  toggled={this.state.enable_save_pwd} />
-
-                <Divider />
-
-                <RaisedButton label="Сохранить настройки"
-                              className={classes.button}
-                              onTouchTap={::this.handleSetPrm} />
-
-              </div>
+              <CnnSettings {...props} />
 
             </Tab>
 

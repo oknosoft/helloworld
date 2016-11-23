@@ -2,24 +2,28 @@ import React, {Component, PropTypes} from "react";
 
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Toggle from 'material-ui/Toggle';
 import Divider from 'material-ui/Divider';
 import DataField from 'components/DataField'
 
 import CircularProgress from "material-ui/CircularProgress";
 
-import classes from "./User.scss";
+import CnnSettings from './CnnSettings';
+
+import classes from "./FrmLogin.scss";
 
 
-export default class UserObj extends Component {
-
-  static contextTypes = {
-    screen: React.PropTypes.object.isRequired
-  }
+export default class TabsUser extends Component {
 
   static propTypes = {
+
+    zone: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]).isRequired,
+    couch_path: PropTypes.string.isRequired,
+    enable_save_pwd: PropTypes.bool.isRequired,
+    handleSetPrm: PropTypes.func.isRequired,
 
     _obj: PropTypes.object,
     _acl: PropTypes.string.isRequired,
@@ -37,11 +41,13 @@ export default class UserObj extends Component {
   }
 
   constructor(props) {
-    super(props);
+
+    super(props)
+
     this.state = {
       tab_value: 'a',
-      btn_login_disabled: !this.props.login || !this.props.password
-    };
+      btn_login_disabled: !props.login || !props.password
+    }
   }
 
   tabChange = (tab_value) => {
@@ -51,14 +57,6 @@ export default class UserObj extends Component {
       });
     }
   };
-
-  handleSetPrm(){
-    this.props.handleSetPrm({
-      zone: this.state.zone,
-      couch_path: this.state.couch_path,
-      enable_save_pwd: this.state.enable_save_pwd
-    })
-  }
 
   handleLogOut = () => {
     this.props.handleLogOut()
@@ -87,7 +85,7 @@ export default class UserObj extends Component {
 
   render() {
 
-    const { screen } = this.context
+    const { props } = this
 
     return (
 
@@ -113,8 +111,6 @@ export default class UserObj extends Component {
 
                         <DataField _obj={this.props._obj} _fld="id" />
                         <DataField _obj={this.props._obj} _fld="name" />
-                        <DataField _obj={this.props._obj} _fld="department" />
-
 
                       </div>
 
@@ -131,39 +127,7 @@ export default class UserObj extends Component {
 
                   <Tab label="Подключение" value="b">
 
-                    <div className={classes.sub_paper}>
-
-                      <TextField
-                        ref="zone"
-                        floatingLabelText="Область данных"
-                        hintText="zone"
-                        fullWidth={true}
-                        defaultValue={this.props.zone}
-                      />
-
-                      <TextField
-                        ref="couch_path"
-                        floatingLabelText="Адрес CouchDB"
-                        hintText="couch_path"
-                        fullWidth={true}
-                        defaultValue={this.props.couch_path}
-                      />
-
-                      <Toggle
-                        ref="enable_save_pwd"
-                        label="Разрешить сохранение пароля"
-                        className={classes.toggle}
-                        defaultToggled={this.props.enable_save_pwd}
-                      />
-
-                      <br />
-                      <Divider />
-
-                      <RaisedButton label="Сохранить настройки"
-                                    className={classes.button}
-                                    onTouchTap={::this.handleSetPrm}/>
-
-                    </div>
+                    <CnnSettings {...props} />
 
                   </Tab>
 
