@@ -6,8 +6,6 @@ import OrderIcon from 'material-ui/svg-icons/action/work';
 
 import Dialog from 'material-ui/Dialog';
 
-import EventsList from "../EventsList"
-
 import classes from "./RepMaterialsDemand.scss";
 
 const columns = ['date','number_doc']
@@ -63,14 +61,6 @@ export default class SelectOrder extends Component {
           onRequestClose={this.handleRequestClose}
           autoScrollBodyContent={true}
         >
-
-          <EventsList
-            width={600}
-            height={350}
-            //fetch_remote={fetch_remote}
-            columns={columns}
-            columnWidths={columnWidths}
-          />
 
         </Dialog>
       </div>

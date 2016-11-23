@@ -17,21 +17,64 @@ export default class DataList extends Component {
 
   static propTypes = {
 
-    columns: PropTypes.array.isRequired,
+    columns: PropTypes.array,             // Настройки колонок динамического списка. Если не указано - генерируем по метаданным
 
-    select: PropTypes.object.isRequired,
-    _mgr: PropTypes.object.isRequired,
-    _width: PropTypes.number.isRequired,
-    _height: PropTypes.number.isRequired
+    select: PropTypes.object,             // Параметры запроса к couchdb. Если не указано - генерируем по метаданным
+    _mgr: PropTypes.object.isRequired,    // Менеджер данных
+    _meta: PropTypes.object,              // Описание метаданных. Если не указано, используем метаданные менеджера
+
+    width: PropTypes.number.isRequired,  // ширина элемента управления
+    height: PropTypes.number.isRequired  // высота элемента управления
   }
 
-  constructor (props) {
+  constructor (props, context) {
 
     super(props);
 
     this.state = {
       totalRowCount: totalRows,
-      selectedRowIndex: 0
+      selectedRowIndex: 0,
+      columns: props.columns,
+      _meta: props._meta || props._mgr.metadata()
+    }
+
+    const { state } = this
+    const { $p } = context
+
+    if(!state.columns || !state.columns.length){
+
+      state.columns = []
+
+      // набираем поля
+      if(state._meta.form && state._meta.form.selection){
+        state._meta.form.selection.fields.forEach( fld => { state.columns.push(fld); });
+
+      }else if(props._mgr instanceof $p.classes.CatManager){
+        if(state._meta.code_length){
+          state.columns.push('id')
+        }
+
+        if(state._meta.main_presentation_name){
+          state.columns.push('name')
+        }
+
+      }else if(props._mgr instanceof $p.classes.DocManager){
+        state.columns.push('number_doc')
+        state.columns.push('date')
+      }
+
+      state.columns = state.columns.map((id, index) => {
+        // id, synonym, tooltip, type, width
+        const fld_meta = state._meta.fields[id] || props._mgr.metadata(id)
+        return {
+          id,
+          synonym: fld_meta.synonym,
+          tooltip: fld_meta.tooltip,
+          type: fld_meta.type,
+          width: fld_meta.width || 140
+        }
+      })
+
     }
 
     this._list = {
@@ -49,16 +92,17 @@ export default class DataList extends Component {
 
   }
 
+
   render () {
 
-    const { totalRowCount } = this.state
-    const { columns, _width, _height } = this.props
+    const { columns, totalRowCount } = this.state
+    const { width, height } = this.props
 
     return (
       <div>
 
         <Toolbar
-          handleAdd={this.props.handleAdd}
+          handleAdd={this.handleAdd}
           handleEdit={this.handleEdit}
           handleRemove={this.handleRemove}
           handleSelectionChange={this.handleSelectionChange}
@@ -125,8 +169,8 @@ export default class DataList extends Component {
                   columnWidth={({index}) => columns[index].width }
                   rowCount={totalRowCount}
                   rowHeight={30}
-                  width={_width}
-                  height={_height-140}
+                  width={width}
+                  height={height-140}
                   style={{top: 30}}
                 />
 
@@ -172,7 +216,7 @@ export default class DataList extends Component {
   _formatter (row, index){
 
     const { $p } = this.context
-    const { columns } = this.props
+    const { columns } = this.state
     const column = columns[index]
     const v = row[column.id]
 

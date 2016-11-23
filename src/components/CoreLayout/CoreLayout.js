@@ -52,7 +52,7 @@ class CoreLayout extends Component {
               <Header {...props} navlist_items={navlist_items} />
               <div className={classes.mainContainer}>
                 {React.cloneElement(props.children, {
-                  height,
+                  height: height-52,
                   width,
                   data_empty: this.state.data_empty
                 })}

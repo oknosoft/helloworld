@@ -31,7 +31,6 @@ export default class Header extends Component {
         titleStyle={{fontSize: 18}}
         iconElementLeft={<NavList {...props} />}
         iconElementRight={<NavUserButtons {...props} />}
-
       />
     )
   }

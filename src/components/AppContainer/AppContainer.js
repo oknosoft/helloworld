@@ -9,8 +9,11 @@ import {Router} from "react-router";
 import {Provider} from "react-redux";
 import {LOCATION_CHANGE} from "react-router-redux";
 
+// эти стили после отладки можно будет объединить в один файл
 import "metadata-react-ui/combined.css";
 import "metadata-react-ui/react-data-grid.css";
+import "metadata-react-ui/metadata-react-ui.css";
+
 import "react-virtualized/styles.css";
 import "react-virtualized-select/styles.css";
 //import 'react-flex-layout/react-flex-layout-splitter.css'
