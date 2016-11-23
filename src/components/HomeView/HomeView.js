@@ -10,6 +10,7 @@ import classes from "./HomeView.scss";
 const columns = ['date','number_doc']
 const columnWidths = [50,50]
 
+
 export default class HomeView extends Component {
 
   static propTypes = {

@@ -9,11 +9,13 @@ import {Router} from "react-router";
 import {Provider} from "react-redux";
 import {LOCATION_CHANGE} from "react-router-redux";
 
-import "metadata-react-ui/combined.css";
+// FIXME Разкомментировать
+// import "metadata-react-ui/combined.css";
+
 import "metadata-react-ui/react-data-grid.css";
 import "react-virtualized/styles.css";
 import "react-virtualized-select/styles.css";
-//import 'react-flex-layout/react-flex-layout-splitter.css'
+// import 'react-flex-layout/react-flex-layout-splitter.css'
 
 
 import DumbScreen from "components/DumbLoader/DumbScreen";

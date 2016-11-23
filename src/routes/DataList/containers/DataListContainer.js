@@ -6,7 +6,7 @@ import { increment, doubleAsync } from '../modules/datalist'
     wiring in the actions and state necessary to render a presentational
     component - in this case, the DataList:   */
 
-import DynList from 'components/DataList'
+import DynList from 'metadata-react-ui/src/DataList'
 
 import $p from 'metadata'
 

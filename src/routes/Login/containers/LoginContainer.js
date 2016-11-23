@@ -6,7 +6,7 @@ import { mapStateToProps, actions } from '../modules/login'
  wiring in the actions and state necessary to render a presentational
  component - in this case, the DataList:   */
 
-import FrmLogin from 'components/FrmLogin'
+import FrmLogin from 'metadata-react-ui/src/FrmLogin'
 
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

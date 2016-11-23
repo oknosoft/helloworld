@@ -5,9 +5,7 @@
 
 import { connect } from 'react-redux'
 import { actions, mapStateToProps } from '../modules/actions'
-
-import FrmObj from 'components/FrmObj'
-
+import FrmObj from 'metadata-react-ui/src/FrmObj'
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
 

@@ -1,12 +1,11 @@
-
-
 // конструктор metadata.js
 //const MetaEngine = require('metadata-core').default
 
 import MetaEngine from 'metadata-core'
 import metadata_pouchdb from 'metadata-pouchdb'
 import metadata_redux from 'metadata-redux'
-import metadata_react from 'metadata-react-ui/plugin'
+import metadata_react from 'metadata-react-ui/src/plugin'
+
 
 MetaEngine
   .plugin(metadata_pouchdb)       // подключаем pouchdb-адаптер к прототипу metadata.js

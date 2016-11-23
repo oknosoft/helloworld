@@ -2,16 +2,11 @@ import React, { Component, PropTypes } from 'react';
 
 import {GridList, GridTile} from 'material-ui/GridList';
 
-
 import Toolbar from "./Toolbar";
-import DataField from 'components/DataField'
-
+import DataField  from 'metadata-react-ui/DataField/src'
+import DumbLoader from 'components/DumbLoader'
 import RepTabularSection from './RepTabularSection'
-
-import DumbLoader from '../DumbLoader'
-
 import classes from './RepMaterialsDemand.scss'
-
 
 export default class RepMaterialsDemand extends Component {
 
