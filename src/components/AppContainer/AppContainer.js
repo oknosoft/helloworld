@@ -18,6 +18,8 @@ import "react-virtualized/styles.css";
 import "react-virtualized-select/styles.css";
 //import 'react-flex-layout/react-flex-layout-splitter.css'
 
+import "styles/core.scss";
+
 
 import DumbScreen from "components/DumbLoader/DumbScreen";
 
