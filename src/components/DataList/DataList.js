@@ -35,7 +35,19 @@ export default class DataList extends Component {
       totalRowCount: totalRows,
       selectedRowIndex: 0,
       columns: props.columns,
-      _meta: props._meta || props._mgr.metadata()
+      _meta: props._meta || props._mgr.metadata(),
+
+      // готовим фильтры для запроса couchdb
+      select: props.select || {
+        _view: 'doc/by_date',
+        _raw: true,
+        _top: 30,
+        _skip: 0,
+        _key: {
+          startkey: [props._mgr.class_name, 2000],
+          endkey: [props._mgr.class_name, 2020]
+        }
+      }
     }
 
     const { state } = this
@@ -47,34 +59,45 @@ export default class DataList extends Component {
 
       // набираем поля
       if(state._meta.form && state._meta.form.selection){
-        state._meta.form.selection.fields.forEach( fld => { state.columns.push(fld); });
+        state._meta.form.selection.cols.forEach( fld => {
+          const fld_meta = state._meta.fields[fld.id] || props._mgr.metadata(fld.id)
+          state.columns.push({
+            id: fld.id,
+            synonym: fld.caption || fld_meta.synonym,
+            tooltip: fld_meta.tooltip,
+            type: fld_meta.type,
+            width: (fld.width == '*') ? 250 : (parseInt(fld.width) || 140)
+          });
+        });
 
-      }else if(props._mgr instanceof $p.classes.CatManager){
-        if(state._meta.code_length){
-          state.columns.push('id')
+      }else{
+
+        if(props._mgr instanceof $p.classes.CatManager){
+          if(state._meta.code_length){
+            state.columns.push('id')
+          }
+
+          if(state._meta.main_presentation_name){
+            state.columns.push('name')
+          }
+
+        }else if(props._mgr instanceof $p.classes.DocManager){
+          state.columns.push('number_doc')
+          state.columns.push('date')
         }
 
-        if(state._meta.main_presentation_name){
-          state.columns.push('name')
-        }
-
-      }else if(props._mgr instanceof $p.classes.DocManager){
-        state.columns.push('number_doc')
-        state.columns.push('date')
+        state.columns = state.columns.map((id, index) => {
+          // id, synonym, tooltip, type, width
+          const fld_meta = state._meta.fields[id] || props._mgr.metadata(id)
+          return {
+            id,
+            synonym: fld_meta.synonym,
+            tooltip: fld_meta.tooltip,
+            type: fld_meta.type,
+            width: fld_meta.width || 140
+          }
+        })
       }
-
-      state.columns = state.columns.map((id, index) => {
-        // id, synonym, tooltip, type, width
-        const fld_meta = state._meta.fields[id] || props._mgr.metadata(id)
-        return {
-          id,
-          synonym: fld_meta.synonym,
-          tooltip: fld_meta.tooltip,
-          type: fld_meta.type,
-          width: fld_meta.width || 140
-        }
-      })
-
     }
 
     this._list = {
@@ -91,7 +114,6 @@ export default class DataList extends Component {
     this.handleEdit = ::this.handleEdit
 
   }
-
 
   render () {
 
@@ -170,7 +192,7 @@ export default class DataList extends Component {
                   rowCount={totalRowCount}
                   rowHeight={30}
                   width={width}
-                  height={height-140}
+                  height={height-90}
                   style={{top: 30}}
                 />
 
@@ -245,8 +267,8 @@ export default class DataList extends Component {
 
   _loadMoreRows ({ startIndex, stopIndex }) {
 
-    const { totalRowCount } = this.state
-    const { select, _mgr } = this.props
+    const { select, totalRowCount } = this.state
+    const { _mgr } = this.props
     const increment = Math.max(limit, stopIndex - startIndex + 1)
 
     select._top = increment

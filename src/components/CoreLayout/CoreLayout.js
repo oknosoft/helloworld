@@ -9,10 +9,12 @@ import { AutoSizer } from "react-virtualized"
 
 import Header from 'components/Header';
 import navlist_items from './navlist_items';
-import { navlist_open } from '../../store/ifaceReducer'
+import { navlist_open } from 'store/ifaceReducer';
+
+import { muiTheme } from "../AppContainer/AppMuiTheme";
 
 import classes from "./CoreLayout.scss";
-import "../../styles/core.scss";
+import "styles/core.scss";
 
 let data_empty_timer
 
@@ -52,7 +54,7 @@ class CoreLayout extends Component {
               <Header {...props} navlist_items={navlist_items} />
               <div className={classes.mainContainer}>
                 {React.cloneElement(props.children, {
-                  height: height-52,
+                  height: height - muiTheme.appBar.height,
                   width,
                   data_empty: this.state.data_empty
                 })}
