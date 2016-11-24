@@ -3,8 +3,9 @@ import cssnano from 'cssnano'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import config from '../config'
+import path from 'path'
 import _debug from 'debug'
-
+/* global __dirname */
 const debug = _debug('app:webpack:config')
 const paths = config.utils_paths
 const {__DEV__, __PROD__, __TEST__} = config.globals
@@ -16,7 +17,11 @@ const webpackConfig = {
   devtool: config.compiler_devtool,
   resolve: {
     root: paths.client(),
-    extensions: ['', '.js', '.jsx', '.json']
+    extensions: ['', '.js', '.jsx', '.json'],
+    fallback: path.join(__dirname, '..', 'node_modules'),
+  },
+  resolveLoader: {
+    fallback: path.join(__dirname, '..', 'node_modules')
   },
   module: {}
 }
