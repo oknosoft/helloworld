@@ -8,6 +8,9 @@ import metadata_pouchdb from 'metadata-pouchdb';
 import metadata_redux from 'metadata-redux';
 import metadata_ui from 'metadata-abstract-ui';
 
+export meta_init from './init';
+export modifiers from './modifiers';
+
 MetaEngine
   .plugin(metadata_pouchdb)     // подключаем pouchdb-адаптер к прототипу metadata.js
   .plugin(metadata_redux)       // подключаем свойства redux к прототипу metadata.js

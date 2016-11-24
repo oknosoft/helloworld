@@ -6,7 +6,7 @@
 import { connect } from 'react-redux'
 import { actions, mapStateToProps } from '../modules/actions'
 
-import FrmReport from 'components/RepMaterialsDemand'
+import FrmReport from 'components/FrmReport'
 
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

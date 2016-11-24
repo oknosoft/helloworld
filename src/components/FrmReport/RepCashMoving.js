@@ -10,7 +10,7 @@ import RepTabularSection from './RepTabularSection'
 
 import DumbLoader from '../DumbLoader'
 
-import classes from './RepMaterialsDemand.scss'
+import classes from './RepCashMoving.scss'
 
 
 export default class RepMaterialsDemand extends Component {
@@ -37,16 +37,12 @@ export default class RepMaterialsDemand extends Component {
 
     const { $p } = context
 
-    this.state = {
-      characteristic_mgr: $p.cat.characteristics
-    };
-
   }
 
   handleSave(){
     this.props._obj.calculate()
       .then(() => {
-        this.refs.specification.setState({groupBy: []})
+        this.refs.data.setState({groupBy: []})
         //this.forceUpdate()
       })
   }
@@ -73,12 +69,12 @@ export default class RepMaterialsDemand extends Component {
           _obj={_obj}
         />
 
-        <div className={classes.cont} style={{width: width - 20, height: height - 150}}>
+        <div className={classes.cont} style={{width: width - 16, height: height - 120}}>
 
           <RepTabularSection
             _obj={_obj}
-            _tabular="specification"
-            ref="specification"
+            _tabular="data"
+            ref="data"
             minHeight={height - 160}
           />
 

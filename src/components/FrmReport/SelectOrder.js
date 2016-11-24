@@ -6,7 +6,7 @@ import OrderIcon from 'material-ui/svg-icons/action/work';
 
 import Dialog from 'material-ui/Dialog';
 
-import classes from "./RepMaterialsDemand.scss";
+import classes from "./RepCashMoving.scss";
 
 const columns = ['date','number_doc']
 const columnWidths = [50,50]

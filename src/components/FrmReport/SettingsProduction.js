@@ -6,7 +6,7 @@ import DataCell from 'components/DataField/DataCell'
 
 import SettingsProductionToolbar from './SettingsProductionToolbar';
 
-import classes from './RepMaterialsDemand.scss'
+import classes from './RepCashMoving.scss'
 
 //options for priorities autocomplete editor
 var CharacteristicEditor = <DataCell />
@@ -25,21 +25,14 @@ export default class SettingsProduction extends Component{
 
       <TabularSection
         _obj={_obj}
-        _tabular="production"
+        _tabular="cashboxes"
         _columns={[
           {
-            key: 'characteristic',
-            name: 'Продукция',
+            key: 'cashbox',
+            name: 'Касса',
             resizable : true,
             formatter: _obj.formatters.characteristic,
             editor: CharacteristicEditor
-          },
-          {
-            key: 'qty',
-            name: 'Штук',
-            width : 90,
-            resizable : true,
-            editable : true
           }]}
         Toolbar={SettingsProductionToolbar}
         handleCustom={ () => { console.log('handleCustom') }}

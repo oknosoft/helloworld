@@ -29,14 +29,8 @@ import MuiThemeProvider, {styles, muiTheme} from "./AppMuiTheme";
 // функция установки параметров сеанса
 import settings from "../../../config/app.settings";
 
-// функция инициализации структуры метаданных
-import meta_init from "metadata/init";
-
-// собственно, metaengine
-import $p from "metadata";
-
-// модификатор отчета materials_demand
-//import rep_cash_moving from "metadata/reports/rep_cash_moving";
+// собственно, metaengine, скрипт инициализации структуры метаданных и модификаторы
+import $p, { meta_init, modifiers } from "metadata";
 
 
 class AppContainer extends Component {
@@ -67,12 +61,12 @@ class AppContainer extends Component {
 			$p,
 			store,
 			handleLocationChange: this.handleLocationChange
-		};
+		}
 	}
 
 	constructor(props) {
 
-		super(props);
+		super(props)
 
 		const {store} = props
 
@@ -82,6 +76,7 @@ class AppContainer extends Component {
 
 	}
 
+	// TODO: перенести генератор событий начальной загрузки в metadata-redux
 	subscriber(store) {
 
 		function select(state) {
@@ -90,7 +85,7 @@ class AppContainer extends Component {
 				res = {};
 
 			pnames.forEach(function (name) {
-				res[name] = meta[name];
+				res[name] = meta[name]
 			})
 
 			return res
@@ -106,7 +101,7 @@ class AppContainer extends Component {
 
 			pnames.some(function (name) {
 				if (current_state[name] != previous_state[name]) {
-					t.setState(current_state);
+					t.setState(current_state)
 					return true;
 				}
 			})
@@ -124,13 +119,13 @@ class AppContainer extends Component {
 		setTimeout(() => {
 
 			// инициализируем параметры сеанса и метаданные
-			$p.wsql.init(settings, meta_init);
+			$p.wsql.init(settings, meta_init)
 
 			// подключаем обработчики событий плагином metadata-redux
-			$p.rx_events(store);
+			$p.rx_events(store)
 
 			// выполняем модификаторы
-			// rep_cash_moving($p)
+      modifiers($p)
 
 			// информируем хранилище о готовности MetaEngine
 			store.dispatch($p.rx_actions.META_LOADED($p))
@@ -166,7 +161,7 @@ class AppContainer extends Component {
 
 		if (meta.data_empty) {
 			if (routes.path != '/login') {
-				AppContainer.handleLocationChange(store, '/login');
+				AppContainer.handleLocationChange(store, '/login')
 			}
 		} else {
 

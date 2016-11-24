@@ -34,11 +34,6 @@ export const mapStateToProps = (state, props) => {
   const _mgr = $p.md.mgr_by_class_name(props.params.meta),
     _obj = _mgr.get(props.params.guid);
 
-  if(props.params.meta == 'rep_materials_demand' && !_obj.production.count()){
-    _obj.production.add({qty: 1})
-    _obj.specification.add({qty: 1})
-  }
-
   return {
     meta: state.meta,
     _mgr: _mgr,

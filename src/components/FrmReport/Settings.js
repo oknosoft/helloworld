@@ -12,7 +12,7 @@ import SettingsProduction from './SettingsProduction';
 import SettingsColumns from './SettingsColumns';
 
 
-import classes from './RepMaterialsDemand.scss'
+import classes from './RepCashMoving.scss'
 
 
 export default class ReportSettings extends Component{

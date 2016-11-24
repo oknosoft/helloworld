@@ -27,7 +27,7 @@ export default (store) => ({
 
         /*  Webpack - use require callback to define
          dependencies for bundling   */
-        const DataObjContainer = nextState.params.meta == 'rep_materials_demand' ?
+        const DataObjContainer = nextState.params.meta.split('_')[0] == 'rep' ?
           require('./containers/ReportContainer').default : require('./containers/DataObjContainer').default
 
         if(_obj instanceof Promise){

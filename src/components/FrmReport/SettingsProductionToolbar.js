@@ -8,7 +8,7 @@ import RemoveIcon from 'material-ui/svg-icons/action/delete';
 import SelectOrder from './SelectOrder';
 
 
-import classes from './RepMaterialsDemand.scss'
+import classes from './RepCashMoving.scss'
 
 export default class SettingsProductionToolbar extends Component{
 

@@ -1,165 +1,285 @@
 /**
- * ### Отчет Движение денег
  *
  * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
- * @module rep_cash_moving
- * Created 01.08.2016
+ * @module materials_demand
+ * Created 07.11.2016
  */
 
+import React from 'react';
 
-// Форма отчета
-$p.rep.cash_moving.form_rep = function (pwnd, attr) {
+export default function ($p) {
 
-	// получаем форму типового отчета
-	var wnd = this.constructor.prototype.form_rep.call(this, pwnd, attr);
+  const {cashboxes, cash_flow_articles} = $p.cat
 
-	// добавляем элементы управления отчетом. в нашем случае - список касс
-	var cont_cashboxes = document.createElement("DIV");
-	cont_cashboxes.style.width = "100%";
-	cont_cashboxes.style.height = "100%";
-	wnd.elmnts.frm_prm.appendChild(cont_cashboxes);
+  // свойства объекта отчета _Потребность по материалам_
+  Object.defineProperties($p.RepCash_moving.prototype, {
 
-	var grid_cashboxes = new dhtmlXGridObject(cont_cashboxes),
-		data={
-			rows:[]
-		};
-	grid_cashboxes.setHeader(" ,Касса");
-	grid_cashboxes.setInitWidths("40,*");
-	grid_cashboxes.setColumnMinWidth("30,200");
-	grid_cashboxes.setColSorting("na,na");
-	grid_cashboxes.setColTypes("ch,ro");
-	grid_cashboxes.enableAutoWidth(true, 600, 180);
-	grid_cashboxes.enableAutoHeight(true, 280);
-	grid_cashboxes.init();
-	$p.wsql.alasql("select ref, name from cat_cashboxes where not(ref = '00000000-0000-0000-0000-000000000000') order by name").forEach(function (row, ind, arr) {
-		data.rows.push({ id:row.ref, data: [(ind+1) < arr.length ? 1 : 0, row.name]});
-	});
-	grid_cashboxes.parse(data,"json");
-	wnd.elmnts.layout.attachEvent("onResizeFinish", function(){
-		grid_cashboxes.setSizes();
-	});
-	wnd.elmnts.layout.attachEvent("onPanelResizeFinish", function(){
-		grid_cashboxes.setSizes();
-	});
+    formatters: {
+      value: {
+	      cashbox: v => {
+          v = cashboxes.get(v.value)
+          return (<div>{v instanceof Promise ? 'loading...' : v.presentation}</div>)
+        }
+      }
+    },
 
-	// добавляем метод для получения списка касс объектом отчета
-	wnd.report.cashboxes_filter = function () {
-		var res = [];
-		grid_cashboxes.forEachRow(function(id){
-			if(grid_cashboxes.cells(id,0).isChecked())
-				res.push(id);
-		});
-		return res;
-	};
+    columns_avalable: {
+      get: function () {
 
-};
+        if(!this._columns_avalable){
 
+          this._columns_avalable = []
 
-// Методы объекта отчет
-$p.RepCash_moving.prototype.__define({
+          let _meta = this._metadata('data')
+          for (let fld in _meta.fields) {
+            let _fld = _meta.fields[fld],
+              column = {
+                key: fld,
+                name: _fld.synonym,
+                resizable: true,
+                draggable: true
+              }
 
-	/**
-	 * ### Формирует отчет
-	 * @param obj
-	 * @return Promise.<T>
-	 */
-	build: {
-		value: function() {
+            if (_fld.type.is_ref) {
+              column.formatter = v => {
+                return <div>{v.value.presentation}</div>
+              }
+            }
 
-			var date_sub = moment(this.daterange.date_from).subtract(1, 'day').toDate(),
-				date_from = this.daterange.date_from.toDate(),
-				date_till = this.daterange.date_till.toDate(),
-				query_options = {
-					reduce: true,
-					limit: 10000,
-					group: true,
-					group_level: 4,
-					startkey: [],
-					endkey: [date_sub.getFullYear(), date_sub.getMonth()+1, date_sub.getDate(),"\uffff"]
-				},
-				res = {
-					data: [],
-					readOnly: true,
-					wordWrap: false,
-					colWidths: [220, 120, 120, 120, 120],
-					colHeaders: ['Касса', 'Нач. ост.', 'Приход', 'Расход', 'Кон. ост'],
-					columns: [
-						{type: 'text'},
-						{type: 'numeric', format: '0 0.00'},
-						{type: 'numeric', format: '0 0.00'},
-						{type: 'numeric', format: '0 0.00'},
-						{type: 'numeric', format: '0 0.00'}
-					]
-				},
-				start_total = {},
-				cashboxes = this.cashboxes_filter();
+            this._columns_avalable.push(column)
 
-			return $p.wsql.pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
+          }
 
-				.then(function (data) {
+        }
 
-					if(data.rows){
-						data.rows.forEach(function (row) {
+        return this._columns_avalable;
+      }
+    },
 
-							if(cashboxes.indexOf(row.key[3]) == -1)
-								return;
+    column_flds: {
+      get: function () {
 
-							if(!start_total.hasOwnProperty(row.key[3]))
-								start_total[row.key[3]] = [0,0,0,0];
+        if(!this._columns){
+          this._columns = {
+            name: 'data',
+            flds: []
+          }
+          $p.wsql.restore_options(this._manager.class_name, this._columns)
+        }
 
-							start_total[row.key[3]][0] += row.value.total;
-							start_total[row.key[3]][3] = start_total[row.key[3]][0];
+        if(!this._columns.flds.length){
+          this._columns.flds = this.columns_avalable.map(column => column.key)
+          $p.wsql.save_options(this._manager.class_name, this._columns)
+        }
 
-						});
-					}
+        return this._columns.flds;
+      },
+      set: function (v) {
+        if(!Array.isArray(v)){
+          return;
+        }
+        if(!this._columns){
+          this._columns = {
+            name: 'data',
+            flds: []
+          }
+        }
 
-					query_options.startkey = [date_from.getFullYear(), date_from.getMonth()+1, date_from.getDate(), ""];
-					query_options.endkey = [date_till.getFullYear(), date_till.getMonth()+1, date_till.getDate(),"\uffff"]
+        // если массивы идентичны, ничего записывать не надо
+        function test(arr, arr2){
+          if(arr.length != arr2.length){
+            return false
+          }
+          for( let i = 0; i < arr.length; i++ ){
+            if(arr[i] !== arr2[i]){
+              return false
+            }
+          }
+          return true;
+        }
 
-					return $p.wsql.pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
-				})
-				.then(function (data) {
+        if(!test(this._columns.flds, v)){
+          this._columns.flds = v;
+          $p.wsql.save_options(this._manager.class_name, this._columns)
+        }
+      }
+    },
 
-					if(data.rows){
+    columns: {
+      get: function () {
 
-						data.rows.forEach(function (row) {
+        let columns = this.columns_avalable;
 
-							if(cashboxes.indexOf(row.key[3]) == -1)
-								return;
+        return this.column_flds.map(fld => {
+          let column;
+          columns.some(function (clmn) {
+            if(clmn.key == fld){
+              column = clmn;
+            }
+          })
+          return column;
+        })
+      }
+    },
 
-							if(!start_total.hasOwnProperty(row.key[3]))
-								start_total[row.key[3]] = [0,row.value.debit,row.value.credit,row.value.total];
-							else{
-								start_total[row.key[3]][1] += row.value.debit;
-								start_total[row.key[3]][2] += row.value.credit;
-								start_total[row.key[3]][3] += row.value.debit - row.value.credit;
-							}
+    resources: {
+        value: ['qty','totqty','totqty1','amount','amount_marged']
+    },
 
-						});
+    calculate: {
+      value: function () {
 
-						for(var key in start_total){
-							var row = start_total[key];
-							res.data.push([
-								$p.cat.cashboxes.get(key),
-								row[0],
-								row[1],
-								row[2],
-								row[3]
-							]);
-						}
+        const t = this,
+          specification = t.specification,
+          arefs = [], aobjs = [],
+          spec_flds = Object.keys(characteristics.metadata('specification').fields),
+          rspec_flds = Object.keys(t._metadata('specification').fields);
 
+        function material(row) {
 
-					}
+          let res = row.nom.presentation;
 
-					return res;
-				});
-		}
-	},
+          if(!row.characteristic.empty()){
+            res += ' ' + row.characteristic.presentation;
+          }
 
-	allow_offline: {
-		value: true
-	}
+          if(row.len && row.width)
+            res += ' ' + (1000*row.len).toFixed(0) + "x" + (1000*row.width).toFixed(0);
+          else if(row.len)
+            res += ' ' + (1000*row.len).toFixed(0);
+          else if(row.width)
+            res += ' ' + (1000*row.width).toFixed(0);
 
-});
+          return res;
+        }
+
+        // получаем массив объектов продукций
+        t.production.each(function (row) {
+          if(!row.characteristic.empty() && row.characteristic.is_new() && arefs.indexOf(row.characteristic.ref) == -1){
+            arefs.push(row.characteristic.ref)
+            aobjs.push(row.characteristic.load())
+          }
+        })
+
+        // чистим таблицу результата
+        specification.clear();
+        if(!specification._rows){
+          specification._rows = []
+        }else{
+          specification._rows.length = 0;
+        }
+
+        return Promise.all(aobjs)
+
+        // получаем массив объектов заказов и вложенных характеристик
+          .then(function (ares) {
+
+            arefs.length = 0;
+            aobjs.length = 0;
+
+            t.production.each(function (row) {
+
+              if (!row.characteristic.empty() && !row.characteristic.calc_order.empty()
+                  && row.characteristic.calc_order.is_new() && arefs.indexOf(row.characteristic.calc_order.ref) == -1) {
+                arefs.push(row.characteristic.calc_order.ref)
+                aobjs.push(row.characteristic.calc_order.load())
+              }
+
+              row.characteristic.specification.each(function (sprow) {
+                if (!sprow.characteristic.empty() && sprow.characteristic.is_new() && arefs.indexOf(sprow.characteristic.ref) == -1) {
+                  arefs.push(sprow.characteristic.ref)
+                  aobjs.push(sprow.characteristic.load())
+                }
+              })
+
+            });
+
+            return Promise.all(aobjs)
+
+          })
+
+          .then(function () {
+
+            const prows = {};
+
+            // бежим по продукции и заполняем результат
+            t.production.each(function (row) {
+              if(!row.characteristic.empty()){
+                row.characteristic.specification.each(function (sprow) {
+                  let resrow = {};
+                  spec_flds.forEach( fld => {
+                    if(rspec_flds.indexOf(fld) != -1){
+                      resrow[fld] = sprow[fld]
+                    }
+                  });
+                  resrow = specification.add(resrow)
+
+                  // учтём количество
+                  resrow.qty = resrow.qty * row.qty;
+                  resrow.totqty = resrow.totqty * row.qty;
+                  resrow.totqty1 = resrow.totqty1 * row.qty;
+                  resrow.amount = resrow.amount * row.qty;
+                  resrow.amount_marged = resrow.amount_marged * row.qty;
+
+                  // рассчитаем недостающие поля
+                  if(resrow.elm > 0){
+                    resrow.cnstr = row.characteristic.coordinates.find_rows({elm: resrow.elm})[0].cnstr;
+                  }else if(resrow.elm < 0){
+                    resrow.cnstr = -resrow.elm;
+                  }
+
+                  // ссылка на заказ
+                  resrow.calc_order = row.characteristic;
+
+                  // номер строки изделия в исходном заказе
+                  if(!prows[row.characteristic.ref]){
+                    prows[row.characteristic.ref] = row.characteristic.calc_order.production.find_rows({characteristic: row.characteristic});
+                    if(prows[row.characteristic.ref].length){
+                      prows[row.characteristic.ref] = prows[row.characteristic.ref][0].row
+                    }else{
+                      prows[row.characteristic.ref] = 1
+                    }
+                  }
+                  resrow.product = prows[row.characteristic.ref];
+
+                  // свойства номенклатуры и группировки
+                  resrow.nom_kind = resrow.nom.nom_kind;
+                  resrow.material = material(resrow);
+                  //resrow.grouping = resrow.nom.grouping;
+
+                })
+              }
+            })
+
+            // сворачиваем результат и сохраняем его в specification._rows
+
+            const dimensions = [], resources = [];
+            t.column_flds.forEach(fld => {
+              if(t.resources.indexOf(fld) != -1){
+                resources.push(fld)
+              }else{
+                dimensions.push(fld)
+              }
+            })
+            specification.group_by(dimensions, resources);
+            specification.forEach(function (row) {
+
+              // округление
+              row.qty = row.qty.round(3);
+              row.totqty = row.totqty.round(3);
+              row.totqty1 = row.totqty1.round(3);
+              row.price = row.price.round(3);
+              row.amount = row.amount.round(3);
+              row.amount_marged = row.amount_marged.round(3);
+
+              specification._rows.push(row);
+            })
+
+          })
+      }
+    }
+  })
+
+}
 
 

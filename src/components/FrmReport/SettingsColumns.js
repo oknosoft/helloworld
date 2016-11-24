@@ -5,7 +5,7 @@ import {Draggable, Data} from "react-data-grid/addons";
 const Selectors = Data.Selectors;
 const { RowActionsCell, Container, DropTargetRowContainer } = Draggable;
 
-import classes from './RepMaterialsDemand.scss'
+import classes from './RepCashMoving.scss'
 
 const RowRenderer = DropTargetRowContainer(ReactDataGrid.Row);
 
