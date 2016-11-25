@@ -25,8 +25,24 @@ export default class DataList extends Component {
     _mgr: PropTypes.object.isRequired,    // Менеджер данных
     _meta: PropTypes.object,              // Описание метаданных. Если не указано, используем метаданные менеджера
 
-    width: PropTypes.number.isRequired,  // ширина элемента управления
-    height: PropTypes.number.isRequired  // высота элемента управления
+    width: PropTypes.number.isRequired,   // ширина элемента управления - вычисляется родительским компонентом с помощью `react-virtualized/AutoSizer`
+    height: PropTypes.number.isRequired,  // высота элемента управления - вычисляется родительским компонентом с помощью `react-virtualized/AutoSizer`
+
+    // Redux actions
+    // Не факт, что все обработчики должны быть isRequired...
+    handleAdd: PropTypes.func.isRequired,         // обработчик добавления объекта
+    handleEdit: PropTypes.func.isRequired,        // обработчик открытия формы редактора
+    handleRevert: PropTypes.func.isRequired,      // откатить изменения - перечитать объект из базы данных
+    handleMarkDeleted: PropTypes.func.isRequired, // обработчик удаления строки
+    handlePost: PropTypes.func.isRequired,        // обработчик проведения документа
+    handleUnPost: PropTypes.func.isRequired,      // отмена проведения
+    handlePrint: PropTypes.func.isRequired,       // обработчик открытия диалога печати
+    handleAttachment: PropTypes.func.isRequired,  // обработчик открытия диалога присоединенных файлов
+  }
+
+  static defaultProps = {
+    width: 1000,
+    height: 400
   }
 
   constructor(props, context) {
@@ -241,15 +257,27 @@ export default class DataList extends Component {
   }
 
   handleSelectionChange(e) {
-
+    const row = this._list.get(this.state.selectedRowIndex)
+    const {handleSelectionChange, _mgr} = this.props
+    if (row && handleSelectionChange) {
+      handleSelectionChange(row, _mgr)
+    }
   }
 
   handlePrint(e) {
-
+    const row = this._list.get(this.state.selectedRowIndex)
+    const {handlePrint, _mgr} = this.props
+    if (row && handlePrint) {
+      handlePrint(row, _mgr)
+    }
   }
 
   handleAttachment(e) {
-
+    const row = this._list.get(this.state.selectedRowIndex)
+    const {handleAttachment, _mgr} = this.props
+    if (row && handleAttachment) {
+      handleAttachment(row, _mgr)
+    }
   }
 
   _formatter(row, index) {

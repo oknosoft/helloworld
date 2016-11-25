@@ -19,8 +19,7 @@ export default class HomeView extends Component {
     const { $p } = this.context
 
     return <DataList
-      width={props.width}
-      height={props.height}
+      { ...props }
       _mgr={$p.doc.cash_moving}
     />
 
