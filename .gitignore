@@ -2,3 +2,4 @@ node_modules
 localstorage
 src/metadata-react-ui
 dist
+npm-debug.log
