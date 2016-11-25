@@ -149,11 +149,22 @@ class AppContainer extends Component {
 			)
 		}
 
+		// если это первый запуск...
 		if (meta.data_empty) {
-			if (routes.path.indexOf('/login') == -1) {
+
+		  // если это гостевая зона и задан пользователь по умолчанию - пытаемся авторизоваться
+      if($p.job_prm.guests.length && $p.job_prm.zone_demo == $p.wsql.get_user_param('zone')){
+			  if(!$p.wsql.get_user_param("user_name")){
+          store.dispatch($p.rx_actions.USER_TRY_LOG_IN(
+            $p.adapters.pouch,
+            $p.job_prm.guests[0].username,
+            $p.aes.Ctr.decrypt($p.job_prm.guests[0].password)))
+        }
+
+      // если зона не гостевая, перемещаемся на страницу авторизации
+      }else if (routes.path.indexOf('/login') == -1) {
         history.push('/login')
-			}
-		} else {
+      }
 
 		}
 

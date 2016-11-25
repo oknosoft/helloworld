@@ -28,6 +28,17 @@ class CoreLayout extends Component {
     this.state = {data_empty: false};
   }
 
+  componentDidMount(){
+    this.state.mounted = true
+  }
+
+  componentWillUnmount(){
+    this.state.mounted = false
+    if(data_empty_timer){
+      clearTimeout(data_empty_timer)
+    }
+  }
+
   render() {
 
     const { props } = this
@@ -39,9 +50,11 @@ class CoreLayout extends Component {
       }
       data_empty_timer = setTimeout( () => {
         data_empty_timer = 0
-        this.setState({
-          data_empty: false
-        })
+        if(this.state.mounted){
+          this.setState({
+            data_empty: false
+          })
+        }
       }, 4000)
     }
 
@@ -66,6 +79,8 @@ class CoreLayout extends Component {
   }
 
 }
+
+// TODO: переместить mapStateToProps и mapDispatchToProps в более приличное место
 
 const mapDispatchToProps = {
 

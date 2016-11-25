@@ -36,7 +36,7 @@ export default function settings(prm) {
     zone: 0,
 
     // объявляем номер демо-зоны
-    zone_demo: 1,
+    zone_demo: 0,
 
     // размер вложений
     attachment_max_size: 10000000,
