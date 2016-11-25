@@ -1,6 +1,6 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../components/AppContainer/CoreLayout'
-import Home from './Home'
+import Home, {HomeRoute} from './Home'
 import DataObjRoute from './DataObj'
 import DataListRoute from './DataList'
 import LoginRoute from './Login'
@@ -17,7 +17,10 @@ export const createRoutes = (store) => ({
     LoginRoute(store),
     AboutRoute(store),
     DataListRoute(store),
-    DataObjRoute(store)
+    DataObjRoute(store),
+
+	// если не проканал ни один маршрут, показываем '/'
+	HomeRoute(store)
   ]
 })
 

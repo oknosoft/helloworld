@@ -50,7 +50,7 @@ export default class NavUserButtons extends Component{
   }
 
   handleLogin = (e) => {
-    this.context.handleLocationChange('/login')
+    this.context.handleLocationChange('login')
   }
 
   render () {

@@ -1,25 +1,22 @@
 import $p from 'metadata'
-import { LOCATION_CHANGE } from 'react-router-redux'
 
 /**
  * Генераторы действий
  */
 export const actions = {
-  handleEdit: (row) => ({
-    type: LOCATION_CHANGE,
-    payload: {pathname:'doc_calc_order/'+row.ref, search:'',hash:''}
+
+  handleEdit: (row, _mgr) => (() => {
+	  $p.rx_actions.handleLocationChange(_mgr.class_name.replace('.', '_') + '/' + row.ref)
   }),
-  handleAdd: () => (
-    (dispatch, getState) => {
-      $p.doc.calc_order.create()
-        .then(_obj => {
-          _obj._set_loaded()
-          dispatch({
-            type: LOCATION_CHANGE,
-            payload: {pathname:'doc_calc_order/'+_obj.ref, search:'',hash:''}
-          })
-        })
-    }),
+
+  handleAdd: (_mgr) => (() => {
+  	_mgr.create()
+	    .then(_obj => {
+	    	_obj._set_loaded()
+		    $p.rx_actions.handleLocationChange(_obj._manager.class_name.replace('.', '_') + '/' + _obj.ref)
+	    })
+  }),
+
   handleRevert: $p.rx_actions.OBJ_REVERT,
   handleMarkDeleted: $p.rx_actions.obj_mark_deleted,
   handlePost: $p.rx_actions.obj_post,

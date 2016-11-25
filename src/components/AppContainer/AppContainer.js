@@ -48,19 +48,14 @@ class AppContainer extends Component {
 		handleLocationChange: React.PropTypes.func.isRequired
 	}
 
-	static handleLocationChange(store, pathname, search = '', hash = '') {
-		store.dispatch({
-			type: LOCATION_CHANGE,
-			payload: {pathname, search, hash}
-		})
-	}
+	static handleLocationChange() { }
 
 	getChildContext() {
 		const {store} = this.props
 		return {
 			$p,
 			store,
-			handleLocationChange: this.handleLocationChange
+			handleLocationChange: AppContainer.handleLocationChange
 		}
 	}
 
@@ -68,13 +63,33 @@ class AppContainer extends Component {
 
 		super(props)
 
-		const {store} = props
-
-		this.handleLocationChange = function (pathname, search = '', hash = '') {
-			AppContainer.handleLocationChange(store, pathname, search, hash)
-		}
+    AppContainer.handleLocationChange = ::this.handleLocationChange
+    $p.rx_actions.handleLocationChange = AppContainer.handleLocationChange
 
 	}
+
+  handleLocationChange(pathname, search = '', hash = '') {
+
+    const {store, history} = this.props
+    const loc = history.getCurrentLocation()
+
+    if(pathname && pathname.indexOf('/') == 0){
+      pathname = pathname.substr(1);
+    }
+
+    if('/' + pathname == loc.pathname){
+      return
+    }
+
+    if(loc.basename != '/'){
+      history.replace('/')
+    }
+
+    store.dispatch({
+      type: LOCATION_CHANGE,
+      payload: {pathname: pathname, search, hash}
+    })
+  }
 
 	// TODO: перенести генератор событий начальной загрузки в metadata-redux
 	subscriber(store) {
@@ -160,8 +175,8 @@ class AppContainer extends Component {
 		}
 
 		if (meta.data_empty) {
-			if (routes.path != '/login') {
-				AppContainer.handleLocationChange(store, '/login')
+			if (routes.path.indexOf('/login') == -1) {
+				AppContainer.handleLocationChange('login')
 			}
 		} else {
 

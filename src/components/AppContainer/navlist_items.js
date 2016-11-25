@@ -8,7 +8,7 @@ import IconPerson from "material-ui/svg-icons/social/person";
 export default [
   {
     text: 'Перемещение денег',
-    navigate: '/doc_cash_moving/list',
+    navigate: 'doc_cash_moving/list',
     icon: <IconDrafts />
   },
   {
@@ -18,19 +18,19 @@ export default [
     items: [
       {
         text: 'Движение денег',
-        navigate: '/rep_cash_moving/main',
+        navigate: 'rep_cash_moving/main',
         icon: <IconList />
       }
     ]
   },
   {
     text: 'Профиль',
-    navigate: '/login',
+    navigate: 'login',
     icon: <IconPerson />
   },
   {
     text: 'О программе',
-    navigate: '/about',
+    navigate: 'about',
     icon: <IconInfo />
   }
 ]

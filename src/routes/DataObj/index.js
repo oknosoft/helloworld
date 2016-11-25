@@ -7,7 +7,7 @@ import DumbLoader from 'components/DumbLoader'
 
 export default (store) => ({
 
-  path: ':meta/:guid(/:form)(/:options)',
+  path: '/:meta/:guid(/:form)(/:options)',
 
   /*  Async getComponent is only invoked when route matches   */
   getComponent (nextState, cb) {
@@ -35,7 +35,7 @@ export default (store) => ({
             if(_obj.is_new()){
 
               setTimeout(function () {
-                AppContainer.handleLocationChange(store, '/')
+                AppContainer.handleLocationChange('/')
               })
 
             }else{
@@ -51,9 +51,9 @@ export default (store) => ({
       }else{
         /*  Return getComponent   */
         cb(null, DumbLoader)
-        setTimeout(function () {
-          AppContainer.handleLocationChange(store, nextState.location.pathname)
-        }, 3000)
+        // setTimeout(function () {
+        //   AppContainer.handleLocationChange(nextState.location.pathname)
+        // }, 3000)
       }
 
 
