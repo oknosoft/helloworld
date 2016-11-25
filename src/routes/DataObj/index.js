@@ -1,7 +1,6 @@
 // import { injectReducer } from '../../store/reducers'
 import $p from 'metadata'
 
-import AppContainer from 'components/AppContainer'
 
 import DumbLoader from 'components/DumbLoader'
 
@@ -35,7 +34,7 @@ export default (store) => ({
             if(_obj.is_new()){
 
               setTimeout(function () {
-                AppContainer.handleLocationChange('/')
+	              $p.UI.history.push('/')
               })
 
             }else{
@@ -52,7 +51,7 @@ export default (store) => ({
         /*  Return getComponent   */
         cb(null, DumbLoader)
         // setTimeout(function () {
-        //   AppContainer.handleLocationChange(nextState.location.pathname)
+        //   $p.UI.history.push(nextState.location.pathname)
         // }, 3000)
       }
 

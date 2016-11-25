@@ -18,7 +18,7 @@ function handleMarkDeleted(row, _mgr){
 function handleEdit(row, _mgr){
 
 	return function (dispatch, getState) {
-		$p.rx_actions.handleLocationChange('doc_calc_order/'+row.ref)
+		$p.UI.history.push(_mgr.class_name.replace('.', '_') + row.ref)
 	}
 }
 

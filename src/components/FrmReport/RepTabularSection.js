@@ -52,7 +52,7 @@ class CustomToolbar extends Component {
   }
 }
 
-export default class TabularSection extends Component {
+export default class RepTabularSection extends Component {
 
   static propTypes = {
 

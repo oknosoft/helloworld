@@ -1,33 +1,38 @@
 import $p from 'metadata'
 
-/**
- * Генераторы действий
- */
-export const actions = {
-
-  handleEdit: (row, _mgr) => (() => {
-	  $p.rx_actions.handleLocationChange(_mgr.class_name.replace('.', '_') + '/' + row.ref)
-  }),
-
-  handleAdd: (_mgr) => (() => {
-  	_mgr.create()
-	    .then(_obj => {
-	    	_obj._set_loaded()
-		    $p.rx_actions.handleLocationChange(_obj._manager.class_name.replace('.', '_') + '/' + _obj.ref)
-	    })
-  }),
-
-  handleRevert: $p.rx_actions.OBJ_REVERT,
-  handleMarkDeleted: $p.rx_actions.obj_mark_deleted,
-  handlePost: $p.rx_actions.obj_post,
-  handleUnPost: $p.rx_actions.obj_unpost,
-  handlePrint(){},
-  handleAttachment(){}
+function handleEdit(row, _mgr) {
+	$p.UI.history.push(_mgr.class_name.replace('.', '_') + '/' + row.ref)
 }
 
-export const mapStateToProps = (state, props) => ({
+function handleAdd(_mgr) {
+	_mgr.create()
+		.then(_obj => {
+			_obj._set_loaded()
+			$p.UI.history.push(_obj._manager.class_name.replace('.', '_') + '/' + _obj.ref)
+		})
+}
 
-  state_user: state.meta.user,
-  user: $p.current_user,
+/**
+ * Отображение свойств на связанные генараторы действий.
+ */
+export function mapDispatchToProps(dispatch) {
 
-})
+	return {
+		handleEdit,
+		handleAdd,
+		handleRevert:      () => dispatch($p.rx_actions.OBJ_REVERT),
+		handleMarkDeleted: () => dispatch($p.rx_actions.obj_mark_deleted),
+		handlePost:        () => dispatch($p.rx_actions.obj_post),
+		handleUnPost:      () => dispatch($p.rx_actions.obj_unpost),
+		handlePrint:       () => {},
+		handleAttachment:  () => {}
+	}
+}
+
+export function mapStateToProps(state, props){
+	return {
+		meta: state.meta,
+		_mgr: $p.md.mgr_by_class_name(props.params.meta),
+		_acl: 'e'
+	}
+}

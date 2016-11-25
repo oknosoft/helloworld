@@ -4,7 +4,7 @@ import $p from "metadata";
 function handleClose() {
 
 	return function (dispatch, getState) {
-		$p.rx_actions.handleLocationChange('/')
+		$p.UI.history.push('/')
 	}
 }
 

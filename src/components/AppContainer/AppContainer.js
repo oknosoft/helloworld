@@ -43,52 +43,23 @@ class AppContainer extends Component {
 
 	// эти свойства будут доступны в контексте детей
 	static childContextTypes = {
-		$p: React.PropTypes.object.isRequired,
-		store: React.PropTypes.object.isRequired,
-		handleLocationChange: React.PropTypes.func.isRequired
+		$p: PropTypes.object.isRequired,
+		store: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
 	}
 
-	static handleLocationChange() { }
-
 	getChildContext() {
-		const {store} = this.props
+		const { store, history } = this.props
 		return {
 			$p,
 			store,
-			handleLocationChange: AppContainer.handleLocationChange
+      history
 		}
 	}
 
-	constructor(props) {
-
-		super(props)
-
-    AppContainer.handleLocationChange = ::this.handleLocationChange
-    $p.rx_actions.handleLocationChange = AppContainer.handleLocationChange
-
-	}
-
-  handleLocationChange(pathname, search = '', hash = '') {
-
-    const {store, history} = this.props
-    const loc = history.getCurrentLocation()
-
-    if(pathname && pathname.indexOf('/') == 0){
-      pathname = pathname.substr(1);
-    }
-
-    if('/' + pathname == loc.pathname){
-      return
-    }
-
-    if(loc.basename != '/'){
-      history.replace('/')
-    }
-
-    store.dispatch({
-      type: LOCATION_CHANGE,
-      payload: {pathname: pathname, search, hash}
-    })
+  constructor(props) {
+    super(props)
+    $p.UI.history = props.history
   }
 
 	// TODO: перенести генератор событий начальной загрузки в metadata-redux
@@ -163,6 +134,10 @@ class AppContainer extends Component {
 
 		// при первом старте и при загрузке данных, минуя роутинг показываем заставку
 		// если пустые данные, перебрасываем на страницу авторизации
+    //
+    // TODO: если гостевая зона и указан пользователь по умолчанию - делаем попытку входа в программу
+    //
+    // TODO: все строки сообщений переместить в i18.js
 		//
 		// if(!meta_loaded) - заглушка заставка
 		// if(data_empty && route.path != '/login') - перебросить в login
@@ -176,7 +151,7 @@ class AppContainer extends Component {
 
 		if (meta.data_empty) {
 			if (routes.path.indexOf('/login') == -1) {
-				AppContainer.handleLocationChange('login')
+        history.push('/login')
 			}
 		} else {
 
