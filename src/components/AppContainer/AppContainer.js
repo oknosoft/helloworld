@@ -125,7 +125,7 @@ class AppContainer extends Component {
 			$p.rx_events(store)
 
 			// выполняем модификаторы
-      modifiers($p)
+      		modifiers($p)
 
 			// информируем хранилище о готовности MetaEngine
 			store.dispatch($p.rx_actions.META_LOADED($p))

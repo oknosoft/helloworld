@@ -14,7 +14,6 @@ export default class HomeView extends Component {
   }
 
   render () {
-
     const { props } = this
     const { $p } = this.context
 

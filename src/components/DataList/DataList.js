@@ -1,6 +1,6 @@
 /** @flow */
 import React, {Component, PropTypes} from "react";
-import {InfiniteLoader, Grid} from "react-virtualized";
+import { InfiniteLoader, Grid } from "react-virtualized";
 import Toolbar from "./Toolbar";
 import styles from "./DataList.scss";
 import cn from "classnames";
@@ -215,8 +215,8 @@ export default class DataList extends Component {
 
   handleEdit(e){
     const row = this._list.get(this.state.selectedRowIndex)
-    if(row)
-      this.props.handleEdit(row)
+    // if(row)
+    //  this.props.handleEdit(row)
   }
 
   handleRemove(e){

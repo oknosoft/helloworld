@@ -6,7 +6,7 @@
 import MetaEngine from 'metadata-core';
 import metadata_pouchdb from 'metadata-pouchdb';
 import metadata_redux from 'metadata-redux';
-import metadata_ui from 'metadata-abstract-ui';
+import metadata_ui from 'metadata-abstract-ui/src';
 
 export meta_init from './init';
 export modifiers from './modifiers';
