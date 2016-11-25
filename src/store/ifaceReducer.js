@@ -36,9 +36,9 @@ export default function ifaceReducer (state = initialState, action) {
 
   const handler = ACTION_HANDLERS[action.type]
 
-  if(handler){
-    console.log(action)
+  if(handler) {
     return handler(state, action)
-  }else
+  } else {
     return state
+  }
 }

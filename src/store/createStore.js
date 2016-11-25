@@ -2,7 +2,7 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
 import makeRootReducer from './reducers'
-
+/* global __DEBUG__ */
 
 // функция, создающая store для redux
 export default (initialState = {}, history) => {
@@ -41,6 +41,17 @@ export default (initialState = {}, history) => {
       const reducers = require('./reducers').default
       store.replaceReducer(reducers(store.asyncReducers))
     })
+  }
+
+  /**
+   * Отобразить последние действие в консоли.
+   * Display last action in console.
+   */
+  if (__DEBUG__) {
+    store.subscribe(function () {
+      const lastAction = store.getState().lastAction;
+      console.log(lastAction);
+    });
   }
 
   return store

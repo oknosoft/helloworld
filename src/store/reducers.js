@@ -7,12 +7,16 @@ import $p from '../metadata'
 // редюсер событий интерфейса
 import ifaceReducer from './ifaceReducer'
 
+// логирование последнего действия
+import lastActionReducer from './lastActionReducer';
+
 export const makeRootReducer = (asyncReducers = {}) => {
 
   return combineReducers({
     // Add sync reducers here
     meta: $p.rx_reducer,
     iface: ifaceReducer,
+    lastAction: lastActionReducer,
     router,
     ...asyncReducers
   })
