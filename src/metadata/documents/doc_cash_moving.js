@@ -21,9 +21,9 @@ export default function ($p) {
 			if(this.sender.empty() && this.recipient.empty()){
 
 				$p.msg.show_msg({
-					title: $p.msg.mandatory_title,
+					title: $p.msg('mandatory_title'),
 					type: "alert-error",
-					text: $p.msg.mandatory_one_cashbox
+					text: $p.msg('mandatory_one_cashbox')
 				});
 
 				return false

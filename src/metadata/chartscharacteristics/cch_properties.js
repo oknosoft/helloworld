@@ -30,8 +30,8 @@ export default function ($p) {
 					if(row.param.mandatory && (!row.value || row.value.empty())){
 						$p.msg.show_msg({
 							type: "alert-error",
-							text: $p.msg.bld_empty_param + row.param.presentation,
-							title: title || $p.msg.bld_title});
+							text: $p.msg('bld_empty_param') + row.param.presentation,
+							title: title || $p.msg('bld_title')});
 						return true;
 					}
 				}
