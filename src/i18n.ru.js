@@ -1,13 +1,11 @@
 /**
  * Строковые константы интернационализации
- *
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
  */
 
-(function (msg){
+(function (msg) {
 
 	msg.main_title = "Hello world ";
 
 	msg.mandatory_one_cashbox = "Необходимо указать как минимум одну кассу: отправителя или получателя";
-	
+
 })($p.msg);
