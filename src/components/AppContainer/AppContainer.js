@@ -20,20 +20,18 @@ import "react-virtualized-select/styles.css";
 
 import "styles/core.scss";
 
-
+// заставка "загрузка занных"
 import DumbScreen from "components/DumbLoader/DumbScreen";
 
 // стили MuiTheme для material-ui
 import MuiThemeProvider, {styles, muiTheme} from "./AppMuiTheme";
 
-// функция установки параметров сеанса
-import settings from "../../../config/app.settings";
 
-// собственно, metaengine, скрипт инициализации структуры метаданных и модификаторы
-import $p, { meta_init, modifiers } from "metadata";
+// собственно, metaengine и скрипт инициализации структуры метаданных и модификаторы
+import $p, { init } from "metadata";
 
 
-class AppContainer extends Component {
+export default class AppContainer extends Component {
 
 	static propTypes = {
 		history: PropTypes.object.isRequired,
@@ -102,27 +100,10 @@ class AppContainer extends Component {
 
 		const {store} = this.props
 
-		setTimeout(() => {
-
-			// инициализируем параметры сеанса и метаданные
-			$p.wsql.init(settings, meta_init)
-
-			// подключаем обработчики событий плагином metadata-redux
-			$p.rx_events(store)
-
-			// выполняем модификаторы
-      modifiers($p)
-
-			// информируем хранилище о готовности MetaEngine
-			store.dispatch($p.rx_actions.META_LOADED($p))
-
-			// читаем локальные данные в ОЗУ
-			$p.adapters.pouch.load_data();
-
-			// подписываемся на события хранилища
-			store.subscribe(this.subscriber(store))
-
-		})
+    init(store, this.subscriber(store))
+      .catch(function (err) {
+        console.log(err)
+      })
 
 	}
 
@@ -189,5 +170,3 @@ class AppContainer extends Component {
 	}
 
 }
-
-export default AppContainer

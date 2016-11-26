@@ -1,8 +1,21 @@
 // модификаторы объектов и менеджеров данных
 
-// модификатор отчета materials_demand
-import rep_cash_moving from "./reports/rep_cash_moving";
+// модификаторы справочников
+import catalogs from "./catalogs";
+
+// модификаторы документов
+import documents from "./documents";
+
+// модификаторы планов видов характеристик
+import chartscharacteristics from "./chartscharacteristics";
+
+// модификаторы отчетов
+import reports from "./reports";
+
 
 export default function ($p) {
-	rep_cash_moving($p);
+	catalogs($p)
+	documents($p)
+	chartscharacteristics($p)
+	reports($p)
 }

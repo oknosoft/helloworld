@@ -7,26 +7,30 @@
  * Created 28.07.2016
  */
 
+export default function ($p) {
 
-// Подписываемся на события
-$p.doc.cash_moving.on({
+	// Подписываемся на события
+	$p.doc.cash_moving.on({
 
-	/**
-	 * Обработчик перед записью документа
-	 */
-	before_save: function (attr) {
+		/**
+		 * Обработчик перед записью документа
+		 */
+		before_save: function (attr) {
 
-		// как минимум, одна касса должна быть заполнена
-		if(this.sender.empty() && this.recipient.empty()){
+			// как минимум, одна касса должна быть заполнена
+			if(this.sender.empty() && this.recipient.empty()){
 
-			$p.msg.show_msg({
-				title: $p.msg.mandatory_title,
-				type: "alert-error",
-				text: $p.msg.mandatory_one_cashbox
-			});
+				$p.msg.show_msg({
+					title: $p.msg.mandatory_title,
+					type: "alert-error",
+					text: $p.msg.mandatory_one_cashbox
+				});
 
-			return false
+				return false
+			}
+
 		}
+	});
 
-	}
-});
+}
+
