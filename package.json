@@ -98,7 +98,7 @@
     "material-ui": "^0.16",
     "metadata-core": "2.0.0-beta.12",
     "metadata-pouchdb": "2.0.0-beta.12",
-    "metadata-redux": "2.0.0-beta.11",
+    "metadata-redux": "2.0.0-beta.12",
     "metadata-react-ui": "2.0.0-beta.12",
     "node-sass": "^3.13",
     "normalize.css": "^5.0",
