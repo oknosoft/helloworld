@@ -1,8 +1,6 @@
-import React from 'react';
-
-import About from './About'
-
-import classes from './FrmAbout.scss'
+import React from "react";
+import About from "./About";
+import classes from "./FrmAbout.scss";
 
 
 export default class FrmAbout extends React.Component {

@@ -2,17 +2,13 @@
  * Уровень под провайдером и роутингом
  */
 
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-
-import { AutoSizer } from "react-virtualized"
-
-import Header from 'components/Header';
-import navlist_items from './navlist_items';
-
-import { navlist_open } from 'store/ifaceReducer';
-
-import { muiTheme } from "./AppMuiTheme";
+import React, {Component, PropTypes} from "react";
+import {connect} from "react-redux";
+import {AutoSizer} from "react-virtualized";
+import Header from "components/Header";
+import navlist_items from "./navlist_items";
+import {navlist_open} from "store/ifaceReducer";
+import {muiTheme} from "./AppMuiTheme";
 
 
 let data_empty_timer
@@ -28,29 +24,29 @@ class CoreLayout extends Component {
     this.state = {data_empty: false};
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.state.mounted = true
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.state.mounted = false
-    if(data_empty_timer){
+    if (data_empty_timer) {
       clearTimeout(data_empty_timer)
     }
   }
 
   render() {
 
-    const { props } = this
+    const {props} = this
 
-    if(props.data_empty){
+    if (props.data_empty) {
       this.state.data_empty = true;
-      if(data_empty_timer){
+      if (data_empty_timer) {
         clearTimeout(data_empty_timer)
       }
-      data_empty_timer = setTimeout( () => {
+      data_empty_timer = setTimeout(() => {
         data_empty_timer = 0
-        if(this.state.mounted){
+        if (this.state.mounted) {
           this.setState({
             data_empty: false
           })
@@ -63,7 +59,7 @@ class CoreLayout extends Component {
         {({width, height}) => {
           return (
             <div style={{width: width}}>
-              <Header {...props} navlist_items={navlist_items} />
+              <Header {...props} navlist_items={navlist_items}/>
               <div style={{height: '100%'}}>
                 {React.cloneElement(props.children, {
                   height: height - muiTheme.appBar.height,
@@ -91,7 +87,7 @@ const mapDispatchToProps = {
 // здесь state - это состояние хранилища, а не состояние компонента
 function mapStateToProps(state, props) {
 
-  const { meta, iface } = state
+  const {meta, iface} = state
 
   return {
 
