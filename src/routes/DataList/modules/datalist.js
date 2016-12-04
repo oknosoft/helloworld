@@ -1,4 +1,4 @@
-import $p from 'metadata'
+import $p from "metadata";
 
 function handleEdit(row, _mgr) {
 	$p.UI.history.push(_mgr.class_name.replace('.', '_') + '/' + row.ref)
@@ -20,16 +20,18 @@ export function mapDispatchToProps(dispatch) {
 	return {
 		handleEdit,
 		handleAdd,
-		handleRevert:      () => dispatch($p.rx_actions.OBJ_REVERT),
+		handleRevert: () => dispatch($p.rx_actions.OBJ_REVERT),
 		handleMarkDeleted: () => dispatch($p.rx_actions.obj_mark_deleted),
-		handlePost:        () => dispatch($p.rx_actions.obj_post),
-		handleUnPost:      () => dispatch($p.rx_actions.obj_unpost),
-		handlePrint:       () => {},
-		handleAttachment:  () => {}
+		handlePost: () => dispatch($p.rx_actions.obj_post),
+		handleUnPost: () => dispatch($p.rx_actions.obj_unpost),
+		handlePrint: () => {
+		},
+		handleAttachment: () => {
+		}
 	}
 }
 
-export function mapStateToProps(state, props){
+export function mapStateToProps(state, props) {
 	return {
 		meta: state.meta,
 		_mgr: $p.md.mgr_by_class_name(props.params.meta),

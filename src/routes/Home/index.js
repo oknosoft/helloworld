@@ -1,11 +1,11 @@
-import HomeViewContainer from './containers/HomeViewContainer'
+import HomeViewContainer from "./containers/HomeViewContainer";
 
 // Sync route definition
 export default {
-  component: HomeViewContainer
+	component: HomeViewContainer
 }
 
-export function HomeRoute(store){
+export function HomeRoute(store) {
 	return {
 		path: '/',
 		/*  Async getComponent is only invoked when route matches   */

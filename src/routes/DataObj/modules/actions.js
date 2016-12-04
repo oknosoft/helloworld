@@ -1,4 +1,3 @@
-
 import $p from "metadata";
 
 function handleClose() {

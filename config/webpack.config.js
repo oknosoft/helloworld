@@ -6,6 +6,7 @@ import config from '../config'
 import path from 'path'
 import _debug from 'debug'
 /* global __dirname */
+
 const debug = _debug('app:webpack:config')
 const paths = config.utils_paths
 const {__DEV__, __PROD__, __TEST__} = config.globals
