@@ -144,20 +144,19 @@ export default class AppContainer extends Component {
 
     }
 
-    if (!meta.data_loaded && meta.fetch_local) {
-      return (
-        <DumbScreen
-          title="Загрузка данных из IndexedDB..."
-          page={meta.page}
-        />
-      )
-    }
-
     return (
       <Provider store={store}>
         <MuiThemeProvider muiTheme={muiTheme}>
           <div style={ styles.container }>
-            <Router history={history} children={routes}/>
+            {
+              (!meta.data_loaded && meta.fetch_local) ?
+                <DumbScreen
+                  title="Загрузка данных из IndexedDB..."
+                  page={meta.page}
+                />
+                :
+                <Router history={history} children={routes}/>
+            }
           </div>
         </MuiThemeProvider>
       </Provider>

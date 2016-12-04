@@ -57,6 +57,12 @@ class CoreLayout extends Component {
     return (
       <AutoSizer >
         {({width, height}) => {
+          if(!width){
+            width = document.body.clientWidth
+          }
+          if(!height){
+            height = document.body.clientHeight
+          }
           return (
             <div style={{width: width}}>
               <Header {...props} navlist_items={navlist_items}/>
