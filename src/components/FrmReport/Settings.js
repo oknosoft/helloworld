@@ -21,13 +21,9 @@ export default class ReportSettings extends Component{
     _obj: PropTypes.object
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      open: false,
-      tab_value: 'a'
-    };
+  state = {
+    open: false,
+    tab_value: 'a'
   }
 
   handleTabChange = (tab_value) => {
@@ -36,7 +32,7 @@ export default class ReportSettings extends Component{
         tab_value: tab_value,
       });
     }
-  };
+  }
 
   handleTouchTap = (event) => {
     // This prevents ghost click.
@@ -46,7 +42,7 @@ export default class ReportSettings extends Component{
       open: true,
       anchorEl: event.currentTarget,
     });
-  };
+  }
 
   handleRequestClose = () => {
 
