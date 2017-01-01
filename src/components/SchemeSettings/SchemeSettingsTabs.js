@@ -19,7 +19,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 export default class SchemeSettingsTabs extends Component{
 
   static propTypes = {
-    selectionChange: PropTypes.func.isRequired,
+    handleSchemeChange: PropTypes.func.isRequired,
     scheme: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired
   }

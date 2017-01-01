@@ -64,7 +64,7 @@ export default class DataListToolbar extends Component {
 
           <ToolbarSeparator />
           <SchemeSettings
-            handleSchemeChange={props.handleSelectionChange}
+            handleSchemeChange={props.handleSchemeChange}
             scheme={props.scheme}
             schemas={props.schemas}
             show_prm={false}

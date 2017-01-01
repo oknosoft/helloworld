@@ -21,7 +21,7 @@ import SchemeSettingsTabs from './SchemeSettingsTabs';
 export default class SchemeSettingsWrapper extends Component{
 
   static propTypes = {
-    selectionChange: PropTypes.func.isRequired,
+    handleSchemeChange: PropTypes.func.isRequired,
     scheme: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired
   }

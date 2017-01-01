@@ -1,6 +1,7 @@
 /** @flow */
 import React, {Component, PropTypes} from "react";
 import {InfiniteLoader, Grid} from "react-virtualized";
+import DumbLoader from '../DumbLoader'
 import Toolbar from "./Toolbar";
 import cn from "classnames";
 
@@ -179,6 +180,10 @@ export default class DataList extends Component {
     const {width, height, selection_mode, params, _mgr, schemas} = this.props
     const key0 = params.options || _mgr.class_name
 
+    if(!scheme){
+      return <DumbLoader title="Чтение настроек компоновки..." />
+    }
+
     if(select._key.startkey[0] != key0){
       select._key.startkey[0] = key0
       select._key.endkey[0] = key0
@@ -189,6 +194,7 @@ export default class DataList extends Component {
           totalRowCount: 0
         })
       })
+      // return <DumbLoader title="Обновление данных..." />
     }
 
     return (
