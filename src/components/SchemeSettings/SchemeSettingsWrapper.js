@@ -22,7 +22,8 @@ export default class SchemeSettingsWrapper extends Component{
 
   static propTypes = {
     selectionChange: PropTypes.func.isRequired,
-    selectionValue: PropTypes.object.isRequired
+    scheme: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired
   }
 
   state = {

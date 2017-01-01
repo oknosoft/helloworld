@@ -20,7 +20,8 @@ export default class SchemeSettingsTabs extends Component{
 
   static propTypes = {
     selectionChange: PropTypes.func.isRequired,
-    selectionValue: PropTypes.object.isRequired
+    scheme: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired
   }
 
   state = {
@@ -51,15 +52,21 @@ export default class SchemeSettingsTabs extends Component{
             null
         }
 
+        <Tab label="Отбор" value="s">
+
+          <div>Отбор</div>
+
+        </Tab>
+
         <Tab label="Колонки" value="c">
 
           <div>Колонки</div>
 
         </Tab>
 
-        <Tab label="Отбор" value="s">
+        <Tab label="Группировка" value="g">
 
-          <div>Отбор</div>
+          <div>Группировка</div>
 
         </Tab>
 

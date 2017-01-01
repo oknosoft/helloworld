@@ -17,13 +17,15 @@ function handleAdd(_mgr) {
  */
 export function mapDispatchToProps(dispatch) {
 
+	const {rx_actions} = $p;
+
 	return {
 		handleEdit,
 		handleAdd,
-		handleRevert: () => dispatch($p.rx_actions.OBJ_REVERT),
-		handleMarkDeleted: () => dispatch($p.rx_actions.obj_mark_deleted),
-		handlePost: () => dispatch($p.rx_actions.obj_post),
-		handleUnPost: () => dispatch($p.rx_actions.obj_unpost),
+		handleRevert: () => dispatch(rx_actions.OBJ_REVERT),
+		handleMarkDeleted: () => dispatch(rx_actions.obj_mark_deleted),
+		handlePost: () => dispatch(rx_actions.obj_post),
+		handleUnPost: () => dispatch(rx_actions.obj_unpost),
 		handlePrint: () => {
 		},
 		handleAttachment: () => {
@@ -34,6 +36,7 @@ export function mapDispatchToProps(dispatch) {
 export function mapStateToProps(state, props) {
 	return {
 		meta: state.meta,
+		schemas: $p.cat.scheme_settings,
 		_mgr: $p.md.mgr_by_class_name(props.params.meta),
 		_acl: 'e'
 	}

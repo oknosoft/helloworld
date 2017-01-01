@@ -25,8 +25,9 @@ export default class DataListToolbar extends Component {
     handleEdit: PropTypes.func.isRequired,            // обработчик открфтия формы редактора
     handleRemove: PropTypes.func.isRequired,          // обработчик удаления строки
 
-    handleSelectionChange: PropTypes.func.isRequired, // ??? обработчик при изменении фильтра
-    selectionValue: PropTypes.object.isRequired,      // значение фильтра
+    handleSchemeChange: PropTypes.func.isRequired,    // обработчик при изменении настроек компоновки
+    scheme: PropTypes.object.isRequired,              // значение настроек компоновки
+    schemas: PropTypes.object.isRequired,             // менеджер настроек компоновки
 
     handlePrint: PropTypes.func.isRequired,           // обработчик открытия диалога печати
     handleAttachment: PropTypes.func.isRequired,      // обработчик открытия диалога присоединенных файлов
@@ -63,8 +64,9 @@ export default class DataListToolbar extends Component {
 
           <ToolbarSeparator />
           <SchemeSettings
-            selectionChange={props.handleSelectionChange}
-            selectionValue={props.selectionValue}
+            handleSchemeChange={props.handleSelectionChange}
+            scheme={props.scheme}
+            schemas={props.schemas}
             show_prm={false}
           />
 
