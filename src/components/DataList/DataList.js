@@ -89,7 +89,7 @@ export default class DataList extends Component {
       columns: props.columns,
       _meta: props._meta || props._mgr.metadata(),
 
-      scheme: props.schemas.get_scheme(class_name),
+      scheme: null,
 
       // готовим фильтры для запроса couchdb
       select: props.select || {
@@ -153,6 +153,11 @@ export default class DataList extends Component {
     }
 
     this._list = new DataListStorage()
+
+    props.schemas.get_scheme(class_name)
+      .then((scheme) => {
+        this.setState({ scheme })
+      })
 
   }
 
