@@ -67,6 +67,7 @@ export default class SchemeSettingsWrapper extends Component{
           title="Настройка списка"
           actions={actions}
           modal={false}
+          autoScrollBodyContent={true}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >

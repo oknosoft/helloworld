@@ -7,16 +7,13 @@
  * Created 19.12.2016
  */
 
-import React, { Component, PropTypes } from 'react';
-
-import IconButton from 'material-ui/IconButton';
-import IconFilter from 'material-ui/svg-icons/content/filter-list';
-
-import {Tabs, Tab} from 'material-ui/Tabs';
+import React, {Component, PropTypes} from "react";
+import {Tabs, Tab} from "material-ui/Tabs";
+import Subheader from "material-ui/Subheader";
+import TabularSection from "../TabularSection";
 
 
-
-export default class SchemeSettingsTabs extends Component{
+export default class SchemeSettingsTabs extends Component {
 
   static propTypes = {
     handleSchemeChange: PropTypes.func.isRequired,
@@ -25,48 +22,83 @@ export default class SchemeSettingsTabs extends Component{
   }
 
   state = {
-    tab_value: 'c'
+    tab_value: 'p'
   }
 
   handleTabChange = (tab_value) => {
-    this.setState({ tab_value })
+    this.setState({tab_value})
   }
 
-	render(){
+  render() {
 
-		return(
+    const {handleSchemeChange, scheme, schemas} = this.props
+
+    return (
 
       <Tabs
         value={this.state.tab_value}
         onChange={this.handleTabChange}
       >
 
-        {
-          this.props.show_prm ?
-            <Tab label="Параметры" value="p">
+        <Tab label="Параметры" value="p">
 
-              <div>Параметры</div>
+          <Subheader>Параметры запроса</Subheader>
 
-            </Tab>
-            :
-            null
-        }
+          <TabularSection
+            _obj={scheme}
+            _tabular="params"
+            minHeight={150}
+          />
 
-        <Tab label="Отбор" value="s">
-
-          <div>Отбор</div>
+          <Subheader>Отбор</Subheader>
+          <TabularSection
+            _obj={scheme}
+            _tabular="selection"
+            minHeight={150}
+          />
 
         </Tab>
 
         <Tab label="Колонки" value="c">
 
-          <div>Колонки</div>
+          <TabularSection
+            _obj={scheme}
+            _tabular="fields"
+            _columns={[
+              {
+                key: 'field',
+                name: 'Поле',
+                resizable : true
+              }]}
+            deny_add_del={true}
+            minHeight={300}
+          />
 
         </Tab>
 
         <Tab label="Группировка" value="g">
 
-          <div>Группировка</div>
+          <TabularSection
+            _obj={scheme}
+            _tabular="dimensions"
+            minHeight={150}
+          />
+
+          <TabularSection
+            _obj={scheme}
+            _tabular="resources"
+            minHeight={150}
+          />
+
+        </Tab>
+
+        <Tab label="Сортировка" value="s">
+
+          <TabularSection
+            _obj={scheme}
+            _tabular="sorting"
+            minHeight={300}
+          />
 
         </Tab>
 
@@ -77,7 +109,7 @@ export default class SchemeSettingsTabs extends Component{
         </Tab>
 
       </Tabs>
-		)
-	}
+    )
+  }
 
 }
