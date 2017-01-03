@@ -17,8 +17,7 @@ export default class SchemeSettingsTabs extends Component {
 
   static propTypes = {
     handleSchemeChange: PropTypes.func.isRequired,
-    scheme: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired
+    scheme: PropTypes.object.isRequired
   }
 
   state = {
@@ -31,7 +30,7 @@ export default class SchemeSettingsTabs extends Component {
 
   render() {
 
-    const {handleSchemeChange, scheme, schemas} = this.props
+    const {handleSchemeChange, scheme} = this.props
 
     return (
 

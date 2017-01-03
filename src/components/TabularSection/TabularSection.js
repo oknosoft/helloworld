@@ -61,11 +61,13 @@ export default class TabularSection extends Component {
 
     super(props);
 
-    const users_mgr = context.$p.cat.users
+    const {$p} = context
+    const {_obj} = props
+    const class_name = _obj._manager.class_name + "." + props._tabular
 
     this.state = {
-      _meta: props._meta || props._obj._metadata(props._tabular),
-      _tabular: props._obj[props._tabular],
+      _meta: props._meta || _obj._metadata(props._tabular),
+      _tabular: _obj[props._tabular],
       _columns: props._columns || []
     }
 
@@ -88,22 +90,10 @@ export default class TabularSection extends Component {
         this.state._columns.push(column)
 
       }
-      // this.state._columns = [
-      //   {
-      //     key: 'row',
-      //     name: '№',
-      //     resizable : true,
-      //     width : 80
-      //   },
-      //   {
-      //     key: 'nom',
-      //     name: 'ФИО',
-      //     resizable : true,
-      //     formatter: v => {
-      //       v = users_mgr.get(v.value)
-      //       return (<div>{v instanceof Promise ? 'loading...' : v.presentation}</div>)
-      //     }
-      //   }]
+
+      $p.cat.scheme_settings.get_scheme(class_name)
+        .then(this.handleSchemeChange)
+
     }
   }
 
@@ -131,17 +121,28 @@ export default class TabularSection extends Component {
     Object.assign(row._row || row, e.updated);
   }
 
+  // обработчик при изменении настроек компоновки
+  handleSchemeChange = (scheme) => {
+    this.setState({
+      scheme,
+      _columns: scheme.columns("ts")
+    })
+  }
+
   render() {
 
     const { $p } = this.context;
-    const { _meta, _tabular, _columns } = this.state;
+    const { _meta, _tabular, _columns, scheme } = this.state;
     const { _obj, _fld, Toolbar } = this.props;
     const _val = _obj[_fld];
-    const subProps = {
-      _meta: _meta,
-      _obj: _obj,
-      _fld: _fld,
-      _val: _val
+    const subProps = { _meta, _obj, _fld, _val }
+
+    if(!scheme){
+      return <DumbLoader title="Чтение настроек компоновки..." />
+
+    }else if(!_columns || !_columns.length){
+      return <DumbLoader title="Ошибка настроек компоновки..."/>
+
     }
 
     // contextMenu={<MyContextMenu

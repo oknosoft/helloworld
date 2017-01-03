@@ -27,7 +27,6 @@ export default class DataListToolbar extends Component {
 
     handleSchemeChange: PropTypes.func.isRequired,    // обработчик при изменении настроек компоновки
     scheme: PropTypes.object.isRequired,              // значение настроек компоновки
-    schemas: PropTypes.object.isRequired,             // менеджер настроек компоновки
 
     handlePrint: PropTypes.func.isRequired,           // обработчик открытия диалога печати
     handleAttachment: PropTypes.func.isRequired,      // обработчик открытия диалога присоединенных файлов
@@ -66,7 +65,6 @@ export default class DataListToolbar extends Component {
           <SchemeSettings
             handleSchemeChange={props.handleSchemeChange}
             scheme={props.scheme}
-            schemas={props.schemas}
             show_prm={false}
           />
 

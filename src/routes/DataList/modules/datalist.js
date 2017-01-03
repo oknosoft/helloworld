@@ -36,7 +36,6 @@ export function mapDispatchToProps(dispatch) {
 export function mapStateToProps(state, props) {
 	return {
 		meta: state.meta,
-		schemas: $p.cat.scheme_settings,
 		_mgr: $p.md.mgr_by_class_name(props.params.meta),
 		_acl: 'e'
 	}
