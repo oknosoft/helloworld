@@ -1,10 +1,9 @@
 /** @flow */
 import React, {Component, PropTypes} from "react";
 import {InfiniteLoader, Grid} from "react-virtualized";
-import DumbLoader from '../DumbLoader'
+import DumbLoader from "../DumbLoader";
 import Toolbar from "./Toolbar";
 import cn from "classnames";
-
 import styles from "./DataList.scss";
 
 
@@ -14,18 +13,18 @@ const limit = 30,
 class DataListStorage {
 
   constructor() {
-   this._data = []
+    this._data = []
   }
 
   get size() {
     return this._data.length
   }
 
-  get(index){
+  get(index) {
     return this._data[index]
   }
 
-  clear(){
+  clear() {
     this._data.length = 0
   }
 
@@ -106,7 +105,7 @@ export default class DataList extends Component {
       .then(this.handleSchemeChange)
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     // If props/state signals that the underlying collection has changed,
     // Reload the most recently requested batch of rows:
     if (this.state.do_reload) {
@@ -124,15 +123,15 @@ export default class DataList extends Component {
     const {width, height, selection_mode, params, _mgr} = this.props
     const key0 = params.options || _mgr.class_name
 
-    if(!scheme){
-      return <DumbLoader title="Чтение настроек компоновки..." />
+    if (!scheme) {
+      return <DumbLoader title="Чтение настроек компоновки..."/>
 
-    }else if(!columns || !columns.length){
+    } else if (!columns || !columns.length) {
       return <DumbLoader title="Ошибка настроек компоновки..."/>
 
     }
 
-    if(select._key.startkey[0] != key0){
+    if (select._key.startkey[0] != key0) {
       select._key.startkey[0] = key0
       select._key.endkey[0] = key0
       setTimeout(() => {
@@ -190,7 +189,7 @@ export default class DataList extends Component {
 
                 <div
                   //className={styles.BodyGrid}
-                  style={{position: 'relative'}}>
+                  style={{position: 'relative', zIndex: -1}}>
                   {
                     columns.map(function (column, index) {
 

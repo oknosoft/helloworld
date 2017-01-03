@@ -63,12 +63,6 @@ export default class SchemeSettingsTabs extends Component {
           <TabularSection
             _obj={scheme}
             _tabular="fields"
-            _columns={[
-              {
-                key: 'field',
-                name: 'Поле',
-                resizable : true
-              }]}
             deny_add_del={true}
             minHeight={300}
           />

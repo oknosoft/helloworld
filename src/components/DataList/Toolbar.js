@@ -41,7 +41,7 @@ export default class DataListToolbar extends Component {
 
           {
             props.selection_mode ?
-              <IconButton touch={true} tooltip="Выбрать из списка" tooltipPosition="top-right"
+              <IconButton touch={true} tooltip="Выбрать из списка" tooltipPosition="bottom-right"
                           onTouchTap={props.handleSelect}>
                 <SelectIcon />
               </IconButton>
@@ -49,14 +49,14 @@ export default class DataListToolbar extends Component {
               null
           }
 
-          <IconButton touch={true} tooltip="Создать объект" tooltipPosition="top-right" onTouchTap={props.handleAdd}>
+          <IconButton touch={true} tooltip="Создать объект" tooltipPosition="bottom-right" onTouchTap={props.handleAdd}>
             <AddIcon />
           </IconButton>
-          <IconButton touch={true} tooltip="Открыть форму объекта" tooltipPosition="top-right"
+          <IconButton touch={true} tooltip="Открыть форму объекта" tooltipPosition="bottom-right"
                       onTouchTap={props.handleEdit}>
             <EditIcon />
           </IconButton>
-          <IconButton touch={true} tooltip="Пометить на удаление" tooltipPosition="top-center"
+          <IconButton touch={true} tooltip="Пометить на удаление" tooltipPosition="bottom-center"
                       onTouchTap={props.handleRemove}>
             <RemoveIcon />
           </IconButton>
