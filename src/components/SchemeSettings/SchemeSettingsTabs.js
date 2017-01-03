@@ -65,6 +65,18 @@ export default class SchemeSettingsTabs extends Component {
             _tabular="fields"
             deny_add_del={true}
             minHeight={300}
+
+            rowSelection={{
+              showCheckbox: true,
+              enableShiftSelect: true,
+              selectBy: {
+                keys: {
+                  rowKey: "field",
+                  markKey: "use",
+                  values: scheme.used_fields()
+                }
+              }
+            }}
           />
 
         </Tab>

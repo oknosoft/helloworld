@@ -56,6 +56,11 @@ export default class TabularSection extends Component {
 
     handleValueChange: PropTypes.func,    // Обработчик изменения значения в ячейке
     handleRowChange: PropTypes.func,      // При окончании редактирования строки
+
+    enableRowSelect: PropTypes.string,
+    handleRowSelect: PropTypes.func,
+
+    selectedIds: PropTypes.array
   }
 
   constructor(props, context) {
@@ -69,7 +74,9 @@ export default class TabularSection extends Component {
     this.state = {
       _meta: props._meta || _obj._metadata(props._tabular),
       _tabular: _obj[props._tabular],
-      _columns: props._columns || []
+      _columns: props._columns || [],
+
+      selectedIds: props.rowSelection ? props.rowSelection.selectBy.keys.values : []
     }
 
     if (!this.state._columns.length) {
@@ -103,7 +110,7 @@ export default class TabularSection extends Component {
     return this.state._tabular.get(i);
   }
 
-  deleteRow(e, data) {
+  deleteRow = (e, data) => {
     if (!data) {
       data = this.refs.grid.state.selected
     }
@@ -111,7 +118,7 @@ export default class TabularSection extends Component {
     this.forceUpdate()
   }
 
-  addRow(e, data) {
+  addRow = (e, data) => {
     this.state._tabular.add()
     this.forceUpdate()
   }
@@ -130,11 +137,37 @@ export default class TabularSection extends Component {
     })
   }
 
+  onRowsSelected = (rows) => {
+    const {rowSelection} = this.props
+    this.setState({
+      selectedIds: this.state.selectedIds.concat(
+        rows.map(r => {
+          if(rowSelection.selectBy.keys.markKey){
+            r.row[rowSelection.selectBy.keys.markKey] = true
+          }
+          return r.row[rowSelection.selectBy.keys.rowKey]
+        }))
+    })
+  }
+
+  onRowsDeselected = (rows) => {
+    const {rowSelection} = this.props
+    let rowIds = rows.map(r => {
+      if(rowSelection.selectBy.keys.markKey){
+        r.row[rowSelection.selectBy.keys.markKey] = false
+      }
+      return r.row[rowSelection.selectBy.keys.rowKey]
+    })
+    this.setState({
+      selectedIds: this.state.selectedIds.filter(i => rowIds.indexOf(i) === -1 )
+    })
+  }
+
   render() {
 
     const {$p} = this.context;
-    const {_meta, _tabular, _columns, scheme} = this.state;
-    const {_obj, Toolbar} = this.props;
+    const {_meta, _tabular, _columns, scheme, selectedIds} = this.state;
+    const {_obj, Toolbar, rowSelection} = this.props;
 
     if (!scheme) {
       return <DumbLoader title="Чтение настроек компоновки..."/>
@@ -145,8 +178,8 @@ export default class TabularSection extends Component {
     }
 
     // contextMenu={<MyContextMenu
-    //   onRowDelete={::this.deleteRow}
-    //   onRowAdd={::this.addRow}
+    //   onRowDelete={this.deleteRow}
+    //   onRowAdd={this.addRow}
     //   style={{zIndex: 9999}}
     // />}
 
@@ -155,39 +188,39 @@ export default class TabularSection extends Component {
     //   handleRemove={}
     // />
 
+    const gridProps = {
+      ref: "grid",
+      columns: _columns,
+      enableCellSelect: true,
+      rowGetter: this.rowGetter,
+      rowsCount: _tabular.count(),
+      onRowUpdated: this.handleRowUpdated,
+      minHeight: this.props.minHeight || 200
+    }
+
+    if(rowSelection){
+      rowSelection.onRowsSelected = this.onRowsSelected
+      rowSelection.onRowsDeselected = this.onRowsDeselected
+      rowSelection.selectBy.keys.values = selectedIds
+      gridProps.rowSelection = rowSelection
+    }
+
     return (
       Toolbar ?
 
         <div>
 
           <Toolbar
-            handleAdd={::this.addRow}
-            handleRemove={::this.deleteRow}
+            handleAdd={this.addRow}
+            handleRemove={this.deleteRow}
             handleCustom={this.props.handleCustom}
           />
 
-          <ReactDataGrid
-            ref="grid"
-            columns={_columns}
-            enableCellSelect={true}
-            rowGetter={this.rowGetter}
-            rowsCount={_tabular.count()}
-            onRowUpdated={this.handleRowUpdated}
-            minHeight={this.props.minHeight || 200}
+          <ReactDataGrid {...gridProps} />
 
-          />
         </div>
         :
-        <ReactDataGrid
-
-          columns={_columns}
-          enableCellSelect={true}
-          rowGetter={this.rowGetter}
-          rowsCount={_tabular.count()}
-          onRowUpdated={this.handleRowUpdated}
-          minHeight={this.props.minHeight || 200}
-
-        />
+        <ReactDataGrid {...gridProps} />
 
     )
 
