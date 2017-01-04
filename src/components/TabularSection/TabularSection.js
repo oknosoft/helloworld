@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import ReactDataGrid from "react-data-grid";
 import DumbLoader from "../DumbLoader";
+import DefaultToolbar from "./TabularSectionToolbar"
 
 
 // // Import the necessary modules.
@@ -76,6 +77,8 @@ export default class TabularSection extends Component {
       _tabular: _obj[props._tabular],
       _columns: props._columns || [],
 
+      Toolbar: props.Toolbar || DefaultToolbar,
+
       selectedIds: props.rowSelection ? props.rowSelection.selectBy.keys.values : []
     }
 
@@ -110,7 +113,7 @@ export default class TabularSection extends Component {
     return this.state._tabular.get(i);
   }
 
-  deleteRow = (e, data) => {
+  handleRemove = (e, data) => {
     if (!data) {
       data = this.refs.grid.state.selected
     }
@@ -118,9 +121,17 @@ export default class TabularSection extends Component {
     this.forceUpdate()
   }
 
-  addRow = (e, data) => {
+  handleAdd = (e, data) => {
     this.state._tabular.add()
     this.forceUpdate()
+  }
+
+  handleUp = () => {
+    const data = this.refs.grid.state.selected
+  }
+
+  handleDown = () => {
+    const data = this.refs.grid.state.selected
   }
 
   handleRowUpdated(e) {
@@ -166,8 +177,8 @@ export default class TabularSection extends Component {
   render() {
 
     const {$p} = this.context;
-    const {_meta, _tabular, _columns, scheme, selectedIds} = this.state;
-    const {_obj, Toolbar, rowSelection} = this.props;
+    const {_meta, _tabular, _columns, scheme, selectedIds, Toolbar} = this.state;
+    const {_obj, rowSelection} = this.props;
 
     if (!scheme) {
       return <DumbLoader title="Чтение настроек компоновки..."/>
@@ -178,8 +189,8 @@ export default class TabularSection extends Component {
     }
 
     // contextMenu={<MyContextMenu
-    //   onRowDelete={this.deleteRow}
-    //   onRowAdd={this.addRow}
+    //   onRowDelete={this.handleRemove}
+    //   onRowAdd={this.handleAdd}
     //   style={{zIndex: 9999}}
     // />}
 
@@ -206,22 +217,20 @@ export default class TabularSection extends Component {
     }
 
     return (
-      Toolbar ?
+      <div>
 
-        <div>
+        <Toolbar
+          handleAdd={this.handleAdd}
+          handleRemove={this.handleRemove}
+          handleUp={this.handleUp}
+          handleDown={this.handleDown}
+          handleCustom={this.props.handleCustom}
 
-          <Toolbar
-            handleAdd={this.addRow}
-            handleRemove={this.deleteRow}
-            handleCustom={this.props.handleCustom}
-          />
+        />
 
-          <ReactDataGrid {...gridProps} />
-
-        </div>
-        :
         <ReactDataGrid {...gridProps} />
 
+      </div>
     )
 
 

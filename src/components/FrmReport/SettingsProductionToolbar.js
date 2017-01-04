@@ -8,8 +8,6 @@ import RemoveIcon from 'material-ui/svg-icons/action/delete';
 import SelectOrder from './SelectOrder';
 
 
-import classes from './RepCashMoving.scss'
-
 export default class SettingsProductionToolbar extends Component{
 
   static propTypes = {
@@ -25,7 +23,7 @@ export default class SettingsProductionToolbar extends Component{
     const props = this.props;
     return (
 
-      <Toolbar className={classes.toolbar}>
+      <Toolbar>
         <ToolbarGroup firstChild={true}>
           <IconButton touch={true} tooltip="Добавить строку" tooltipPosition="bottom-right" onTouchTap={props.handleAdd}>
             <AddIcon />

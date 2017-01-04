@@ -14,8 +14,6 @@ import PrintIcon from 'material-ui/svg-icons/action/print';
 import AttachIcon from 'material-ui/svg-icons/editor/attach-file';
 
 
-import classes from './DataObj.scss'
-
 export default class DataObjToolbar extends Component{
 
   static propTypes = {
@@ -34,7 +32,7 @@ export default class DataObjToolbar extends Component{
     const props = this.props;
     return (
 
-      <Toolbar className={classes.toolbar}>
+      <Toolbar>
         <ToolbarGroup firstChild={true}>
           <IconButton touch={true} tooltip="Записать" tooltipPosition="bottom-right" onTouchTap={props.handleSave}>
             <SaveIcon />

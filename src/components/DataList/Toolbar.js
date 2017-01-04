@@ -13,8 +13,6 @@ import AttachIcon from "material-ui/svg-icons/editor/attach-file";
 import SelectIcon from "material-ui/svg-icons/av/playlist-add-check";
 import SchemeSettings from "../SchemeSettings";
 
-import classes from "./DataList.scss";
-
 export default class DataListToolbar extends Component {
 
   static propTypes = {
@@ -36,7 +34,7 @@ export default class DataListToolbar extends Component {
     const props = this.props;
     return (
 
-      <Toolbar className={classes.toolbar}>
+      <Toolbar>
         <ToolbarGroup firstChild={true}>
 
           {

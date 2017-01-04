@@ -34,7 +34,7 @@ export default class DataObjToolbar extends Component{
 
     return (
 
-      <Toolbar className={classes.toolbar}>
+      <Toolbar>
         <ToolbarGroup firstChild={true}>
           <FlatButton
             label="Сформировать"
