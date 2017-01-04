@@ -50,18 +50,23 @@ export default class TabularSection extends Component {
     _meta: PropTypes.object,
     _columns: PropTypes.array,
 
-    read_only: PropTypes.object,          // Элемент только для чтения
+    read_only: PropTypes.bool,            // Элемент только для чтения
     deny_add_del: PropTypes.bool,         // Запрет добавления и удаления строк (скрывает кнопки в панели, отключает обработчики)
+    deny_reorder: PropTypes.bool,         // Запрет изменения порядка строк
 
     Toolbar: PropTypes.func,              // Индивидуальная панель инструментов. Если не указана, рисуем типовую
 
     handleValueChange: PropTypes.func,    // Обработчик изменения значения в ячейке
     handleRowChange: PropTypes.func,      // При окончании редактирования строки
 
-    enableRowSelect: PropTypes.string,
-    handleRowSelect: PropTypes.func,
+    rowSelection: PropTypes.object,       // Настройка пометок строк
 
     selectedIds: PropTypes.array
+  }
+
+  static defaultProps = {
+    deny_add_del: false,
+    read_only: false
   }
 
   constructor(props, context) {
@@ -178,7 +183,7 @@ export default class TabularSection extends Component {
 
     const {$p} = this.context;
     const {_meta, _tabular, _columns, scheme, selectedIds, Toolbar} = this.state;
-    const {_obj, rowSelection} = this.props;
+    const {_obj, rowSelection, deny_add_del, deny_reorder} = this.props;
 
     if (!scheme) {
       return <DumbLoader title="Чтение настроек компоновки..."/>
@@ -225,6 +230,9 @@ export default class TabularSection extends Component {
           handleUp={this.handleUp}
           handleDown={this.handleDown}
           handleCustom={this.props.handleCustom}
+
+          deny_add_del={deny_add_del}
+          deny_reorder={deny_reorder}
 
         />
 

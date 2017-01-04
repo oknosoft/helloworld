@@ -41,19 +41,30 @@ export default class SchemeSettingsTabs extends Component {
 
         <Tab label="Параметры" value="p">
 
-          <Subheader>Параметры запроса</Subheader>
-
           <TabularSection
             _obj={scheme}
             _tabular="params"
-            minHeight={150}
+            minHeight={140}
+            deny_add_del={true}
           />
 
-          <Subheader>Отбор</Subheader>
           <TabularSection
             _obj={scheme}
             _tabular="selection"
-            minHeight={150}
+            minHeight={140}
+
+            rowSelection={{
+              showCheckbox: true,
+              enableShiftSelect: true,
+              selectBy: {
+                keys: {
+                  rowKey: "field",
+                  markKey: "use",
+                  values: scheme.used_fields()
+                }
+              }
+            }}
+
           />
 
         </Tab>
@@ -86,13 +97,13 @@ export default class SchemeSettingsTabs extends Component {
           <TabularSection
             _obj={scheme}
             _tabular="dimensions"
-            minHeight={150}
+            minHeight={140}
           />
 
           <TabularSection
             _obj={scheme}
             _tabular="resources"
-            minHeight={150}
+            minHeight={140}
           />
 
         </Tab>

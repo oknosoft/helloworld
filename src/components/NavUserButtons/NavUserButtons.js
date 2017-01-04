@@ -27,6 +27,10 @@ const refreshStyles = {
 
 export default class NavUserButtons extends Component{
 
+  static contextTypes = {
+    $p: React.PropTypes.object.isRequired
+  }
+
   static propTypes = {
 
     sync_started: PropTypes.bool,
@@ -43,10 +47,6 @@ export default class NavUserButtons extends Component{
 
   static defaultProps = {
     show_notifications: true
-  };
-
-  static contextTypes = {
-    $p: React.PropTypes.object.isRequired
   }
 
   handleLogin = (e) => {
