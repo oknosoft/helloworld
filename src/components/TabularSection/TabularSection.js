@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import ReactDataGrid from "react-data-grid";
 import DumbLoader from "../DumbLoader";
 import DefaultToolbar from "./TabularSectionToolbar"
+import DataCell from 'components/DataField/DataCell'
 
 
 // // Import the necessary modules.
@@ -147,13 +148,38 @@ export default class TabularSection extends Component {
 
     // подклеиваем редакторы и форматтеры
     _columns.forEach((column) => {
+
+      const _fld = fields[column.key]
+
       if(!column.formatter){
-        const _fld = fields[column.key]
 
         if (_fld.type.is_ref) {
-          column.formatter = (v) => <div>{v.value.presentation}</div>
+          column.formatter = (v) => {
+            const {presentation} = v.value
+            return <div title={presentation}>{presentation}</div>
+          }
         }
       }
+
+      switch (column.ctrl_type) {
+
+        case 'input':
+          column.editable = true;
+          break;
+
+        case 'ocombo':
+          column.editor = <DataCell />;
+          break;
+
+        case 'dhxCalendar':
+          column.editor = <DataCell />;
+          break;
+
+        default:
+          ;
+
+      }
+
     })
 
     this.setState({scheme, _columns})
