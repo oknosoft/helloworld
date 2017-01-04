@@ -46,6 +46,7 @@ export default class SchemeSettingsTabs extends Component {
             _tabular="params"
             minHeight={140}
             deny_add_del={true}
+            Toolbar={() => <div></div>}
           />
 
           <TabularSection

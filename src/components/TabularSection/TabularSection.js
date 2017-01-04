@@ -89,23 +89,7 @@ export default class TabularSection extends Component {
 
     if (!this.state._columns.length) {
 
-      for (let fld in this.state._meta.fields) {
-        let _fld = this.state._meta.fields[fld],
-          column = {
-            key: fld,
-            name: _fld.synonym,
-            resizable: true
-          }
 
-        if (_fld.type.is_ref) {
-          column.formatter = v => {
-            return <div>{v.value.presentation}</div>
-          }
-        }
-
-        this.state._columns.push(column)
-
-      }
 
       $p.cat.scheme_settings.get_scheme(class_name)
         .then(this.handleSchemeChange)
@@ -135,6 +119,7 @@ export default class TabularSection extends Component {
     const data = this.refs.grid.state.selected
     if(data && data.hasOwnProperty("rowIdx") && data.rowIdx > 0){
       this.state._tabular.swap(data.rowIdx, data.rowIdx - 1)
+      data.rowIdx = data.rowIdx - 1
       this.forceUpdate()
     }
   }
@@ -143,6 +128,7 @@ export default class TabularSection extends Component {
     const data = this.refs.grid.state.selected
     if(data && data.hasOwnProperty("rowIdx") && data.rowIdx < this.state._tabular.count() - 1){
       this.state._tabular.swap(data.rowIdx, data.rowIdx + 1)
+      data.rowIdx = data.rowIdx + 1
       this.forceUpdate()
     }
   }
@@ -155,10 +141,22 @@ export default class TabularSection extends Component {
 
   // обработчик при изменении настроек компоновки
   handleSchemeChange = (scheme) => {
-    this.setState({
-      scheme,
-      _columns: scheme.columns("ts")
+
+    const _columns = scheme.columns("ts")
+    const {fields} = this.state._meta
+
+    // подклеиваем редакторы и форматтеры
+    _columns.forEach((column) => {
+      if(!column.formatter){
+        const _fld = fields[column.key]
+
+        if (_fld.type.is_ref) {
+          column.formatter = (v) => <div>{v.value.presentation}</div>
+        }
+      }
     })
+
+    this.setState({scheme, _columns})
   }
 
   onRowsSelected = (rows) => {
