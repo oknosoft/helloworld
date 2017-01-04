@@ -133,10 +133,18 @@ export default class TabularSection extends Component {
 
   handleUp = () => {
     const data = this.refs.grid.state.selected
+    if(data && data.hasOwnProperty("rowIdx") && data.rowIdx > 0){
+      this.state._tabular.swap(data.rowIdx, data.rowIdx - 1)
+      this.forceUpdate()
+    }
   }
 
   handleDown = () => {
     const data = this.refs.grid.state.selected
+    if(data && data.hasOwnProperty("rowIdx") && data.rowIdx < this.state._tabular.count() - 1){
+      this.state._tabular.swap(data.rowIdx, data.rowIdx + 1)
+      this.forceUpdate()
+    }
   }
 
   handleRowUpdated(e) {
