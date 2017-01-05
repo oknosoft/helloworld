@@ -95,8 +95,6 @@ export default class TabularSection extends Component {
 
     if (!this.state._columns.length) {
 
-
-
       $p.cat.scheme_settings.get_scheme(class_name)
         .then(this.handleSchemeChange)
 
@@ -226,7 +224,7 @@ export default class TabularSection extends Component {
 
     const {$p} = this.context;
     const {_meta, _tabular, _columns, scheme, selectedIds, Toolbar} = this.state;
-    const {_obj, rowSelection, deny_add_del, deny_reorder} = this.props;
+    const {_obj, rowSelection, deny_add_del, deny_reorder, minHeight} = this.props;
 
     if (!scheme) {
       return <DumbLoader title="Чтение настроек компоновки..."/>
@@ -254,7 +252,7 @@ export default class TabularSection extends Component {
       rowGetter: this.rowGetter,
       rowsCount: _tabular.count(),
       onRowUpdated: this.handleRowUpdated,
-      minHeight: this.props.minHeight || 200
+      minHeight: minHeight || 200
     }
 
     if(rowSelection){

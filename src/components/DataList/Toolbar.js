@@ -63,7 +63,6 @@ export default class DataListToolbar extends Component {
           <SchemeSettings
             handleSchemeChange={props.handleSchemeChange}
             scheme={props.scheme}
-            show_prm={false}
           />
 
         </ToolbarGroup>
