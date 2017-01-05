@@ -9,7 +9,6 @@
 
 import React, {Component, PropTypes} from "react";
 import {Tabs, Tab} from "material-ui/Tabs";
-import Subheader from "material-ui/Subheader";
 import TabularSection from "../TabularSection";
 
 

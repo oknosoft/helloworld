@@ -32,10 +32,6 @@ export const muiTheme = getMuiTheme({
     titleFontSize: 18,
   },
 
-  zIndex: {
-    tooltip: 999000
-  },
-
   // spacing: {
   //   iconSize: 24,
   //

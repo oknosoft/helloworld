@@ -4,6 +4,11 @@ import DumbLoader from "../DumbLoader";
 import DefaultToolbar from "./TabularSectionToolbar"
 import DataCell from 'components/DataField/DataCell'
 
+import {Editors, Formatters} from "react-data-grid/addons";
+const AutoCompleteEditor = Editors.AutoComplete;
+const DropDownEditor = Editors.DropDownEditor;
+const DropDownFormatter = Formatters.DropDownFormatter;
+
 
 // // Import the necessary modules.
 // import { Menu } from "react-data-grid/addons";
@@ -55,7 +60,7 @@ export default class TabularSection extends Component {
     deny_add_del: PropTypes.bool,         // Запрет добавления и удаления строк (скрывает кнопки в панели, отключает обработчики)
     deny_reorder: PropTypes.bool,         // Запрет изменения порядка строк
 
-    Toolbar: PropTypes.func,              // Индивидуальная панель инструментов. Если не указана, рисуем типовую
+    Toolbar: PropTypes.func,              // Конструктор индивидуальной панели инструментов. Если не указан, рисуем типовую
 
     handleValueChange: PropTypes.func,    // Обработчик изменения значения в ячейке
     handleRowChange: PropTypes.func,      // При окончании редактирования строки
@@ -145,6 +150,7 @@ export default class TabularSection extends Component {
 
     const _columns = scheme.columns("ts")
     const {fields} = this.state._meta
+    const {_obj} = this.props
 
     // подклеиваем редакторы и форматтеры
     _columns.forEach((column) => {
@@ -171,13 +177,18 @@ export default class TabularSection extends Component {
           column.editor = <DataCell />;
           break;
 
+        case 'ofields':
+          const options = _obj.used_fields_list()
+          column.editor = <DropDownEditor options={options} />
+          column.formatter = <DropDownFormatter options={options} />
+          break;
+
         case 'dhxCalendar':
           column.editor = <DataCell />;
           break;
 
         default:
           ;
-
       }
 
     })

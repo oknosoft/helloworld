@@ -35,7 +35,7 @@ export default class DataObjToolbar extends Component{
     return (
 
       <Toolbar>
-        <ToolbarGroup firstChild={true}>
+        <ToolbarGroup className={"meta-toolbar-group"} firstChild={true}>
           <FlatButton
             label="Сформировать"
             labelPosition="after"
@@ -47,7 +47,7 @@ export default class DataObjToolbar extends Component{
 
         </ToolbarGroup>
 
-        <ToolbarGroup>
+        <ToolbarGroup className={"meta-toolbar-group"}>
 
           <ReportSettings _obj={props._obj} />
 

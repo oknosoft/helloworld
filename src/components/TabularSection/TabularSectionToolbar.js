@@ -57,7 +57,7 @@ export default class TabularSectionToolbar extends Component {
 
     return (
       <Toolbar>
-        <ToolbarGroup firstChild={true}>
+        <ToolbarGroup className={"meta-toolbar-group"} firstChild={true}>
           {first_group}
         </ToolbarGroup>
       </Toolbar>

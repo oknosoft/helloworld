@@ -33,7 +33,7 @@ export default class DataObjToolbar extends Component{
     return (
 
       <Toolbar>
-        <ToolbarGroup firstChild={true}>
+        <ToolbarGroup className={"meta-toolbar-group"} firstChild={true}>
           <IconButton touch={true} tooltip="Записать" tooltipPosition="bottom-right" onTouchTap={props.handleSave}>
             <SaveIcon />
           </IconButton>
@@ -46,7 +46,7 @@ export default class DataObjToolbar extends Component{
 
         </ToolbarGroup>
 
-        <ToolbarGroup>
+        <ToolbarGroup className={"meta-toolbar-group"}>
 
           <IconMenu
             iconButtonElement={
