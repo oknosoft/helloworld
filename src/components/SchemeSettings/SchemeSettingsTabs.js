@@ -15,8 +15,9 @@ import TabularSection from "../TabularSection";
 export default class SchemeSettingsTabs extends Component {
 
   static propTypes = {
+    scheme: PropTypes.object.isRequired,
     handleSchemeChange: PropTypes.func.isRequired,
-    scheme: PropTypes.object.isRequired
+    tabParams: PropTypes.object
   }
 
   state = {
@@ -29,7 +30,7 @@ export default class SchemeSettingsTabs extends Component {
 
   render() {
 
-    const {handleSchemeChange, scheme} = this.props
+    const {handleSchemeChange, scheme, tabParams} = this.props
 
     return (
 
@@ -40,11 +41,16 @@ export default class SchemeSettingsTabs extends Component {
 
         <Tab label="Параметры" value="p">
 
-          <TabularSection
-            _obj={scheme}
-            _tabular="params"
-            minHeight={140}
-          />
+          {
+            tabParams ?
+              tabParams
+              :
+              <TabularSection
+                _obj={scheme}
+                _tabular="params"
+                minHeight={140}
+              />
+          }
 
           <TabularSection
             _obj={scheme}
@@ -73,7 +79,7 @@ export default class SchemeSettingsTabs extends Component {
             _obj={scheme}
             _tabular="fields"
             deny_add_del={true}
-            minHeight={300}
+            minHeight={328}
 
             rowSelection={{
               showCheckbox: true,
@@ -111,7 +117,7 @@ export default class SchemeSettingsTabs extends Component {
           <TabularSection
             _obj={scheme}
             _tabular="sorting"
-            minHeight={300}
+            minHeight={328}
           />
 
         </Tab>
