@@ -29,28 +29,28 @@ export default class TabularSectionToolbar extends Component {
 
     if(!deny_add_del){
       first_group.push(
-        <IconButton touch={true} tooltip="Добавить строку" tooltipPosition="bottom-right" onTouchTap={handleAdd}>
-          <AddIcon />
+        <IconButton key="btn_add" touch={true} tooltip="Добавить строку" tooltipPosition="bottom-right" onTouchTap={handleAdd}>
+          <AddIcon key="icon_add" />
         </IconButton>)
       first_group.push(
-        <IconButton touch={true} tooltip="Удалить строку" tooltipPosition="bottom-right" onTouchTap={handleRemove}>
-          <RemoveIcon />
+        <IconButton key="btn_del" touch={true} tooltip="Удалить строку" tooltipPosition="bottom-right" onTouchTap={handleRemove}>
+          <RemoveIcon key="icon_del" />
         </IconButton>)
 
       if(!deny_reorder){
-        first_group.push(<ToolbarSeparator />)
+        first_group.push(<ToolbarSeparator key="sep1" />)
       }
     }
 
     if(!deny_reorder){
       first_group.push(
-        <IconButton touch={true} tooltip="Переместить вверх" tooltipPosition="bottom-right" onTouchTap={handleUp}>
-          <ArrowUpIcon />
+        <IconButton key="btn_up" touch={true} tooltip="Переместить вверх" tooltipPosition="bottom-right" onTouchTap={handleUp}>
+          <ArrowUpIcon key="icon_up" />
         </IconButton>
       )
       first_group.push(
-        <IconButton touch={true} tooltip="Переместить вниз" tooltipPosition="bottom-right" onTouchTap={handleDown}>
-          <ArrowDownIcon />
+        <IconButton key="btn_down" touch={true} tooltip="Переместить вниз" tooltipPosition="bottom-right" onTouchTap={handleDown}>
+          <ArrowDownIcon key="icon_down" />
         </IconButton>
       )
     }
