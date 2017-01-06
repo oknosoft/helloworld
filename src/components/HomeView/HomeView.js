@@ -15,8 +15,8 @@ export default class HomeView extends Component {
 
   render () {
 
-    const { props } = this
-    const { $p } = this.context
+    const { props, context } = this
+    const { $p } = context
 
     return <DataList
       { ...props }

@@ -10,6 +10,7 @@
 import React, {Component, PropTypes} from "react";
 import {Tabs, Tab} from "material-ui/Tabs";
 import TabularSection from "../TabularSection";
+import SchemeSettingsSelect from "./SchemeSettingsSelect"
 
 
 export default class SchemeSettingsTabs extends Component {
@@ -124,7 +125,12 @@ export default class SchemeSettingsTabs extends Component {
 
         <Tab label="Вариант" value="v">
 
-          <div>Вариант</div>
+          <div style={{height: 376}}>
+            <SchemeSettingsSelect
+              scheme={scheme}
+              handleSchemeChange={handleSchemeChange}
+            />
+          </div>
 
         </Tab>
 
