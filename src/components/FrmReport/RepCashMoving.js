@@ -1,19 +1,10 @@
-import React, { Component, PropTypes } from 'react';
-
-import {GridList, GridTile} from 'material-ui/GridList';
-
-
-import Toolbar from "./Toolbar";
-import DataField from 'components/DataField'
-
-import RepTabularSection from './RepTabularSection'
-
-import DumbLoader from '../DumbLoader'
-
-import classes from './RepCashMoving.scss'
+import React, {Component, PropTypes} from "react";
+import RepToolbar from "./RepToolbar";
+import RepTabularSection from "./RepTabularSection";
+import DumbLoader from "../DumbLoader";
 
 
-export default class RepMaterialsDemand extends Component {
+export default class Report extends Component {
 
   static propTypes = {
     _obj: PropTypes.object,
@@ -33,56 +24,96 @@ export default class RepMaterialsDemand extends Component {
 
   constructor(props, context) {
 
-    super(props);
+    super(props, context);
 
-    const { $p } = context
+    const {$p} = context
+    const {_obj} = props
+    const class_name = _obj._manager.class_name + ".data"
+
+    this.state = {
+      _meta: _obj._metadata("data"),
+    }
+
+    $p.cat.scheme_settings.get_scheme(class_name)
+      .then(this.handleSchemeChange)
 
   }
 
-  handleSave(){
-    this.props._obj.calculate()
+  handleSave = () => {
+    this.props._obj.calculate(this.state._columns)
       .then(() => {
         this.refs.data.setState({groupBy: []})
         //this.forceUpdate()
       })
   }
 
-  handlePrint(){
+  handlePrint = () => {
 
+  }
+
+  // обработчик при изменении настроек компоновки
+  handleSchemeChange = (scheme) => {
+
+    const {props, state} = this
+    const _columns = scheme.rx_columns({
+      mode: "ts",
+      fields: state._meta.fields,
+      _obj: props._obj
+    })
+
+    this.setState({
+      scheme,
+      _columns
+    })
   }
 
   render() {
 
-    const { _obj, height, width } = this.props
+    const {props, state, handleSave, handlePrint, handleSchemeChange} = this
+    const {_obj, height, width, handleClose} = props
+    const {_columns, scheme} = state
+
+    if (!scheme) {
+      return <DumbLoader title="Чтение настроек компоновки..."/>
+
+    }
+    else if (!_obj) {
+      return <DumbLoader title="Чтение объекта данных..."/>
+
+    }
+    else if (!_columns || !_columns.length) {
+      return <DumbLoader title="Ошибка настроек компоновки..."/>
+
+    }
 
     return (
 
-      _obj
-        ?
       <div>
 
-        <Toolbar
-          handleSave={::this.handleSave}
-          handlePrint={::this.handlePrint}
-          handleClose={this.props.handleClose}
+        <RepToolbar
+          handleSave={handleSave}
+          handlePrint={handlePrint}
+          handleClose={handleClose}
 
           _obj={_obj}
+
+          scheme={scheme}
+          handleSchemeChange={handleSchemeChange}
         />
 
-        <div className={classes.cont} style={{width: width - 16, height: height - 120}}>
+        <div className="meta-padding-8" style={{width: width - 20, height: height - 50}}>
 
           <RepTabularSection
             _obj={_obj}
             _tabular="data"
             ref="data"
-            minHeight={height - 160}
+            _columns={_columns}
+            minHeight={height - 60}
           />
 
         </div>
 
       </div>
-        :
-      <DumbLoader />
 
     );
   }

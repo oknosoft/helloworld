@@ -21,7 +21,6 @@ export default class HomeView extends Component {
     return <DataList
       { ...props }
       _mgr={$p.doc.cash_moving}
-      selection_mode={true}
     />
 
   }

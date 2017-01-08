@@ -1,3 +1,3 @@
-import RepMaterialsDemand from './RepCashMoving'
+import RepCashMoving from './RepCashMoving'
 
-export default RepMaterialsDemand
+export default RepCashMoving

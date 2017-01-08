@@ -1,3 +1,8 @@
+/**
+ * ### Кнопки в правом верхнем углу AppBar
+ * войти-выйти, имя пользователя, состояние репликации, индикатор оповещений
+ */
+
 import React, {Component, PropTypes} from "react";
 
 import FlatButton from 'material-ui/FlatButton';
@@ -13,8 +18,6 @@ import SyncIcon from 'material-ui/svg-icons/notification/sync';
 import SyncIconProblem from 'material-ui/svg-icons/notification/sync-problem';
 import SyncIconDisabled from 'material-ui/svg-icons/notification/sync-disabled';
 
-import classes from './NavUserButtons.scss'
-
 
 const refreshStyles = {
   refresh: {
@@ -26,10 +29,6 @@ const refreshStyles = {
 };
 
 export default class NavUserButtons extends Component{
-
-  static contextTypes = {
-    $p: React.PropTypes.object.isRequired
-  }
 
   static propTypes = {
 
@@ -47,10 +46,15 @@ export default class NavUserButtons extends Component{
 
   static defaultProps = {
     show_notifications: true
+  };
+
+  static contextTypes = {
+    $p: React.PropTypes.object.isRequired
   }
 
   handleLogin = (e) => {
-    this.context.$p.UI.history.push('/login')
+    const {$p} = this.context
+    $p.UI.history.push('/login')
   }
 
   render () {
@@ -70,7 +74,7 @@ export default class NavUserButtons extends Component{
             style={refreshStyles.refresh}
           />
           :
-          <IconButton tooltip={this.props.sync_tooltip} className={classes.barButton} touch={true}>
+          <IconButton tooltip={this.props.sync_tooltip} className="meta-appbar-button" touch={true}>
             {this.props.sync_started ?
               <SyncIcon color={white}/>
               :
@@ -83,7 +87,7 @@ export default class NavUserButtons extends Component{
           this.props.show_notifications
 
             ?
-            <IconButton tooltip={this.props.notifications_tooltip} className={classes.barButton} touch={true}>
+            <IconButton tooltip={this.props.notifications_tooltip} className="meta-appbar-button" touch={true}>
               <NotificationsIconNone color={white} />
             </IconButton>
             :
@@ -93,7 +97,7 @@ export default class NavUserButtons extends Component{
         <FlatButton
           label={this.props.button_label}
           onTouchTap={this.handleLogin}
-          className={classes.barButton}
+          className="meta-appbar-button"
         />
 
       </div>
