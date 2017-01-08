@@ -6,8 +6,6 @@
  * Created 07.11.2016
  */
 
-import React from 'react';
-
 export default function ($p) {
 
 	const {characteristics, nom, nom_kinds, clrs} = $p.cat
