@@ -10,6 +10,8 @@ import PrintIcon from "material-ui/svg-icons/action/print";
 import ShareIcon from "material-ui/svg-icons/social/share";
 import SchemeSettings from "../SchemeSettings";
 
+import RepParams from "./RepParams";
+
 
 export default class RepToolbar extends Component {
 
@@ -49,6 +51,13 @@ export default class RepToolbar extends Component {
           <SchemeSettings
             handleSchemeChange={handleSchemeChange}
             scheme={scheme}
+
+            tabParams={<RepParams
+              _obj={_obj}
+              minHeight={140}
+              handleCustom={handleCustom}
+            />}
+
           />
 
           <IconMenu

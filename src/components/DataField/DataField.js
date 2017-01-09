@@ -6,10 +6,6 @@ import FieldText from './FieldText'
 
 export default class DataField extends Component {
 
-  static contextTypes = {
-    $p: React.PropTypes.object.isRequired
-  }
-
   static propTypes = {
     _obj: PropTypes.object.isRequired,  // DataObj, к реквизиту которого будет привязано поле
     _fld: PropTypes.string.isRequired,  // имя поля объекта - путь к данным
@@ -20,6 +16,10 @@ export default class DataField extends Component {
     mandatory: PropTypes.bool,          // поле обязательно для заполнения
     multi: PropTypes.bool,              // множественный выбор - значение является массивом
     handleValueChange: PropTypes.func   // обработчик при изменении значения в поле
+  }
+
+  static contextTypes = {
+    $p: React.PropTypes.object.isRequired
   }
 
   constructor(props, context) {
