@@ -1,13 +1,10 @@
 import React, {Component, PropTypes} from "react";
 import ReactDataGrid from "react-data-grid";
-import DumbLoader from "../DumbLoader";
-import DefaultToolbar from "./TabularSectionToolbar"
-import DataCell from 'components/DataField/DataCell'
 
-import {Editors, Formatters} from "react-data-grid/addons";
-const AutoCompleteEditor = Editors.AutoComplete;
-const DropDownEditor = Editors.DropDownEditor;
-const DropDownFormatter = Formatters.DropDownFormatter;
+import DumbLoader from "../DumbLoader";
+import DataCell from '../DataField/DataCell'
+import DefaultToolbar from "./TabularSectionToolbar"
+
 
 
 // // Import the necessary modules.
@@ -45,10 +42,6 @@ const DropDownFormatter = Formatters.DropDownFormatter;
 
 export default class TabularSection extends Component {
 
-  static contextTypes = {
-    $p: React.PropTypes.object.isRequired
-  }
-
   static propTypes = {
 
     _obj: PropTypes.object.isRequired,
@@ -59,15 +52,21 @@ export default class TabularSection extends Component {
     read_only: PropTypes.bool,            // Элемент только для чтения
     deny_add_del: PropTypes.bool,         // Запрет добавления и удаления строк (скрывает кнопки в панели, отключает обработчики)
     deny_reorder: PropTypes.bool,         // Запрет изменения порядка строк
+    minHeight: PropTypes.number,
 
     Toolbar: PropTypes.func,              // Конструктор индивидуальной панели инструментов. Если не указан, рисуем типовую
 
     handleValueChange: PropTypes.func,    // Обработчик изменения значения в ячейке
     handleRowChange: PropTypes.func,      // При окончании редактирования строки
+    handleCustom: PropTypes.func,         // Внешний дополнительный подключаемый обработчик
 
     rowSelection: PropTypes.object,       // Настройка пометок строк
 
     selectedIds: PropTypes.array
+  }
+
+  static contextTypes = {
+    $p: React.PropTypes.object.isRequired
   }
 
   static defaultProps = {
@@ -146,51 +145,12 @@ export default class TabularSection extends Component {
   // обработчик при изменении настроек компоновки
   handleSchemeChange = (scheme) => {
 
-    const _columns = scheme.columns("ts")
-    const {fields} = this.state._meta
-    const {_obj} = this.props
-
-    // подклеиваем редакторы и форматтеры
-    _columns.forEach((column) => {
-
-      const _fld = fields[column.key]
-
-      if(!column.formatter){
-
-        if (_fld.type.is_ref) {
-          column.formatter = (v) => {
-            const {presentation} = v.value
-            return <div title={presentation}>{presentation}</div>
-          }
-        }
-      }
-
-      switch (column.ctrl_type) {
-
-        case 'input':
-          column.editable = true;
-          break;
-
-        case 'ocombo':
-          column.editor = <DataCell />;
-          break;
-
-        case 'ofields':
-          const options = _obj.used_fields_list()
-          column.editor = <DropDownEditor options={options} />
-          column.formatter = <DropDownFormatter options={options} />
-          break;
-
-        case 'dhxCalendar':
-          column.editor = <DataCell />;
-          break;
-
-        default:
-          ;
-      }
-
+    const {props, state} = this
+    const _columns = scheme.rx_columns({
+      mode: "ts",
+      fields: state._meta.fields,
+      _obj: props._obj
     })
-
     this.setState({scheme, _columns})
   }
 
