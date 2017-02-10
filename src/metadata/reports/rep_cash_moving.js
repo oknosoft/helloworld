@@ -8,8 +8,6 @@
 
 export default function ($p) {
 
-	const {characteristics, nom, nom_kinds, clrs} = $p.cat
-
 	// свойства объекта отчета _Потребность по материалам_
 	Object.defineProperties($p.RepCash_moving.prototype, {
 
@@ -24,7 +22,7 @@ export default function ($p) {
 
 				const {moment} = $p.utils;
 				const {pouch} = $p.adapters;
-				const {period_from, period_till} = this;
+				const {period_from, period_till, data, resources} = this;
 				const date_sub = moment(period_from).subtract(1, 'day').toDate();
 				const query_options = {
 						reduce: true,
@@ -34,28 +32,33 @@ export default function ($p) {
 						startkey: [],
 						endkey: [date_sub.getFullYear(), date_sub.getMonth()+1, date_sub.getDate(),"\uffff"]
 					};
-				const res = {
-						data: []
-					};
 				const start_total = {};
-				const cashboxes = [];
 
+				// массив гвидов касс
+				const cashboxes = [];
 				this.cashboxes.forEach((row) => {
 					cashboxes.push(row.cashbox.ref);
 				});
 
-				function filter(row) {
+				// массив гвидов статей ддс
+				const cash_flow_articles = [];
+				this.cash_flow_articles.forEach((row) => {
+					cash_flow_articles.push(row.cash_flow_article.ref);
+				});
+
+				// фильтр для отбрасывания лишних строк
+				function discard(row) {
 					return cashboxes.length && cashboxes.indexOf(row.key[3]) == -1;
 				}
 
 				return pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
 
-					.then((data) => {
+					.then((res) => {
 
-						if(data.rows){
-							data.rows.forEach((row) => {
+						if(res.rows){
+							res.rows.forEach((row) => {
 
-								if(filter(row)){
+								if(discard(row)){
 									return;
 								}
 
@@ -74,13 +77,13 @@ export default function ($p) {
 
 						return pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
 					})
-					.then((data) => {
+					.then((res) => {
 
-						if(data.rows){
+						if(res.rows){
 
-							data.rows.forEach((row) => {
+							res.rows.forEach((row) => {
 
-								if(filter(row)){
+								if(discard(row)){
 									return;
 								}
 
@@ -95,17 +98,15 @@ export default function ($p) {
 							});
 
 							for(var key in start_total){
-								var row = start_total[key];
-								res.data.push([
-									$p.cat.cashboxes.get(key),
-									row[0],
-									row[1],
-									row[2],
-									row[3]
-								]);
+								const row = start_total[key];
+								data.add({
+									cashbox: key,
+									initial_balance: row[0],
+									debit: row[1],
+									credit: row[2],
+									final_balance: row[3]
+								});
 							}
-
-
 						}
 
 						return res;
@@ -122,26 +123,16 @@ export default function ($p) {
 
 				// чистим таблицу результата
 				data.clear();
-				if(!data._rows){
+				if (!data._rows) {
 					data._rows = []
-				}else{
+				} else {
 					data._rows.length = 0;
 				}
 
 				return this.prepare()
-
-					.then((ares) => {
-
-						let resrow = data.add()
-
-						return Promise.all([])
-
-					})
-
 					.then(() => {
 
 						// сворачиваем результат и сохраняем его в data._rows
-
 						const dims = [], ress = [];
 						_columns.forEach(fld => {
 							const {key} = fld
@@ -153,16 +144,8 @@ export default function ($p) {
 						})
 						data.group_by(dims, ress);
 						data.forEach((row) => {
-
-							// округление
-							row.initial_balance = 1;
-							row.debit = 2;
-							row.credit = 3;
-							row.final_balance = 4;
-
 							data._rows.push(row);
 						})
-
 					})
 			}
 		},

@@ -30,14 +30,14 @@ export default class DataListField extends MetaComponent {
 
     super(props, context)
 
-    const {_fld} = props
-    const _meta = props._meta || props._tabular._metadata(_fld)
+    const {_fld, _tabular} = props
+    const _meta = props._meta || _tabular._metadata(_fld)
 
     this.state = {
       _meta,
       _mgr: context.$p.utils.value_mgr({}, _fld, _meta.fields[_fld].type, false),
       options: [],
-      value: [],
+      value: _tabular.unload_column(_fld),
       multi: true
     }
   }
@@ -68,19 +68,22 @@ export default class DataListField extends MetaComponent {
   }
 
   _onChange = (value) => {
-    const {handleValueChange} = this.props
-    this.setState({value})
+    const {handleValueChange, _fld, _tabular} = this.props;
+    this.setState({value});
 
-    // if(handleValueChange){
-    //   handleValueChange(value)
-    // }
+    // удаляем-добавляем строки в _tabular
+    _tabular.load(value.map((row) => ({[_fld]: row})));
+
+    if(handleValueChange){
+       handleValueChange(value)
+    }
   }
 
   render() {
 
-    const {props, state, _loadOptions, _onChange} = this
-    const {_obj, _fld, label_position} = props
-    const {options, value, _meta} = state
+    const {props, state, _loadOptions, _onChange} = this;
+    const {_obj, _fld, label_position} = props;
+    const {options, value, _meta} = state;
 
     const control = <Async
       name={_fld}
