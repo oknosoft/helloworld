@@ -1,6 +1,6 @@
 module.exports = {
   //"couchdb": "https://zd.oknosoft.ru/couchdb/wb_",
-  "couchdb": "http://cou206:5984/hw_",
+  "couchdb": "http://cou200:5984/hw_",
   "rest_1c": "",
   "zone": 0,
   "zone_demo": 1,

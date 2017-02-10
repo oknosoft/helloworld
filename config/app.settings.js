@@ -24,11 +24,10 @@ export default function settings(prm) {
     rest_path: "",
 
     // расположение couchdb
-    //couch_path: "/couchdb/hw_",
-    couch_path: "http://cou200:5984/hw_",
+    couch_path: "/couchdb/hw_",
+    //couch_path: "http://cou200:5984/hw_",
 
     pouch_filter: {
-      doc: "auth/by_partner",
       meta: "auth/meta"
     },
 
