@@ -77,9 +77,8 @@ export default class DataList extends MetaComponent {
 
     super(props, context);
 
-    const {class_name} = props._mgr
-    const {$p} = context
-
+    const {class_name} = props._mgr;
+    const {$p} = context;
     const state = this.state = {
       totalRowCount: totalRows,
       selectedRowIndex: 0,
@@ -99,10 +98,10 @@ export default class DataList extends MetaComponent {
       }
     }
 
-    this._list = new DataListStorage()
+    this._list = new DataListStorage();
 
     $p.cat.scheme_settings.get_scheme(class_name)
-      .then(this.handleSchemeChange)
+      .then(this.handleSchemeChange);
   }
 
   componentDidUpdate(prevProps, prevState) {
