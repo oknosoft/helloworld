@@ -1,19 +1,26 @@
-import React, {Component, PropTypes} from "react";
+
+import React, {PropTypes} from "react";
+import MetaComponent from "../common/MetaComponent";
+
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from "material-ui/Toolbar";
 import IconButton from "material-ui/IconButton";
+import FlatButton from "material-ui/FlatButton";
 import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
 
 import RunIcon from "material-ui/svg-icons/av/play-arrow";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import PrintIcon from "material-ui/svg-icons/action/print";
-import ShareIcon from "material-ui/svg-icons/social/share";
+import CopyIcon from "material-ui/svg-icons/content/content-copy";
+import CloudDownloadIcon from "material-ui/svg-icons/file/cloud-download";
+import FileDownloadIcon from "material-ui/svg-icons/file/file-download";
+
 import SchemeSettings from "../SchemeSettings";
 
 import RepParams from "./RepParams";
 
 
-export default class RepToolbar extends Component {
+export default class RepToolbar extends MetaComponent {
 
   static propTypes = {
 
@@ -25,25 +32,42 @@ export default class RepToolbar extends Component {
     scheme: PropTypes.object.isRequired,              // значение настроек компоновки
 
     _obj: PropTypes.object,
+    _tabular: PropTypes.string.isRequired,
+    _columns: PropTypes.array.isRequired,   // колонки
 
   }
 
   handleCustom = (row, _mgr) => {
+    this.props._obj.fill_by_order(row, _mgr)
+      .then((objs) => {
+        this.refs.production.forceUpdate()
+      })
+  }
+
+  constructor (props, context) {
+
+    super(props, context);
+
+    context.$p.UI.export_handlers.call(this);
 
   }
 
   render() {
 
-    const {handleCustom, props} = this;
-    const {handleSave, handleClose, handleSchemeChange, handlePrint, handleExport, scheme, _obj} = props;
+    const {handleCustom, handleExportXLS, handleExportJSON, handleExportCSV, props} = this;
+    const {handleSave, handleClose, handleSchemeChange, handlePrint, scheme, _obj, _tabular} = props;
 
     return (
 
       <Toolbar>
         <ToolbarGroup className={"meta-toolbar-group"} firstChild={true}>
-          <IconButton touch={true} tooltip="Сформировать отчет" tooltipPosition="bottom-right" onTouchTap={handleSave}>
-            <RunIcon />
-          </IconButton>
+
+          <FlatButton
+            label="Сформировать"
+            onTouchTap={handleSave}
+            icon={<RunIcon />}
+          />
+
         </ToolbarGroup>
 
         <ToolbarGroup className={"meta-toolbar-group"}>
@@ -51,13 +75,12 @@ export default class RepToolbar extends Component {
           <SchemeSettings
             handleSchemeChange={handleSchemeChange}
             scheme={scheme}
-
             tabParams={<RepParams
               _obj={_obj}
-              minHeight={140}
+              scheme={scheme}
               handleCustom={handleCustom}
             />}
-
+            show_variants={true}
           />
 
           <IconMenu
@@ -67,8 +90,10 @@ export default class RepToolbar extends Component {
               </IconButton>
             }
           >
-            <MenuItem primaryText="Печать" leftIcon={<PrintIcon />} onTouchTap={handlePrint}/>
-            <MenuItem primaryText="Экспорт" leftIcon={<ShareIcon />} onTouchTap={handleExport}/>
+            <MenuItem primaryText="Печать" leftIcon={<PrintIcon />} disabled onTouchTap={handlePrint}/>
+            <MenuItem primaryText="Копировать CSV" leftIcon={<CopyIcon />} onTouchTap={handleExportCSV}/>
+            <MenuItem primaryText="Копировать JSON" leftIcon={<CloudDownloadIcon />} onTouchTap={handleExportJSON}/>
+            <MenuItem primaryText="Экспорт в XLS" leftIcon={<FileDownloadIcon />} onTouchTap={handleExportXLS}/>
 
           </IconMenu>
 

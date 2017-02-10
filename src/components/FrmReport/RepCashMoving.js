@@ -1,25 +1,19 @@
-import React, {Component, PropTypes} from "react";
+import React, {PropTypes} from "react";
+import MetaComponent from "../common/MetaComponent";
+
 import RepToolbar from "./RepToolbar";
 import RepTabularSection from "./RepTabularSection";
 import DumbLoader from "../DumbLoader";
 
 
-export default class Report extends Component {
+export default class Report extends MetaComponent {
 
   static propTypes = {
     _obj: PropTypes.object,
     _acl: PropTypes.string.isRequired,
 
-    handleSave: PropTypes.func.isRequired,
-    handleRevert: PropTypes.func.isRequired,
-    handleMarkDeleted: PropTypes.func.isRequired,
     handlePrint: PropTypes.func.isRequired,
-    handleAddRow: PropTypes.func.isRequired,
-    handleDelRow: PropTypes.func.isRequired
-  }
 
-  static contextTypes = {
-    $p: React.PropTypes.object.isRequired
   }
 
   constructor(props, context) {
@@ -28,21 +22,25 @@ export default class Report extends Component {
 
     const {$p} = context
     const {_obj} = props
-    const class_name = _obj._manager.class_name + ".data"
+    const _tabular = "data"
 
     this.state = {
-      _meta: _obj._metadata("data"),
+      _tabular,
+      _meta: _obj._metadata(_tabular),
     }
 
-    $p.cat.scheme_settings.get_scheme(class_name)
+    $p.cat.scheme_settings.get_scheme(_obj._manager.class_name + `.${_tabular}`)
       .then(this.handleSchemeChange)
 
   }
 
   handleSave = () => {
+
+    const {scheme} = this.state;
+
     this.props._obj.calculate(this.state._columns)
       .then(() => {
-        this.refs.data.setState({groupBy: []})
+        this.refs.data.setState({groupBy: scheme.dims()})
         //this.forceUpdate()
       })
   }
@@ -54,12 +52,16 @@ export default class Report extends Component {
   // обработчик при изменении настроек компоновки
   handleSchemeChange = (scheme) => {
 
-    const {props, state} = this
+    const {props, state} = this;
+    const {_obj} = props;
     const _columns = scheme.rx_columns({
       mode: "ts",
       fields: state._meta.fields,
       _obj: props._obj
-    })
+    });
+
+    _obj.period_from = scheme.date_from;
+    _obj.period_till = scheme.date_till;
 
     this.setState({
       scheme,
@@ -71,7 +73,7 @@ export default class Report extends Component {
 
     const {props, state, handleSave, handlePrint, handleSchemeChange} = this
     const {_obj, height, width, handleClose} = props
-    const {_columns, scheme} = state
+    const {_columns, scheme, _tabular} = state
 
     if (!scheme) {
       return <DumbLoader title="Чтение настроек компоновки..."/>
@@ -96,6 +98,8 @@ export default class Report extends Component {
           handleClose={handleClose}
 
           _obj={_obj}
+          _tabular={_tabular}
+          _columns={_columns}
 
           scheme={scheme}
           handleSchemeChange={handleSchemeChange}
@@ -104,9 +108,9 @@ export default class Report extends Component {
         <div className="meta-padding-8" style={{width: width - 20, height: height - 50}}>
 
           <RepTabularSection
-            _obj={_obj}
-            _tabular="data"
             ref="data"
+            _obj={_obj}
+            _tabular={_tabular}
             _columns={_columns}
             minHeight={height - 60}
           />

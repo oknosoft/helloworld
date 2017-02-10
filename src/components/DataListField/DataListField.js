@@ -8,11 +8,12 @@
  */
 
 import React, { Component, PropTypes } from 'react';
+import MetaComponent from "../common/MetaComponent";
 import {Async} from "react-select";
 //import Select from "../DataField/FieldVirtualizedSelect";
 
 
-export default class DataListField extends Component {
+export default class DataListField extends MetaComponent {
 
   static propTypes = {
     _tabular: PropTypes.object.isRequired,  // TabularSection, к которой будет привязано поле
@@ -23,10 +24,6 @@ export default class DataListField extends Component {
     read_only: PropTypes.bool,              // поле только для чтения
 
     handleValueChange: PropTypes.func   // обработчик при изменении значения в поле
-  }
-
-  static contextTypes = {
-    $p: React.PropTypes.object.isRequired
   }
 
   constructor(props, context) {

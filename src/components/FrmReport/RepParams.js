@@ -9,9 +9,11 @@
  */
 
 import React, {Component, PropTypes} from "react";
+import MetaComponent from "../common/MetaComponent";
 import DataListField from "../DataListField";
+import DataField from "../DataField";
 
-export default class RepParams extends Component {
+export default class RepParams extends MetaComponent {
 
   static propTypes = {
     _obj: PropTypes.object.isRequired,  // DataObj (отчет)
@@ -19,27 +21,43 @@ export default class RepParams extends Component {
     handleCustom: PropTypes.func,       // Внешний дополнительный подключаемый обработчик
   }
 
-  static contextTypes = {
-    $p: React.PropTypes.object.isRequired
+  handleValueChange = () => {
+    const {_obj, scheme} = this.props;
+    scheme.date_from = _obj.period_from;
+    scheme.date_till = _obj.period_till;
   }
-
 
   render() {
 
     const {_obj, minHeight} = this.props
 
     return (
-      <div style={{height: minHeight}}>
+      <div style={{height: '356px', marginTop: '16px'}}>
+
+        <DataField
+          _obj={_obj}
+          _fld="period_from"
+          handleValueChange={this.handleValueChange}
+        />
+
+        <DataField
+          _obj={_obj}
+          _fld="period_till"
+          handleValueChange={this.handleValueChange}
+        />
+
         <DataListField
           _tabular={_obj.cashboxes}
           _fld="cashbox"
           _meta={_obj._metadata('cashboxes')}
         />
+
         <DataListField
           _tabular={_obj.cash_flow_articles}
           _fld="cash_flow_article"
           _meta={_obj._metadata('cash_flow_articles')}
         />
+
       </div>
     )
 

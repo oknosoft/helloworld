@@ -1,14 +1,14 @@
 /**
- * Плагин-модификатор react-ui для metadata.js
+ * ### модификатор метод columns() справочника scheme_settings - добавляет форматтеры и редакторы
  *
- * @module plugin
+ * @module rx_columns
  *
- * Created 07.01.2017
+ * Created 10.01.2017
  */
 
 import React, {Component, PropTypes} from "react";
-import DataCell from "../components/DataField/DataCell";
-import {Editors, Formatters} from "react-data-grid/addons";
+import {DataCell} from "metadata-react-ui/DataField";
+import { Editors, Formatters } from 'react-data-grid-addons';
 
 const AutoCompleteEditor = Editors.AutoComplete;
 const DropDownEditor = Editors.DropDownEditor;
@@ -62,23 +62,4 @@ function rx_columns({mode, fields, _obj}) {
   }
 
   return res;
-}
-
-/**
- * Экспортируем объект-плагин для модификации metadata.js
- */
-export default {
-
-  /**
-   * ### Модификатор конструктора MetaEngine
-   * Вызывается в контексте экземпляра MetaEngine
-   */
-  constructor(){
-
-    // модифицируем метод columns() справочника scheme_settings - добавляем форматтеры и редакторы
-    Object.defineProperty(this.CatScheme_settings.prototype, 'rx_columns', {
-      value: rx_columns
-    })
-
-  }
 }

@@ -25,7 +25,7 @@ export default function settings(prm) {
 
     // расположение couchdb
     //couch_path: "/couchdb/hw_",
-    couch_path: "http://localhost:5984/hw_",
+    couch_path: "http://cou200:5984/hw_",
 
     pouch_filter: {
       doc: "auth/by_partner",

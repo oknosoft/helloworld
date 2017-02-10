@@ -1,10 +1,12 @@
-import React, {Component, PropTypes} from "react";
+import React, {PropTypes} from "react";
+import MetaComponent from "../common/MetaComponent";
+
 import ReactDataGrid from "react-data-grid";
 
-//import {Menu, Data, Editors, ToolsPanel} from "react-data-grid/addons";
+//import {Menu, Data, Editors, ToolsPanel} from "react-data-grid-addons";
 
-import {Data} from "react-data-grid/addons";
-const Selectors = Data.Selectors;
+import {Data} from "react-data-grid-addons";
+const {Selectors} = Data;
 
 // const { AdvancedToolbar, GroupedColumnsPanel }   = ToolsPanel;
 // const DraggableContainer  = ReactDataGridPlugins.Draggable.Container;
@@ -54,7 +56,7 @@ const Selectors = Data.Selectors;
 //   }
 // }
 
-export default class RepTabularSection extends Component {
+export default class RepTabularSection extends MetaComponent {
 
   static propTypes = {
 
@@ -65,10 +67,6 @@ export default class RepTabularSection extends Component {
     _columns: PropTypes.array.isRequired,   // колонки
 
     handleRowChange: PropTypes.func,
-  }
-
-  static contextTypes = {
-    $p: React.PropTypes.object.isRequired
   }
 
   constructor (props, context) {
@@ -102,19 +100,6 @@ export default class RepTabularSection extends Component {
 
   getSize = () => {
     return this.getRows().length;
-  }
-
-  onColumnGroupAdded(colName) {
-    var columnGroups = this.state.groupBy.slice(0);
-    if(columnGroups.indexOf(colName) === -1) {
-      columnGroups.push(colName);
-    }
-    this.setState({groupBy: columnGroups});
-  }
-
-  onColumnGroupDeleted (name) {
-    var columnGroups = this.state.groupBy.filter(function(g){return g !== name});
-    this.setState({groupBy: columnGroups});
   }
 
   onRowExpandToggle = (args) => {

@@ -17,6 +17,104 @@ export default function ($p) {
 			value: ['debit','credit','initial_balance','final_balance']
 		},
 
+		// пересчитывает данные в табличной части
+		prepare: {
+
+			value: function() {
+
+				const {moment} = $p.utils;
+				const {pouch} = $p.adapters;
+				const {period_from, period_till} = this;
+				const date_sub = moment(period_from).subtract(1, 'day').toDate();
+				const query_options = {
+						reduce: true,
+						limit: 10000,
+						group: true,
+						group_level: 4,
+						startkey: [],
+						endkey: [date_sub.getFullYear(), date_sub.getMonth()+1, date_sub.getDate(),"\uffff"]
+					};
+				const res = {
+						data: []
+					};
+				const start_total = {};
+				const cashboxes = [];
+
+				this.cashboxes.forEach((row) => {
+					cashboxes.push(row.cashbox.ref);
+				});
+
+				function filter(row) {
+					return cashboxes.length && cashboxes.indexOf(row.key[3]) == -1;
+				}
+
+				return pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
+
+					.then((data) => {
+
+						if(data.rows){
+							data.rows.forEach((row) => {
+
+								if(filter(row)){
+									return;
+								}
+
+								if(!start_total.hasOwnProperty(row.key[3])){
+									start_total[row.key[3]] = [0,0,0,0];
+								}
+
+								start_total[row.key[3]][0] += row.value.total;
+								start_total[row.key[3]][3] = start_total[row.key[3]][0];
+
+							});
+						}
+
+						query_options.startkey = [period_from.getFullYear(), period_from.getMonth()+1, period_from.getDate(), ""];
+						query_options.endkey = [period_till.getFullYear(), period_till.getMonth()+1, period_till.getDate(),"\uffff"]
+
+						return pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
+					})
+					.then((data) => {
+
+						if(data.rows){
+
+							data.rows.forEach((row) => {
+
+								if(filter(row)){
+									return;
+								}
+
+								if(!start_total.hasOwnProperty(row.key[3]))
+									start_total[row.key[3]] = [0,row.value.debit,row.value.credit,row.value.total];
+								else{
+									start_total[row.key[3]][1] += row.value.debit;
+									start_total[row.key[3]][2] += row.value.credit;
+									start_total[row.key[3]][3] += row.value.debit - row.value.credit;
+								}
+
+							});
+
+							for(var key in start_total){
+								var row = start_total[key];
+								res.data.push([
+									$p.cat.cashboxes.get(key),
+									row[0],
+									row[1],
+									row[2],
+									row[3]
+								]);
+							}
+
+
+						}
+
+						return res;
+					});
+			}
+
+		},
+
+		// сворачивает табличную часть с учетом выбранных колонок
 		calculate: {
 			value: function (_columns) {
 
@@ -30,10 +128,9 @@ export default function ($p) {
 					data._rows.length = 0;
 				}
 
-				return Promise.all([])
+				return this.prepare()
 
-				// получаем массив объектов заказов и вложенных характеристик
-					.then(function (ares) {
+					.then((ares) => {
 
 						let resrow = data.add()
 
@@ -41,7 +138,7 @@ export default function ($p) {
 
 					})
 
-					.then(function () {
+					.then(() => {
 
 						// сворачиваем результат и сохраняем его в data._rows
 
@@ -55,7 +152,7 @@ export default function ($p) {
 							}
 						})
 						data.group_by(dims, ress);
-						data.forEach(function (row) {
+						data.forEach((row) => {
 
 							// округление
 							row.initial_balance = 1;
