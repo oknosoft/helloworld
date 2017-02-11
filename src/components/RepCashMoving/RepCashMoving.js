@@ -1,9 +1,10 @@
 import React, {PropTypes} from "react";
 import MetaComponent from "../common/MetaComponent";
 
-import RepToolbar from "./RepToolbar";
-import RepTabularSection from "./RepTabularSection";
-import DumbLoader from "../DumbLoader";
+import RepToolbar from "metadata-ui/FrmReport/RepToolbar";
+import RepTabularSection from "metadata-ui/FrmReport/RepTabularSection";
+import DumbLoader from "metadata-ui/DumbLoader";
+import RepParams from "./RepParams";
 
 
 export default class Report extends MetaComponent {
@@ -101,8 +102,11 @@ export default class Report extends MetaComponent {
           _tabular={_tabular}
           _columns={_columns}
 
+          TabParams={RepParams}
+
           scheme={scheme}
           handleSchemeChange={handleSchemeChange}
+
         />
 
         <div className="meta-padding-8" style={{width: width - 20, height: height - 50}}>

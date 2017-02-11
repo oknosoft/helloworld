@@ -9,9 +9,9 @@
  */
 
 import React, {Component, PropTypes} from "react";
-import MetaComponent from "../common/MetaComponent";
-import DataListField from "../DataListField";
-import DataField from "../DataField";
+import MetaComponent from "metadata-ui/common/MetaComponent";
+import DataListField from "metadata-ui/DataListField";
+import DataField from "metadata-ui/DataField";
 
 export default class RepParams extends MetaComponent {
 

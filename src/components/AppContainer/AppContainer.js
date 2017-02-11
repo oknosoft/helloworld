@@ -8,15 +8,15 @@ import React, {Component, PropTypes} from "react";
 import {Router} from "react-router";
 import {Provider} from "react-redux";
 
-import "metadata-react-ui/combined.css";
-import "metadata-react-ui/react-data-grid.css";
-import "metadata-react-ui/metadata-react-ui.css";
+import "metadata-react-ui/src/combined.css";
+import "metadata-react-ui/src/react-data-grid.css";
+import "metadata-react-ui/src/metadata-react-ui.css";
 import "react-virtualized/styles.css";
 import "styles/core.scss";
 //import 'react-flex-layout/react-flex-layout-splitter.css'
 
 // заставка "загрузка занных"
-import DumbScreen from "components/DumbLoader/DumbScreen";
+import DumbScreen from "metadata-ui/DumbLoader/DumbScreen";
 
 // стили MuiTheme для material-ui
 import MuiThemeProvider, {styles, muiTheme} from "./AppMuiTheme";

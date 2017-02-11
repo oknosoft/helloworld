@@ -4,7 +4,7 @@
  component - in this case, the counter:   */
 import {connect} from "react-redux";
 import {actions, mapStateToProps} from "../modules/actions";
-import FrmReport from "components/FrmReport";
+import FrmReport from "components/RepCashMoving";
 
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

@@ -1,6 +1,6 @@
 // import { injectReducer } from '../../store/reducers'
 import $p from "metadata";
-import DumbLoader from "components/DumbLoader";
+import DumbLoader from "metadata-ui/DumbLoader";
 
 export default (store) => ({
 

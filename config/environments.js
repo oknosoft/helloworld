@@ -28,9 +28,10 @@ export default {
     compiler_hash_type: 'chunkhash',
     compiler_devtool: false,
     compiler_stats: {
-      chunks: true,
-      chunkModules: true,
-      colors: true
+    	chunks: true,
+	    chunkOrigins: true,
+	    chunkModules: true,
+	    colors: true
     }
   })
 }

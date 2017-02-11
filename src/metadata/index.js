@@ -4,7 +4,7 @@ import MetaEngine from "metadata-core";
 import metadata_pouchdb from "metadata-pouchdb";
 import metadata_redux from "metadata-redux";
 import metadata_ui from "metadata-abstract-ui";
-import metadata_react_ui from "metadata-react-ui/plugin";
+import metadata_react_ui from "metadata-ui/plugin";
 
 // функция установки параметров сеанса
 import settings from "../../config/app.settings";
@@ -47,18 +47,23 @@ export function init(store, subscriber) {
         // информируем хранилище о готовности MetaEngine
         store.dispatch($p.rx_actions.META_LOADED($p))
 
-        // читаем локальные данные в ОЗУ
-        $p.adapters.pouch.load_data();
+	    // подписываемся на события хранилища
+	    store.subscribe(subscriber)
 
-        // подписываемся на события хранилища
-        store.subscribe(subscriber)
+        // читаем локальные данные в ОЗУ
+	    if($p.wsql.get_user_param("couch_direct", "boolean")){
+		    $p.adapters.pouch.emit('pouch_data_loaded', {});
+	    }
+	    else{
+		    $p.adapters.pouch.load_data();
+	    }
 
         resolve()
 
-      } catch (err) {
+      }
+      catch (err) {
         reject(err)
       }
-
     })
 
   })
