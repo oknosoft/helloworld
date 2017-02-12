@@ -1,7 +1,7 @@
 /**
  * ### Модуль менеджера и документа Перемещение денег
  *
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
+ * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2017
  *
  * @module doc_cash_moving
  * Created 28.07.2016

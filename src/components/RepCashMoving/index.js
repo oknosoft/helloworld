@@ -1,3 +1,2 @@
-import RepCashMoving from './RepCashMoving'
 
-export default RepCashMoving
+export default from './RepCashMoving'

@@ -2,7 +2,7 @@
  * ### Раздел интерфейса _Отчеты_
  * Содержит список отчетов
  *
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
+ * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2017
  */
 
 $p.iface.view_rep = function (cell) {

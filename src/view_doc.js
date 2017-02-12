@@ -2,7 +2,7 @@
  * ### Раздел интерфейса _Документы_
  * Содержит карусель с двумя страницами: list и doc
  *
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
+ * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2017
  */
 
 $p.iface.view_doc = function (cell) {
@@ -24,7 +24,7 @@ $p.iface.view_doc = function (cell) {
 
 		// показывает форму списка
 		function show_list(obj){
-			
+
 			t.carousel.cells("list").setActive();
 			cell.setText({text: "Документы"});
 

@@ -1,24 +1,19 @@
 /**
  * ### Панель параметрв
- *
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2017
- *
- * @module RepParams
+ * для отчета _Движение денег_
  *
  * Created 09.01.2017
  */
 
 import React, {Component, PropTypes} from "react";
-import MetaComponent from "metadata-ui/common/MetaComponent";
 import DataListField from "metadata-ui/DataListField";
 import DataField from "metadata-ui/DataField";
 
-export default class RepParams extends MetaComponent {
+export default class RepParams extends Component {
 
   static propTypes = {
     _obj: PropTypes.object.isRequired,  // DataObj (отчет)
     minHeight: PropTypes.number,
-    handleCustom: PropTypes.func,       // Внешний дополнительный подключаемый обработчик
   }
 
   handleValueChange = () => {

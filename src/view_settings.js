@@ -2,7 +2,7 @@
  * ### Раздел интерфейса _Настройки_
  * Закладки основных и дополнительных настроек
  *
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
+ * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2017
  */
 
 $p.iface.view_settings = function (cell) {

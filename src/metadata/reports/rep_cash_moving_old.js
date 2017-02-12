@@ -1,7 +1,7 @@
 /**
  * ### Отчет Движение денег
  *
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2016
+ * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2017
  * @module rep_cash_moving
  * Created 01.08.2016
  */
