@@ -2,3 +2,4 @@ node_modules
 localstorage
 dist
 *.log
+config/local-packages.json

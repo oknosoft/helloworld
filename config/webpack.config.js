@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import config from '../config';
 import path from 'path';
+import fs from 'fs';
 import _debug from 'debug';
 /* global __dirname */
 
@@ -17,11 +18,13 @@ const webpackConfig = {
   target: 'web',
   devtool: config.compiler_devtool,
   resolve: {
+
     modules: [
       paths.client(),
       'node_modules',
     ],
-	// alias: {'metadata-ui': 'path to metadata-react-ui/src'},
+
+    alias: {},
     extensions: ['.js', '.jsx', '.json'],
     symlinks: false,
   },
@@ -35,6 +38,17 @@ const webpackConfig = {
     }
   ],
 }
+
+// Include modules with specific path.
+let includePackages = null;
+if (fs.existsSync(path.join(__dirname, "../config/local-packages.json"))) {
+	includePackages = require(path.join(__dirname, "../config/local-packages.json"));
+}
+
+if (includePackages !== null) {
+	webpackConfig.resolve.alias = Object.assign({}, webpackConfig.resolve.alias, includePackages.alias);
+}
+
 // ------------------------------------
 // Entry Points
 // ------------------------------------
@@ -159,6 +173,12 @@ const BASE_CSS_LOADER = 'css-loader?sourceMap&-minimize'
 const PATHS_TO_TREAT_AS_CSS_MODULES = [
   // 'react-toolbox', (example)
 ]
+
+if (includePackages !== null) {
+	includePackages.cssModules.forEach((path) => {
+		PATHS_TO_TREAT_AS_CSS_MODULES.push(path);
+	})
+}
 
 // If config has CSS modules enabled, treat this project's styles as CSS modules.
 if (config.compiler_css_modules) {
