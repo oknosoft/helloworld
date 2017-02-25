@@ -43,7 +43,14 @@ $p.wsql.init(function (prm) {
 
 }, function ($p) {
 
-	const db = new $p.classes.PouchDB(config.couchdb + "meta", {
+	// Normalize url
+	let couchdbUrl = config.couchdb;
+	if (couchdbUrl.length > 0 && couchdbUrl.charAt(couchdbUrl.length - 1) === "/") {
+		couchdbUrl = couchdbUrl.slice(0, -1);
+	}
+
+	// TODO Переместить построение URL в модуль metadata-core
+	const db = new $p.classes.PouchDB(couchdbUrl + "/" + config.prefix + "meta", {
 		skip_setup: true,
 		auth: {
 			username: "guest",
@@ -52,11 +59,9 @@ $p.wsql.init(function (prm) {
 	});
 
 	let _m;
-
 	return db.info()
 		.then(function () {
 			return db.get('meta');
-
 		})
 		.then(function (doc) {
 			_m = doc;
