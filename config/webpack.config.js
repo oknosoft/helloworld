@@ -30,6 +30,7 @@ const webpackConfig = {
      	'react-addons-create-fragment':  path.resolve('./node_modules/react-addons-create-fragment'),
      	'react-addons-shallow-compare':  path.resolve('./node_modules/react-addons-shallow-compare'),
      	'react-addons-transition-group': path.resolve('./node_modules/react-addons-transition-group'),
+     	'react-select':                  path.resolve('./node_modules/react-select'),
     },
     extensions: ['.js', '.jsx', '.json'],
     symlinks: false,
