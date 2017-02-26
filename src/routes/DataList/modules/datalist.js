@@ -38,7 +38,7 @@ export function mapStateToProps(state, props) {
 		meta: state.meta,
 		_mgr: $p.md.mgr_by_class_name(props.params.meta),
 		_acl: 'e',
-    show_search: true,
-    show_variants: true,
+    	show_search: true,
+    	show_variants: true,
 	}
 }

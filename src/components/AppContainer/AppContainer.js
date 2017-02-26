@@ -69,17 +69,16 @@ export default class AppContainer extends Component {
       return res
     }
 
-    let t = this,
-      pnames = ['meta_loaded', 'data_empty', 'data_loaded', 'fetch_local', 'sync_started', 'page'],
-      current_state = select(store.getState());
+    const pnames = ['meta_loaded', 'data_empty', 'data_loaded', 'fetch_local', 'sync_started', 'page'];
+    let current_state = select(store.getState());
 
-    function handleChange() {
+    const handleChange = () => {
       let previous_state = current_state
       current_state = select(store.getState())
 
-      pnames.some(function (name) {
+      pnames.some(name => {
         if (current_state[name] != previous_state[name]) {
-          t.setState(current_state)
+          this.setState(current_state)
           return true;
         }
       })
