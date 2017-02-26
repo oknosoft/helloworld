@@ -24,7 +24,13 @@ const webpackConfig = {
       'node_modules',
     ],
 
-    alias: {},
+    alias: {
+   		'react':                         path.resolve('./node_modules/react'),
+		'react-dom':                     path.resolve('./node_modules/react-dom'),
+     	'react-addons-create-fragment':  path.resolve('./node_modules/react-addons-create-fragment'),
+     	'react-addons-shallow-compare':  path.resolve('./node_modules/react-addons-shallow-compare'),
+     	'react-addons-transition-group': path.resolve('./node_modules/react-addons-transition-group'),
+    },
     extensions: ['.js', '.jsx', '.json'],
     symlinks: false,
   },
@@ -34,7 +40,7 @@ const webpackConfig = {
   },
   externals: [
     {
-      './cptable': 'var cptable'
+     	'./cptable': 'var cptable',
     }
   ],
 }
