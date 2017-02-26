@@ -3,8 +3,11 @@
  * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2017
  * @module  metadata-prebuild
  */
-
 "use strict";
+/* global require */
+/* global __dirname */
+/* global process */
+/* global console */
 
 const fs = require('fs')
 const path = require('path')
@@ -22,8 +25,12 @@ const MetaEngine = require('metadata-core').default
 	.plugin(require('metadata-abstract-ui').default)
 
 
-var jstext = "",            // в этой переменной будем накапливать текст модуля
-	$p = new MetaEngine();    // подключим метадату
+// Name of init file
+const initFileName = __dirname + '/init.js';
+
+
+let jstext = "";            // в этой переменной будем накапливать текст модуля
+const $p = new MetaEngine();    // подключим метадату
 
 // инициализация и установка параметров
 $p.wsql.init(function (prm) {
@@ -43,7 +50,18 @@ $p.wsql.init(function (prm) {
 
 }, function ($p) {
 
-	const db = new $p.classes.PouchDB(config.couchdb + "meta", {
+	// Normalize url
+	let couchdbUrl = config.couchdb;
+	if (couchdbUrl.length > 0 && couchdbUrl.charAt(couchdbUrl.length - 1) === "/") {
+		couchdbUrl = couchdbUrl.slice(0, -1);
+	}
+
+	console.log(`Connect to couchdb: ${couchdbUrl}`);
+
+	const dbName = config.prefix + "meta"
+
+	// TODO Переместить построение URL в модуль metadata-core
+	const db = new $p.classes.PouchDB(couchdbUrl + "/" + dbName, {
 		skip_setup: true,
 		auth: {
 			username: "guest",
@@ -52,18 +70,32 @@ $p.wsql.init(function (prm) {
 	});
 
 	let _m;
-
 	return db.info()
+		.catch(function (error) {
+			console.log(`Can't get ${dbName} info.`);
+			process.exit(1)
+		})
 		.then(function () {
-			return db.get('meta');
-
+			return db.get("meta");
+		})
+		.catch(function (error) {
+			console.log("Document \"meta\" not found.")
+			console.log(error)
+			process.exit(1)
 		})
 		.then(function (doc) {
 			_m = doc;
 			doc = null;
-			return db.get('meta_patch');
+			return db.get("meta_patch");
+		})
+		.catch(function () {
+			console.log("Document \"meta_patch\" not found. Skip.")
+		})
+		.then(function (doc) {
+			if (doc === undefined) {
+				return $p.md.init(_m)
+			}
 
-		}).then(function (doc) {
 			$p.utils._patch(_m, doc);
 			doc = null;
 			delete _m._id;
@@ -106,25 +138,29 @@ $p.wsql.init(function (prm) {
 					+ "$p.md.init(" + JSON.stringify(_m) + ");\n\n"
 					+ text + "\n}";
 
+				// Remove if exists
+				if (fs.existsSync(initFileName)) {
+					console.log('Init file exists. Removing.')
+					fs.unlinkSync(initFileName);
+				}
 
 				// записываем результат
-				fs.writeFile(__dirname + '/init.js', text, 'utf8', function (err) {
+				fs.writeFile(initFileName, text, 'utf8', function (err) {
 					if (err) {
 						console.log(err)
 						process.exit(1)
 					} else {
-						console.log('metadata > init.js')
+						console.log('Write metadata to init.js.')
+						console.log('Done.')
 						process.exit(0)
 					}
 				});
-
 				$p = null;
-
 			})
 
 		})
 		.catch(function (err) {
-			console.log(err);
+			console.log(err)
 			process.exit(1)
 		})
 })

@@ -1,6 +1,6 @@
 # helloworld
-Шаблон пустого проекта на metadata.js  
-По мотивам http://infostart.ru/public/540168/ для [v2](https://github.com/oknosoft/metadata.js/tree/develop/packages) 
+Шаблон пустого проекта на metadata.js
+По мотивам http://infostart.ru/public/540168/ для [v2](https://github.com/oknosoft/metadata.js/tree/develop/packages)
 
 ### Назначение и возможности
 - Ввод и редактирование докумнтов поступления - выбытия - перемещения денег
@@ -31,7 +31,16 @@
 - [React data grid](https://github.com/adazzle/react-data-grid), React компонент табличной части
 - [Filesaver.js](https://github.com/eligrey/FileSaver.js), HTML5 реализация метода saveAs
 - [Moment.js](http://momentjs.com/), библиотека форматирования интервалов и дат
-- [Rubles.js](http://meritt.github.io/rubles/), библиотека форматирования чисел - сумма прописью 
+- [Rubles.js](http://meritt.github.io/rubles/), библиотека форматирования чисел - сумма прописью
+
+
+#### Конфигурация приложения
+1. Подготовка данных и экспорт их в couchdb ([подробное описание](http://infostart.ru/public/540168/)).
+
+2. Генерация менеджеров объектов по метаданным 1C. В результате будет получен init.js.
+Для этого необходимо задать url couchdb и префик баз данных в файле `config/metadata.config.js`.
+
+3. Сконфигурировать приложение, путем модификации файла `config/app.settings.js`.
 
 ## Лицензия
 [MIT](LICENSE)
