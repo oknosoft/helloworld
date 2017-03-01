@@ -25,13 +25,15 @@ const webpackConfig = {
     ],
 
     alias: {
-   		'react':                         path.resolve('./node_modules/react'),
-		'react-dom':                     path.resolve('./node_modules/react-dom'),
-     	'react-addons-create-fragment':  path.resolve('./node_modules/react-addons-create-fragment'),
-     	'react-addons-shallow-compare':  path.resolve('./node_modules/react-addons-shallow-compare'),
+   		'react': path.resolve('./node_modules/react'),
+		'react-dom': path.resolve('./node_modules/react-dom'),
+     	'react-select': path.resolve('./node_modules/react-select'),
+     	'react-addons-create-fragment': path.resolve('./node_modules/react-addons-create-fragment'),
+     	'react-addons-shallow-compare': path.resolve('./node_modules/react-addons-shallow-compare'),
      	'react-addons-transition-group': path.resolve('./node_modules/react-addons-transition-group'),
-     	'react-select':                  path.resolve('./node_modules/react-select'),
+     	'react-addons-css-transition-group': path.resolve('./node_modules/react-addons-css-transition-group'),
     },
+
     extensions: ['.js', '.jsx', '.json'],
     symlinks: false,
   },

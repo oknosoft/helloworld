@@ -1,10 +1,9 @@
-module.exports = {
-  //"couchdb": "https://zd.oknosoft.ru/couchdb/wb_",
-  "couchdb": "http://cou200:5984/hw_",
-  "rest_1c": "",
-  "zone": 0,
-  "zone_demo": 1,
-  "prefix": "hw_",
-  "suffix": "",
-  "attachment_max_size": 10000000
+/**
+ * This file override default configuration in metadata.config.default.js
+ */
+const metadataConfigDefault = require("./metadata.config.default")
+const metadataConfig = {
+  // Insert your configuration here
 }
+
+module.exports = Object.assign({}, metadataConfigDefault, metadataConfig)
