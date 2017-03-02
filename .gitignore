@@ -3,3 +3,5 @@ localstorage
 dist
 *.log
 config/local-packages.json
+config/metadata.config.js
+config/app.settings.js
