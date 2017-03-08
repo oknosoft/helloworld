@@ -1,8 +1,8 @@
 /**
  * ### Модуль сборки *.js по описанию метаданных
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2017
  * @module  metadata-prebuild
  */
+
 "use strict";
 /* global require */
 /* global __dirname */
@@ -12,11 +12,8 @@
 const fs = require('fs')
 const path = require('path')
 
-// текст модуля начальных настроек приложения для включения в итоговый скрипт
-const settings = fs.readFileSync('config/app.settings.js', 'utf8')
-
 // конфигурация подключения к CouchDB
-const config = require('../../config/metadata.config.js')
+const config = require('../../config/app.settings.js')();
 
 // конструктор metadata-core и плагин metadata-pouchdb
 const MetaEngine = require('metadata-core').default
@@ -36,38 +33,26 @@ const $p = new MetaEngine();    // подключим метадату
 $p.wsql.init(function (prm) {
 
 	// разделитель для localStorage
-	prm.local_storage_prefix = config.prefix;
+	prm.local_storage_prefix = config.local_storage_prefix;
 
 	// по умолчанию, обращаемся к зоне 0
 	prm.zone = config.zone;
 
-	// расположение 1C
-	if (config.rest_1c)
-		prm.rest_path = config.rest_1c;
-
-	// расположение couchdb
-	prm.couch_path = config.couchdb;
+	// в качестве расположения couchdb используем couch_local
+	prm.couch_path = config.couch_local || config.couch_path;
 
 }, function ($p) {
 
-	// Normalize url
-	let couchdbUrl = config.couchdb;
-	if (couchdbUrl.length > 0 && couchdbUrl.charAt(couchdbUrl.length - 1) === "/") {
-		couchdbUrl = couchdbUrl.slice(0, -1);
-	}
+	// config.couchdb никогда не заканчинвается на "/", т.к. включает в себя префикс баз
+	// let couchdbUrl = config.couchdb;
+	// if (couchdbUrl.length > 0 && couchdbUrl.charAt(couchdbUrl.length - 1) === "/") {
+	// 	couchdbUrl = couchdbUrl.slice(0, -1);
+	// }
 
-	console.log(`Connect to couchdb: ${couchdbUrl}`);
-
-	const dbName = config.prefix + "meta"
-
-	// TODO Переместить построение URL в модуль metadata-core
-	const db = new $p.classes.PouchDB(couchdbUrl + "/" + dbName, {
-		skip_setup: true,
-		auth: {
-			username: "guest",
-			password: "meta"
-		}
-	});
+	// невозможно подключиться абстрактно к couchdb - подключение к конкретной базе
+	const dbName = $p.job_prm.couch_path + "meta"
+	console.log(`Connect to couchdb: ${dbName}`);
+	const db = new $p.classes.PouchDB(dbName, {skip_setup: true});
 
 	let _m;
 	return db.info()

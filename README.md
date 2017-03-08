@@ -38,8 +38,8 @@
 1. Подготовка данных и экспорт их в couchdb ([подробное описание](http://infostart.ru/public/540168/)).
 
 2. Генерация менеджеров объектов по метаданным 1C. В результате будет получен `init.js`.
-Для этого необходимо отредактировать файл `config/metadata.config.js` и запустить скрипт сборки `npm run prebuild:meta`.
-Полный список параметров находится в `config/metadata.config.default.js`.
+Для этого необходимо отредактировать файл `config/app.settings.js` и запустить скрипт сборки `npm run prebuild:meta`.
+Полный список параметров находится в `config/app.settings.js.default.js`.
 
 3. Сконфигурировать приложение, путем модификации файла `config/app.settings.js`.
 Полный список параметров находится в `config/app.settings.default.js`.

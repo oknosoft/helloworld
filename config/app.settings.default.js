@@ -1,4 +1,4 @@
-export default {
+export default function settings(prm) {
   // разделитель для localStorage
   local_storage_prefix: "hw_",
 
@@ -14,8 +14,11 @@ export default {
   // расположение rest-сервиса 1C по умолчанию
   rest_path: "",
 
-  // расположение couchdb
-  couch_path: "http://localhost:5984",
+  // расположение couchdb для сайта
+  couch_path: "/couchdb/hw_",
+
+  // расположение couchdb для nodejs
+  couch_local: "http://localhost:5984/hw_",
 
   pouch_filter: {
     meta: "auth/meta"

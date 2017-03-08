@@ -1,8 +1,7 @@
 /** @flow */
 import React, {Component, PropTypes} from "react";
 import MetaComponent from "metadata-ui/common/MetaComponent";
-import DataList from "metadata-ui/DataList"
-import Dialog from "metadata-ui/Dialog"
+import DataList from "metadata-ui/DataList";
 
 export default class HomeView extends MetaComponent {
 
@@ -11,10 +10,10 @@ export default class HomeView extends MetaComponent {
     height: React.PropTypes.number.isRequired
   }
 
-  render () {
-    const { props, context } = this
-    const { $p } = context
+  render() {
+    const {props, context} = this
+    const {$p} = context
 
-    return <DataList { ...props } _mgr={$p.doc.cash_moving} />
+    return <DataList { ...props } _mgr={$p.doc.cash_moving}/>
   }
 }
