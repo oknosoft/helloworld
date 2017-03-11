@@ -75,7 +75,7 @@
   "dependencies": {
     "alasql": "^0.3",
     "clipboard": "^1.6",
-    "history": "^3.2",
+    "history": "^3.3",
     "material-ui": "^0.17",
     "metadata-abstract-ui": "2.0.0-beta.14",
     "metadata-core": "2.0.0-beta.14",
@@ -135,7 +135,7 @@
     "cheerio": "^0.22",
     "classnames": "^2.2",
     "codecov": "^1.0",
-    "css-loader": "^0.26",
+    "css-loader": "^0.27",
     "cssnano": "^3.10",
     "debug": "^2.6",
     "enzyme": "^2.7",
