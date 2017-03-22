@@ -36,6 +36,7 @@
 
 #### Конфигурация приложения
 1. Подготовка данных и экспорт их в couchdb ([подробное описание](http://infostart.ru/public/540168/)).
+Конфигурацию 1С можно взять [здесь](https://github.com/oknosoft/metadata.js/tree/master/integration_1c).
 
 2. Генерация менеджеров объектов по метаданным 1C. В результате будет получен `init.js`.
 Для этого необходимо отредактировать файл `config/app.settings.js` и запустить скрипт сборки `npm run prebuild:meta`.
