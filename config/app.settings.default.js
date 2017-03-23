@@ -1,4 +1,4 @@
-export default function settings(prm) {
+const appSettingsDefault = {
   // разделитель для localStorage
   local_storage_prefix: "hw_",
 
@@ -36,3 +36,5 @@ export default function settings(prm) {
   // разрешаем сохранение пароля
   enable_save_pwd: true
 }
+
+export default appSettingsDefault
