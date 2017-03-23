@@ -10,7 +10,7 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "prebuild:meta": "node ./src/metadata/prebuild.js",
+    "prebuild:meta": "babel-node ./src/metadata/prebuild.js",
     "compile": "better-npm-run compile",
     "lint": "eslint src tests server",
     "lint:fix": "npm run lint -- --fix",
