@@ -29,8 +29,9 @@ export default class Header extends Component {
 
     return (
       <AppBar
+        className={"app-bar"}
         title={props.title}
-        titleStyle={{fontSize: 18}}
+        titleStyle={{ fontSize: 18 }}
         iconElementLeft={<NavList {...props} />}
         iconElementRight={<NavUserButtons {...props} />}
       />
