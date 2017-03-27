@@ -24,7 +24,6 @@ import MuiThemeProvider, {styles, muiTheme} from "./AppMuiTheme";
 // собственно, metaengine и скрипт инициализации структуры метаданных и модификаторы
 import $p, {init} from "metadata";
 
-
 export default class AppContainer extends Component {
 
   static propTypes = {
@@ -56,11 +55,9 @@ export default class AppContainer extends Component {
 
   // TODO: перенести генератор событий начальной загрузки в metadata-redux
   subscriber(store) {
-
     function select(state) {
-
-      const {meta} = state,
-        res = {};
+      const {meta} = state;
+      const res = {};
 
       pnames.forEach(function (name) {
         res[name] = meta[name]
@@ -90,20 +87,15 @@ export default class AppContainer extends Component {
 
   // вызывается один раз на клиенте и сервере при подготовке компонента
   componentWillMount() {
+    const {store} = this.props;
 
-    const {store} = this.props
-
-    init(store, this.subscriber(store))
-      .catch(function (err) {
-        console.log(err)
-      })
-
+    init(store, this.subscriber(store)).catch(function (err) {
+      console.log(err)
+    });
   }
 
   render() {
-
     const {history, routes, store} = this.props
-
     const meta = store.getState().meta
 
     // при первом старте и при загрузке данных, минуя роутинг показываем заставку
@@ -139,7 +131,6 @@ export default class AppContainer extends Component {
       } else if (routes.path.indexOf('/login') == -1) {
         history.push('/login')
       }
-
     }
 
     return (
@@ -160,5 +151,4 @@ export default class AppContainer extends Component {
       </Provider>
     )
   }
-
 }

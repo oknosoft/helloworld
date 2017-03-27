@@ -26,7 +26,7 @@ const webpackConfig = {
 
     alias: {
    		'react': path.resolve('./node_modules/react'),
-		'react-dom': path.resolve('./node_modules/react-dom'),
+		  'react-dom': path.resolve('./node_modules/react-dom'),
      	'react-select': path.resolve('./node_modules/react-select'),
      	'react-addons-create-fragment': path.resolve('./node_modules/react-addons-create-fragment'),
      	'react-addons-shallow-compare': path.resolve('./node_modules/react-addons-shallow-compare'),

@@ -1,0 +1,14 @@
+.coreLayout {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.coreLayoutHeader {
+
+}
+
+.coreLayoutContent {
+	display: flex;
+	flex: 1;
+}
