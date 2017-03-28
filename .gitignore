@@ -3,4 +3,3 @@ localstorage
 dist
 *.log
 config/local-packages.json
-config/app.settings.js
