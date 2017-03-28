@@ -12,10 +12,8 @@
 const fs = require('fs')
 const path = require('path')
 
-const getAppSettings = require('../../config/app.settings.js').getAppSettings;
-
 // конфигурация подключения к CouchDB
-const config = getAppSettings();
+const config = require('../../config/app.settings.js')();
 
 // конструктор metadata-core и плагин metadata-pouchdb
 const MetaEngine = require('metadata-core').default
