@@ -51,6 +51,8 @@ export default class AppContainer extends Component {
   constructor(props) {
     super(props)
     $p.UI.history = props.history
+
+    this._isMounted = false;
   }
 
   // TODO: перенести генератор событий начальной загрузки в metadata-redux
@@ -75,7 +77,10 @@ export default class AppContainer extends Component {
 
       pnames.some(name => {
         if (current_state[name] != previous_state[name]) {
-          this.setState(current_state)
+          if (this._isMounted) {
+            this.setState(current_state)
+          }
+
           return true;
         }
       })
@@ -86,12 +91,17 @@ export default class AppContainer extends Component {
   }
 
   // вызывается один раз на клиенте и сервере при подготовке компонента
-  componentWillMount() {
+  componentDidMount() {
     const {store} = this.props;
+    this._isMounted = true;
 
     init(store, this.subscriber(store)).catch(function (err) {
       console.log(err)
     });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
@@ -139,10 +149,7 @@ export default class AppContainer extends Component {
           <div style={ styles.container }>
             {
               (!meta.data_loaded && meta.fetch_local) ?
-                <DumbScreen
-                  title="Загрузка данных из IndexedDB..."
-                  page={meta.page}
-                />
+                <DumbScreen title="Загрузка данных из IndexedDB..." page={meta.page} />
                 :
                 <Router history={history} children={routes}/>
             }

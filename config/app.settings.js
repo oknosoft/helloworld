@@ -46,5 +46,4 @@ module.exports = function settings(prm) {
     enable_save_pwd: true
 
   })
-
 }
