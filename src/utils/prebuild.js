@@ -21,7 +21,7 @@ module.exports = function (package_data) {
 
 	var firstFile = null,
 		jstext = "",                    // в этой переменной будем накапливать текст модуля
-		$p = require('metadata-js');    // подключим метадату
+		$p = require('../../dist/metadata.core');    // подключим метадату
 
 	// установим параметры
 	$p.on("settings", function (prm) {
@@ -39,12 +39,6 @@ module.exports = function (package_data) {
 		// расположение couchdb
 		prm.couch_path = package_data.config.couchdb;
 
-		// логин гостевого пользователя couchdb
-		prm.guest_name = "guest";
-
-		// пароль гостевого пользователя couchdb
-		prm.guest_pwd = "meta";
-
 	});
 	$p.eve.init();
 
@@ -57,7 +51,7 @@ module.exports = function (package_data) {
 				cch: {mgr: "ChartOfCharacteristicManager", obj: "CatObj"},
 				cacc: {mgr: "ChartOfAccountManager", obj: "CatObj"},
 				cat: {mgr: "CatManager", obj: "CatObj"},
-				bp: {mgr: "BusinessProcessObj", obj: "BusinessProcessObj"},
+				bp: {mgr: "BusinessProcessManager", obj: "BusinessProcessObj"},
 				tsk: {mgr: "TaskManager", obj: "TaskObj"},
 				doc: {mgr: "DocManager", obj: "DocObj"},
 				ireg: {mgr: "InfoRegManager", obj: "RegisterRow"},
@@ -68,17 +62,18 @@ module.exports = function (package_data) {
 
 
 		// менеджеры перечислений
-		for(name in _m.enm)
-			text+= "$p.enm." + name + " = new $p.EnumManager('enm." + name + "');\n";
+		for(name in _m.enm){
+      text+= "$p.enm." + name + " = new $p.EnumManager('enm." + name + "');\n";
+    }
+    text+= "$p.ireg.log = new $p.LogManager('ireg.$log');\n"
 
 		// менеджеры объектов данных, отчетов и обработок
 		for(var category in categoties){
 			for(name in _m[category]){
 				text+= obj_constructor_text(_m, category, name, categoties[category].obj);
-				if(name == "$log")
-					text+= "$p." + category + "." + name + " = new $p.LogManager('ireg.$log');\n";
-				else
-					text+= "$p." + category + "." + name + " = new $p." + categoties[category].mgr + "('" + category + "." + name + "');\n";
+        if(name != "log"){
+          text+= "$p." + category + "." + name + " = new $p." + categoties[category].mgr + "('" + category + "." + name + "');\n";
+        }
 			}
 		}
 

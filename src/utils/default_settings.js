@@ -62,18 +62,6 @@ $p.on({
 				writable: true
 			},
 
-			// логин гостевого пользователя базы "meta" couchdb
-			guest_name: {
-				value: "guest",
-				writable: true
-			},
-
-			// пароль гостевого пользователя базы "meta" couchdb
-			guest_pwd: {
-				value: "meta",
-				writable: true
-			},
-
 			// по умолчанию, обращаемся к зоне 0
 			zone: {
 				value: PACKAGE_ZONE,

@@ -1,9 +1,26 @@
 {
   "name": "helloworld",
   "description": "Hello world for metadata.js",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "dependencies": {
-    "metadata-js": "^0.11"
+    "alasql": "^0.4",
+    "clipboard": "^1.7",
+    "metadata-abstract-ui": "^2.0.0-beta.17",
+    "metadata-core": "^2.0.0-beta.17",
+    "metadata-pouchdb": "^2.0.0-beta.17",
+    "metadata-react-ui": "^2.0.0-beta.17",
+    "metadata-redux": "^2.0.0-beta.17",
+    "moment": "^2.18",
+    "pouchdb": "^6.2",
+    "pouchdb-adapter-http": "^6.2",
+    "pouchdb-adapter-idb": "^6.2",
+    "pouchdb-adapter-memory": "^6.2",
+    "pouchdb-adapter-websql": "^6.2",
+    "pouchdb-authentication": "^0.5",
+    "pouchdb-core": "^6.2",
+    "pouchdb-find": "^6.2",
+    "pouchdb-mapreduce": "^6.2",
+    "pouchdb-replication": "^6.2"
   },
   "devDependencies": {
     "gulp": ">=3.9",
