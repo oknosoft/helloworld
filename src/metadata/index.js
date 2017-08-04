@@ -3,77 +3,48 @@
 import MetaEngine from "metadata-core";
 import metadata_pouchdb from "metadata-pouchdb";
 import metadata_redux from "metadata-redux";
-import metadata_ui from "metadata-abstract-ui";
-import metadata_react_ui from "metadata-ui/plugin";
+//import metadata_ui from "metadata-abstract-ui";
 
 // функция установки параметров сеанса
-import settings from "../../config/app.settings";
+import settings from '../../config/app.settings';
 
 // скрипт инициализации метаданных
-import meta_init from "./init";
+import meta_init from './init';
 
-// методы и обработчики событий объектов и менеджеров данных
-import modifiers from "./modifiers";
+// скрипты модификаторов DataObj`s и DataManager`s
+import modifiers from './modifiers';
 
-/* global __DEBUG__ */
+// генератор события META_LOADED для redux
+import {metaActions} from 'metadata-redux';
 
 MetaEngine
   .plugin(metadata_pouchdb)     // подключаем pouchdb-адаптер к прототипу metadata.js
   .plugin(metadata_redux)       // подключаем свойства redux к прототипу metadata.js
-  .plugin(metadata_ui)          // подключаем общие методы интерфейса пользователя
-  .plugin(metadata_react_ui)    // подключаем методы для работы с компонентами react
+  //.plugin(metadata_ui)          // подключаем общие методы интерфейса пользователя
 
 // создаём экземпляр MetaEngine
 const $p = new MetaEngine()
 export default $p
 
 // скрипт инициализации в привязке к store приложения
-export function init(store, subscriber) {
+export function init(store) {
 
-  return new Promise(function (resolve, reject) {
+  return $p.load_script('/dist/windowbuilder.js', 'script')
+    .then(() => $p.load_script('/dist/wnd_debug.js', 'script'))
+    .then(() => {
 
-    setTimeout(() => {
+      // выполняем модификаторы
+      modifiers($p);
 
-      try {
-        // инициализируем параметры сеанса и метаданные
-        $p.wsql.init(settings, meta_init)
+      // информируем хранилище о готовности MetaEngine
+      store.dispatch(metaActions.META_LOADED($p));
 
-        // подключаем обработчики событий плагином metadata-redux
-        $p.rx_events(store)
+      // читаем локальные данные в ОЗУ
+      return $p.adapters.pouch.load_data();
 
-        // выполняем модификаторы
-        modifiers($p)
-
-        // информируем хранилище о готовности MetaEngine
-        store.dispatch($p.rx_actions.META_LOADED($p))
-
-	    // подписываемся на события хранилища
-	    store.subscribe(subscriber)
-
-        // читаем локальные данные в ОЗУ
-	    if($p.wsql.get_user_param("couch_direct", "boolean")){
-		    $p.adapters.pouch.emit('pouch_data_loaded', {});
-	    }
-	    else{
-		    $p.adapters.pouch.load_data();
-	    }
-
-        resolve()
-
-      }
-      catch (err) {
-        reject(err)
-      }
-    })
-
-  })
+    });
 }
 
-// в отладочном режиме экспортируем $p и PouchDB глобально
-if (__DEBUG__) {
-  window.$p = $p
-  //noinspection
-  if (!window.PouchDB) {
-    window.PouchDB = $p.classes.PouchDB
-  }
-}
+// экспортируем $p и PouchDB глобально
+global.$p = $p;
+global.PouchDB = MetaEngine.classes.PouchDB;

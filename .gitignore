@@ -1,5 +1,5 @@
-node_modules
-localstorage
-dist
+node_modules/
+build/
+.idea/
 *.log
-config/local-packages.json
+/src/metadata-ui/

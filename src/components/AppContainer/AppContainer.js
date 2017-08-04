@@ -4,89 +4,86 @@
  * и обработчик роутинга на login при первом запуске
  */
 
-import React, {Component, PropTypes} from "react";
-import {Router} from "react-router";
-import {Provider} from "react-redux";
+import React, {Component, PropTypes} from 'react';
+import {Router} from 'react-router';
+import {Provider} from 'react-redux';
 
-import "metadata-react-ui/css/combined.css";
-import "metadata-react-ui/css/react-data-grid.css";
-import "metadata-react-ui/css/metadata-react-ui.css";
-import "react-virtualized/styles.css";
-import "styles/core.scss";
+import 'metadata-react-ui/css/combined.css';
+import 'metadata-react-ui/css/react-data-grid.css';
+import 'metadata-react-ui/css/metadata-react-ui.css';
+import 'react-virtualized/styles.css';
+import 'styles/core.scss';
 //import 'react-flex-layout/react-flex-layout-splitter.css'
 
 // заставка "загрузка занных"
-import DumbScreen from "metadata-ui/DumbLoader/DumbScreen";
+import DumbScreen from 'metadata-ui/DumbLoader/DumbScreen';
 
 // стили MuiTheme для material-ui
-import MuiThemeProvider, {styles, muiTheme} from "./AppMuiTheme";
+import MuiThemeProvider, {styles, muiTheme} from './AppMuiTheme';
 
 // собственно, metaengine и скрипт инициализации структуры метаданных и модификаторы
-import $p, {init} from "metadata";
+import $p, {init} from 'metadata';
 
 export default class AppContainer extends Component {
 
   static propTypes = {
     history: PropTypes.object.isRequired,
     routes: PropTypes.object.isRequired,
-    store: PropTypes.object.isRequired
-  }
+    store: PropTypes.object.isRequired,
+  };
 
   // эти свойства будут доступны в контексте детей
   static childContextTypes = {
     $p: PropTypes.object.isRequired,
     store: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
-  }
+    history: PropTypes.object.isRequired,
+  };
 
   getChildContext() {
-    const {store, history} = this.props
+    const {store, history} = this.props;
     return {
       $p,
       store,
-      history
-    }
+      history,
+    };
   }
 
   constructor(props) {
-    super(props)
-    $p.UI.history = props.history
+    super(props);
+    $p.UI.history = props.history;
 
     this._isMounted = false;
   }
 
   // TODO: перенести генератор событий начальной загрузки в metadata-redux
   subscriber(store) {
-    function select(state) {
-      const {meta} = state;
+
+    function select({meta}) {
       const res = {};
-
-      pnames.forEach(function (name) {
-        res[name] = meta[name]
-      })
-
-      return res
+      for (let name of pnames) {
+        res[name] = meta[name];
+      }
+      return res;
     }
 
     const pnames = ['meta_loaded', 'data_empty', 'data_loaded', 'fetch_local', 'sync_started', 'page'];
     let current_state = select(store.getState());
 
     const handleChange = () => {
-      let previous_state = current_state
-      current_state = select(store.getState())
+      let previous_state = current_state;
+      current_state = select(store.getState());
 
       pnames.some(name => {
         if (current_state[name] != previous_state[name]) {
           if (this._isMounted) {
-            this.setState(current_state)
+            this.setState(current_state);
           }
-
           return true;
         }
-      })
-    }
+      });
+    };
 
-    return handleChange
+    return handleChange;
 
   }
 
@@ -96,7 +93,7 @@ export default class AppContainer extends Component {
     this._isMounted = true;
 
     init(store, this.subscriber(store)).catch(function (err) {
-      console.log(err)
+      console.log(err);
     });
   }
 
@@ -105,8 +102,8 @@ export default class AppContainer extends Component {
   }
 
   render() {
-    const {history, routes, store} = this.props
-    const meta = store.getState().meta
+    const {history, routes, store} = this.props;
+    const meta = store.getState().meta;
 
     // при первом старте и при загрузке данных, минуя роутинг показываем заставку
     // если пустые данные, перебрасываем на страницу авторизации
@@ -122,7 +119,7 @@ export default class AppContainer extends Component {
     if (!meta.meta_loaded) {
       return (
         <DumbScreen />
-      )
+      );
     }
 
     // если это первый запуск...
@@ -130,16 +127,16 @@ export default class AppContainer extends Component {
 
       // если это гостевая зона и задан пользователь по умолчанию - пытаемся авторизоваться
       if ($p.job_prm.guests.length && $p.job_prm.zone_demo == $p.wsql.get_user_param('zone')) {
-        if (!$p.wsql.get_user_param("user_name")) {
+        if (!$p.wsql.get_user_param('user_name')) {
           store.dispatch($p.rx_actions.USER_TRY_LOG_IN(
             $p.adapters.pouch,
             $p.job_prm.guests[0].username,
-            $p.aes.Ctr.decrypt($p.job_prm.guests[0].password)))
+            $p.aes.Ctr.decrypt($p.job_prm.guests[0].password)));
         }
 
         // если зона не гостевая, перемещаемся на страницу авторизации
       } else if (routes.path.indexOf('/login') == -1) {
-        history.push('/login')
+        history.push('/login');
       }
     }
 
@@ -149,13 +146,13 @@ export default class AppContainer extends Component {
           <div style={ styles.container }>
             {
               (!meta.data_loaded && meta.fetch_local) ?
-                <DumbScreen title="Загрузка данных из IndexedDB..." page={meta.page} />
+                <DumbScreen title="Загрузка данных из IndexedDB..." page={meta.page}/>
                 :
                 <Router history={history} children={routes}/>
             }
           </div>
         </MuiThemeProvider>
       </Provider>
-    )
+    );
   }
 }
