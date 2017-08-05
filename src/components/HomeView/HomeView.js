@@ -1,17 +1,12 @@
 /** @flow */
-import React, {Component, PropTypes} from "react";
-import MetaComponent from "metadata-ui/common/MetaComponent";
-import DataList from "metadata-ui/DataList";
+import React, {Component} from 'react';
+import DataList from '../../metadata-ui/DataList';
 
-export default class HomeView extends MetaComponent {
-
-  static propTypes = {
-  }
+export default class HomeView extends Component {
 
   render() {
-    const {props, context} = this
-    const {$p} = context
+    const {props, context} = this;
 
-    return <DataList { ...props } _mgr={$p.doc.cash_moving} />
+    return <DataList {...props} _mgr={$p.doc.cash_moving}/>;
   }
 }

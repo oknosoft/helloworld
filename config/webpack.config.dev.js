@@ -168,7 +168,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include: paths.appSrc,
-        exclude: [/init\.js$/],
+        exclude: [/\\metadata\\/],
         loader: require.resolve('babel-loader'),
         options: {
 

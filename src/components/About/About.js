@@ -21,7 +21,7 @@ class About extends Component {
 
   shouldComponentUpdate({handleIfaceState, title}) {
     const ltitle = 'О программе...';
-    if (title != ltitle) {
+    if(title != ltitle) {
       handleIfaceState({
         component: '',
         name: 'title',
@@ -97,9 +97,6 @@ class About extends Component {
               <li><a href="https://github.com/adazzle/react-data-grid" target="_blank" rel="noopener noreferrer">React data grid</a>, React
                 компонент табличной части
               </li>
-              <li><a href="http://dhtmlx.com/" target="_blank" rel="noopener noreferrer">Dhtmlx</a>, кроссбраузерная javascript библиотека
-                компонентов ui
-              </li>
               <li><a href="http://momentjs.com/" target="_blank" rel="noopener noreferrer">Moment.js</a>, библиотека форматирования
                 интервалов и дат
               </li>
@@ -112,7 +109,7 @@ class About extends Component {
               <li><a href="https://github.com/open-xml-templating/docxtemplater" target="_blank" rel="noopener noreferrer">Docxtemplater</a>,
                 библиотека формирования файлов DOCX
               </li>
-              <li><a href="https://fortawesome.github.io/Font-Awesome/" target="_blank" rel="noopener noreferrer">fontawesome</a>, набор
+              <li><a href="https://fortawesome.github.io/Font-Awesome/" target="_blank" rel="noopener noreferrer">Fontawesome</a>, набор
                 шрифтовых иконок
               </li>
             </ul>
@@ -122,13 +119,16 @@ class About extends Component {
                   rel="noopener noreferrer">MIT</a></p>
 
             <h3><i className="fa fa-question-circle"></i> Вопросы</h3>
-            <p>Если обнаружили ошибку, пожалуйста, <a href="https://github.com/oknosoft/windowbuilder/issues/new" target="_blank"
-                                                      rel="noopener noreferrer">зарегистрируйте вопрос в GitHub</a> или <a
-              href="http://www.oknosoft.ru/metadata/#page-118" target="_blank" rel="noopener noreferrer">свяжитесь с разработчиком</a>
-              напрямую<br/></p>
+            <p>Если обнаружили ошибку, пожалуйста, <a href="https://github.com/oknosoft/windowbuilder/issues/new" target="_blank" rel="noopener noreferrer">зарегистрируйте вопрос в GitHub</a> или <a href="http://www.oknosoft.ru/metadata/#page-118" target="_blank" rel="noopener noreferrer">свяжитесь с разработчиком</a> напрямую</p>
           </Grid>
         </Grid>
       </div>);
   }
 
 }
+
+About.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styleSheet)(withIface(About));

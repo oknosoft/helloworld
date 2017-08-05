@@ -1,8 +1,8 @@
 // конструктор metadata.js
 
-import MetaEngine from "metadata-core";
-import metadata_pouchdb from "metadata-pouchdb";
-import metadata_redux from "metadata-redux";
+import MetaEngine from 'metadata-core';
+import metadata_pouchdb from 'metadata-pouchdb';
+//import metadata_redux from 'metadata-redux';
 //import metadata_ui from "metadata-abstract-ui";
 
 // функция установки параметров сеанса
@@ -18,19 +18,19 @@ import modifiers from './modifiers';
 import {metaActions} from 'metadata-redux';
 
 MetaEngine
-  .plugin(metadata_pouchdb)     // подключаем pouchdb-адаптер к прототипу metadata.js
-  .plugin(metadata_redux)       // подключаем свойства redux к прототипу metadata.js
-  //.plugin(metadata_ui)          // подключаем общие методы интерфейса пользователя
+  .plugin(metadata_pouchdb);     // подключаем pouchdb-адаптер к прототипу metadata.js
+//.plugin(metadata_redux)       // подключаем свойства redux к прототипу metadata.js
+//.plugin(metadata_ui)          // подключаем общие методы интерфейса пользователя
 
 // создаём экземпляр MetaEngine
-const $p = new MetaEngine()
-export default $p
+const $p = new MetaEngine();
+// параметры сеанса и метаданные инициализируем без лишних проволочек
+$p.wsql.init(settings, meta_init);
 
 // скрипт инициализации в привязке к store приложения
 export function init(store) {
 
-  return $p.load_script('/dist/windowbuilder.js', 'script')
-    .then(() => $p.load_script('/dist/wnd_debug.js', 'script'))
+  return Promise.resolve()
     .then(() => {
 
       // выполняем модификаторы
@@ -48,3 +48,5 @@ export function init(store) {
 // экспортируем $p и PouchDB глобально
 global.$p = $p;
 global.PouchDB = MetaEngine.classes.PouchDB;
+
+export default $p;

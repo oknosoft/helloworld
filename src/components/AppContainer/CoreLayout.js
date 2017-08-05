@@ -5,7 +5,7 @@
 import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
 import Header from "./Header";
-import navlist_items from "./navlist_items";
+import navlist_items from "../App/navlist_items";
 import { navlist_open } from "store/ifaceReducer";
 import { muiTheme } from "./AppMuiTheme";
 import styles from "styles/CoreLayout.scss";

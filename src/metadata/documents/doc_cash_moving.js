@@ -8,29 +8,23 @@
  */
 
 export default function ($p) {
+  /**
+   * Обработчик перед записью документа
+   */
+  $p.DocCash_moving.prototype.before_save = function (attr) {
 
-	// Подписываемся на события
-	$p.doc.cash_moving.on({
+    // как минимум, одна касса должна быть заполнена
+    if(this.sender.empty() && this.recipient.empty()) {
 
-		/**
-		 * Обработчик перед записью документа
-		 */
-		before_save: function (attr) {
+      $p.msg.show_msg({
+        title: $p.msg('mandatory_title'),
+        type: 'alert-error',
+        text: $p.msg('mandatory_one_cashbox')
+      });
 
-			// как минимум, одна касса должна быть заполнена
-			if(this.sender.empty() && this.recipient.empty()){
+      return false;
+    }
 
-				$p.msg.show_msg({
-					title: $p.msg('mandatory_title'),
-					type: "alert-error",
-					text: $p.msg('mandatory_one_cashbox')
-				});
+  };
 
-				return false
-			}
-
-		}
-	});
-
-}
-
+};

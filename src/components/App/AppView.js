@@ -10,13 +10,15 @@ import Snackbar from 'material-ui/Snackbar';
 import Button from 'material-ui/Button';
 
 import Header from '../Header';
+import items from './menu_items'; // массив элементов меню
+
+//import HomeView from '../HomeView';
 import AboutPage from '../About';
 import NotFoundPage from '../NotFoundPage';
+import MetaTreePage from '../MetaTreePage';
 import FrmLogin from '../../metadata-ui/FrmLogin';
 
 import withNavigateAndMeta from '../../redux/withNavigateAndMeta';
-
-import CalcOrderList from '../CalcOrderList';
 
 
 class AppRoot extends Component {
@@ -56,7 +58,7 @@ class AppRoot extends Component {
   handleNavigate() {
     const {handleNavigate, first_run} = this.props;
     if (first_run) {
-      $p.eve.redirect = true;
+      $p.eve && ($p.eve.redirect = true);
       location.replace('/');
     }
     else {
@@ -70,7 +72,7 @@ class AppRoot extends Component {
 
     return (
       <div>
-        <Header />
+        <Header items={items} {...props} />
         {
           (!props.path_log_in && !props.complete_loaded) ?
             <DumbScreen
@@ -79,7 +81,7 @@ class AppRoot extends Component {
               top={92} />
             :
             <Switch>
-              <Route exact path="/" component={CalcOrderList}/>
+              <Route exact path="/" component={NotFoundPage}/>
               <Route path="/about" component={AboutPage} />
               <Route path="/meta" component={MetaTreePage} />
               <Route path="/login" component={FrmLogin} />

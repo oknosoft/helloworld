@@ -8,179 +8,173 @@
 
 export default function ($p) {
 
-	// Подписываемся на событие окончания загрузки локальных данных
-	$p.on({
-		pouch_load_data_loaded: function predefined_elmnts_loaded() {
+  const {job_prm, adapters, cch, utils, md} = $p;
 
-			$p.off(predefined_elmnts_loaded);
+  // Подписываемся на событие окончания загрузки локальных данных
+  adapters.pouch.once('pouch_doc_ram_loaded', () => {
+    // читаем элементы из pouchdb и создаём свойства
+    cch.predefined_elmnts.pouch_find_rows({_raw: true, _top: 500, _skip: 0})
+      .then(function (rows) {
 
-			// читаем элементы из pouchdb и создаём свойства
-			$p.cch.predefined_elmnts.pouch_find_rows({ _raw: true, _top: 500, _skip: 0 })
-				.then(function (rows) {
+        var parents = {};
 
-					var parents = {};
+        rows.forEach(function (row) {
+          if(row.is_folder && row.synonym) {
+            var ref = row._id.split('|')[1];
+            parents[ref] = row.synonym;
+            job_prm.__define(row.synonym, {value: {}});
+          }
+        });
 
-					rows.forEach(function (row) {
-						if(row.is_folder && row.synonym){
-							var ref = row._id.split("|")[1];
-							parents[ref] = row.synonym;
-							$p.job_prm.__define(row.synonym, { value: {} });
-						}
-					});
+        rows.forEach((row) => {
+          if(!row.is_folder && row.synonym && parents[row.parent] && !job_prm[parents[row.parent]][row.synonym]) {
 
-					rows.forEach(function (row) {
+            var _mgr, tnames;
 
-						if(!row.is_folder && row.synonym && parents[row.parent] && !$p.job_prm[parents[row.parent]][row.synonym]){
+            if(row.type.is_ref) {
+              tnames = row.type.types[0].split('.');
+              _mgr = $p[tnames[0]][tnames[1]];
+            }
 
-							var _mgr, tnames;
+            if(row.list == -1) {
 
-							if(row.type.is_ref){
-								tnames = row.type.types[0].split(".");
-								_mgr = $p[tnames[0]][tnames[1]]
-							}
+              job_prm[parents[row.parent]].__define(row.synonym, {
+                value: function () {
+                  var res = {};
+                  row.elmnts.forEach(function (row) {
+                    res[row.elm] = _mgr ? _mgr.get(row.value, false) : row.value;
+                  });
+                  return res;
+                }()
+              });
 
-							if(row.list == -1){
+            }
+            else if(row.list) {
 
-								$p.job_prm[parents[row.parent]].__define(row.synonym, {
-									value: function () {
-										var res = {};
-										row.elmnts.forEach(function (row) {
-											res[row.elm] = _mgr ? _mgr.get(row.value, false) : row.value;
-										});
-										return res;
-									}()
-								});
+              job_prm[parents[row.parent]].__define(row.synonym, {
+                value: row.elmnts.map(function (row) {
+                  return _mgr ? _mgr.get(row.value, false) : row.value;
+                })
+              });
 
-							}else if(row.list){
+            }
+            else {
 
-								$p.job_prm[parents[row.parent]].__define(row.synonym, {
-									value: row.elmnts.map(function (row) {
-										return _mgr ? _mgr.get(row.value, false) : row.value;
-									})
-								});
+              if(job_prm[parents[row.parent]].hasOwnProperty(row.synonym)) {
+                delete job_prm[parents[row.parent]][row.synonym];
+              }
 
-							}else{
+              job_prm[parents[row.parent]].__define(row.synonym, {
+                value: _mgr ? _mgr.get(row.value, false) : row.value,
+                configurable: true
+              });
+            }
 
-								if($p.job_prm[parents[row.parent]].hasOwnProperty(row.synonym))
-									delete $p.job_prm[parents[row.parent]][row.synonym];
+          }
+        });
+      })
+      .then(() => {
+        // даём возможность завершиться другим обработчикам, подписанным на _pouch_load_data_loaded_
+        setTimeout(() => md.emit('predefined_elmnts_inited'), 100);
+      });
+  });
 
-								$p.job_prm[parents[row.parent]].__define(row.synonym, {
-									value: _mgr ? _mgr.get(row.value, false) : row.value,
-									configurable: true
-								});
-							}
-
-						}
-					});
-				})
-				.then(function () {
-
-					// даём возможность завершиться другим обработчикам, подписанным на _pouch_load_data_loaded_
-					setTimeout(function () {
-						$p.eve.callEvent("predefined_elmnts_inited");
-					}, 100);
-
-
-				});
-
-		}
-	});
+  const _mgr = cch.predefined_elmnts;
 
 
-	/**
-	 * Переопределяем геттер значения
-	 *
-	 * @property value
-	 * @override
-	 * @type {*}
-	 */
-	delete $p.CchPredefined_elmnts.prototype.value;
-	$p.CchPredefined_elmnts.prototype.__define({
+  /**
+   * Переопределяем геттер значения
+   *
+   * @property value
+   * @override
+   * @type {*}
+   */
+  delete $p.CchPredefined_elmnts.prototype.value;
+  $p.CchPredefined_elmnts.prototype.__define({
 
-		value: {
-			get: function () {
+    value: {
+      get: function () {
 
-				var mf = this.type,
-					res = this._obj ? this._obj.value : "",
-					mgr, ref;
+        const mf = this.type;
+        const res = this._obj ? this._obj.value : '';
 
-				if(this._obj.is_folder)
-					return "";
+        if(this._obj.is_folder) {
+          return '';
+        }
+        if(typeof res == 'object') {
+          return res;
+        }
+        else if(mf.is_ref) {
+          if(mf.digits && typeof res === 'number') {
+            return res;
+          }
+          if(mf.hasOwnProperty('str_len') && !utils.is_guid(res)) {
+            return res;
+          }
+          const mgr = md.value_mgr(this._obj, 'value', mf);
+          if(mgr) {
+            if(utils.is_data_mgr(mgr)) {
+              return mgr.get(res, false);
+            }
+            else {
+              return utils.fetch_type(res, mgr);
+            }
+          }
+          if(res) {
+            $p.record_log(['value', mf, this._obj]);
+            return null;
+          }
+        }
+        else if(mf.date_part) {
+          return utils.fix_date(this._obj.value, true);
+        }
+        else if(mf.digits) {
+          return utils.fix_number(this._obj.value, !mf.hasOwnProperty('str_len'));
+        }
+        else if(mf.types[0] == 'boolean') {
+          return utils.fix_boolean(this._obj.value);
+        }
+        else {
+          return this._obj.value || '';
+        }
 
-				if(typeof res == "object")
-					return res;
+        return this.characteristic.clr;
+      },
 
-				else if(mf.is_ref){
-					if(mf.digits && typeof res === "number")
-						return res;
+      set: function (v) {
 
-					if(mf.hasOwnProperty("str_len") && !$p.utils.is_guid(res))
-						return res;
+        if(this._obj.value === v) {
+          return;
+        }
 
-					if(mgr = $p.md.value_mgr(this._obj, "value", mf)){
-						if($p.utils.is_data_mgr(mgr))
-							return mgr.get(res, false);
-						else
-							return $p.utils.fetch_type(res, mgr);
-					}
+        _mgr.emit_async('update', this, {value: this._obj.value});
+        this._obj.value = v.valueOf();
+        this._data._modified = true;
+      }
+    }
+  });
 
-					if(res){
-						console.log(["value", mf, this._obj]);
-						return null;
-					}
+  /**
+   * ### Форма элемента
+   *
+   * @method form_obj
+   * @override
+   * @param pwnd
+   * @param attr
+   * @returns {*}
+   */
+  _mgr.form_obj = function (pwnd, attr) {
 
-				}else if(mf.date_part)
-					return $p.utils.fix_date(this._obj.value, true);
+    let o, wnd;
 
-				else if(mf.digits)
-					return $p.utils.fix_number(this._obj.value, !mf.hasOwnProperty("str_len"));
-
-				else if(mf.types[0]=="boolean")
-					return $p.utils.fix_boolean(this._obj.value);
-
-				else
-					return this._obj.value || "";
-
-				return this.characteristic.clr;
-			},
-
-			set: function (v) {
-
-				if(this._obj.value === v)
-					return;
-
-				Object.getNotifier(this).notify({
-					type: 'update',
-					name: 'value',
-					oldValue: this._obj.value
-				});
-				this._obj.value = $p.utils.is_data_obj(v) ? v.ref : v;
-				this._data._modified = true;
-			}
-		}
-	});
-
-	/**
-	 * ### Форма элемента
-	 *
-	 * @method form_obj
-	 * @override
-	 * @param pwnd
-	 * @param attr
-	 * @returns {*}
-	 */
-	$p.cch.predefined_elmnts.form_obj = function(pwnd, attr){
-
-		var o, wnd;
-
-		return this.constructor.prototype.form_obj.call(this, pwnd, attr)
-			.then(function (res) {
-				if(res){
-					o = res.o;
-					wnd = res.wnd;
-					return res;
-				}
-			});
-	};
+    return this.constructor.prototype.form_obj.call(this, pwnd, attr)
+      .then((res) => {
+        if(res) {
+          o = res.o;
+          wnd = res.wnd;
+          return res;
+        }
+      });
+  }
 
 }
