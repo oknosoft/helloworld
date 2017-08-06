@@ -1,6 +1,6 @@
 /** @flow */
 import React, {Component} from 'react';
-import DataList from '../../metadata-ui/DataList';
+import DataList from 'metadata-react-ui/DataList';
 
 export default class HomeView extends Component {
 

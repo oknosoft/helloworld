@@ -7,11 +7,11 @@ import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import IconNavigationMenu from 'material-ui-icons/Menu';
 
+import withIface from 'metadata-redux/src/withIface';
+
 import NavList from './NavList';
 
 import withStyles from '../Header/toolbar';
-
-import withIface from '../../redux/withIface';
 
 
 class NavDrawer extends Component {

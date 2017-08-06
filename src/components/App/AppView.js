@@ -16,9 +16,9 @@ import items from './menu_items'; // массив элементов меню
 import AboutPage from '../About';
 import NotFoundPage from '../NotFoundPage';
 import MetaTreePage from '../MetaTreePage';
-import FrmLogin from '../../metadata-ui/FrmLogin';
+import FrmLogin from 'metadata-react-ui/FrmLogin';
 
-import withNavigateAndMeta from '../../redux/withNavigateAndMeta';
+import withNavigateAndMeta from 'metadata-redux/src/withNavigateAndMeta';
 
 
 class AppRoot extends Component {

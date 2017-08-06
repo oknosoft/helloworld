@@ -7,19 +7,19 @@
  * Created 28.07.2016
  */
 
-export default function ($p) {
+export default function ({DocCash_moving, msg}) {
   /**
    * Обработчик перед записью документа
    */
-  $p.DocCash_moving.prototype.before_save = function (attr) {
+  DocCash_moving.prototype.before_save = function () {
 
     // как минимум, одна касса должна быть заполнена
     if(this.sender.empty() && this.recipient.empty()) {
 
-      $p.msg.show_msg({
-        title: $p.msg('mandatory_title'),
+      msg.show_msg({
+        title: msg('mandatory_title'),
         type: 'alert-error',
-        text: $p.msg('mandatory_one_cashbox')
+        text: msg('mandatory_one_cashbox')
       });
 
       return false;
@@ -27,4 +27,4 @@ export default function ($p) {
 
   };
 
-};
+}

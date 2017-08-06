@@ -2,8 +2,8 @@
 
 import MetaEngine from 'metadata-core';
 import metadata_pouchdb from 'metadata-pouchdb';
+import metadata_ui from "metadata-abstract-ui";
 //import metadata_redux from 'metadata-redux';
-//import metadata_ui from "metadata-abstract-ui";
 
 // функция установки параметров сеанса
 import settings from '../../config/app.settings';
@@ -18,9 +18,9 @@ import modifiers from './modifiers';
 import {metaActions} from 'metadata-redux';
 
 MetaEngine
-  .plugin(metadata_pouchdb);     // подключаем pouchdb-адаптер к прототипу metadata.js
+  .plugin(metadata_pouchdb)     // подключаем pouchdb-адаптер к прототипу metadata.js
+  .plugin(metadata_ui);         // подключаем общие методы интерфейса пользователя
 //.plugin(metadata_redux)       // подключаем свойства redux к прототипу metadata.js
-//.plugin(metadata_ui)          // подключаем общие методы интерфейса пользователя
 
 // создаём экземпляр MetaEngine
 const $p = new MetaEngine();

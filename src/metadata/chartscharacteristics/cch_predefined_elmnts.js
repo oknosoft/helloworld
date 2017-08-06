@@ -163,18 +163,6 @@ export default function ($p) {
    * @param attr
    * @returns {*}
    */
-  _mgr.form_obj = function (pwnd, attr) {
-
-    let o, wnd;
-
-    return this.constructor.prototype.form_obj.call(this, pwnd, attr)
-      .then((res) => {
-        if(res) {
-          o = res.o;
-          wnd = res.wnd;
-          return res;
-        }
-      });
-  }
+  _mgr.form_obj = () => {};
 
 }

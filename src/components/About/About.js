@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles, createStyleSheet} from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 
-import withIface from '../../redux/withIface';
+import withIface from 'metadata-redux/src/withIface';
 
 const styleSheet = createStyleSheet('About', {
   root: {
