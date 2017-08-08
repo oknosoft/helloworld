@@ -8,7 +8,7 @@ import IconPerson from 'material-ui-icons/Person';
 const items = [
   {
     text: 'Перемещение денег',
-    navigate: '/doc_cash_moving/list',
+    navigate: '/doc.cash_moving/list',
     icon: <IconDrafts/>
   },
   {
@@ -18,7 +18,7 @@ const items = [
     items: [
       {
         text: 'Движение денег',
-        navigate: '/rep_cash_moving/main',
+        navigate: '/rep.cash_moving/main',
         icon: <IconList/>
       }
     ]

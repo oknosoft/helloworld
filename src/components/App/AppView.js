@@ -2,20 +2,33 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Switch, Route} from 'react-router';
 
-// заставка "загрузка занных"
-import DumbScreen from '../DumbScreen';
-
-// сообщения вверху страницы
+// сообщения в верхней части страницы (например, обновить после первого запуска)
 import Snackbar from 'material-ui/Snackbar';
 import Button from 'material-ui/Button';
 
-import Header from '../Header';
+// навигация
+import Header from 'metadata-react-ui/Header';
 import items from './menu_items'; // массив элементов меню
 
-//import HomeView from '../HomeView';
+// заставка "загрузка занных"
+import DumbScreen from '../DumbScreen';
+
+// вложенный маршрутизатор страниц с данными
+import DataRoute from '../DataRoute';
+
+// домашняя страница, в данном проекте - просто редирект на список заказов
+import HomeView from '../HomeView';
+
+// информация о программе
 import AboutPage from '../About';
+
+// 404
 import NotFoundPage from '../NotFoundPage';
+
+// дерево метаданных
 import MetaTreePage from '../MetaTreePage';
+
+// логин и свойства подключения
 import FrmLogin from 'metadata-react-ui/FrmLogin';
 
 import withNavigateAndMeta from 'metadata-redux/src/withNavigateAndMeta';
@@ -77,11 +90,12 @@ class AppRoot extends Component {
           (!props.path_log_in && !props.complete_loaded) ?
             <DumbScreen
               title={props.doc_ram_loaded ? "Подготовка данных в памяти..." : "Загрузка из IndexedDB..."}
-              page={props.doc_ram_loaded ? {text: 'Цены и характеристики...'} : {text: 'Почти готово...'}}
+              page={{text: props.doc_ram_loaded ? 'Цены и характеристики...' : 'Почти готово...'}}
               top={92} />
             :
             <Switch>
-              <Route exact path="/" component={NotFoundPage}/>
+              <Route exact path="/" render={(routeProps) => <HomeView handleNavigate={props.handleNavigate} {...routeProps} />} />
+              <Route path="/:area(doc|cat|ireg|cch|rep).:name" component={DataRoute} />
               <Route path="/about" component={AboutPage} />
               <Route path="/meta" component={MetaTreePage} />
               <Route path="/login" component={FrmLogin} />

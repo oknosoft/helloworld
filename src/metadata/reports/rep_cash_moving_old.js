@@ -75,7 +75,7 @@ $p.RepCash_moving.prototype.__define({
 					group: true,
 					group_level: 4,
 					startkey: [],
-					endkey: [date_sub.getFullYear(), date_sub.getMonth()+1, date_sub.getDate(),"\uffff"]
+					endkey: [date_sub.getFullYear(), date_sub.getMonth()+1, date_sub.getDate(),"\ufff0"]
 				},
 				res = {
 					data: [],
@@ -114,7 +114,7 @@ $p.RepCash_moving.prototype.__define({
 					}
 
 					query_options.startkey = [date_from.getFullYear(), date_from.getMonth()+1, date_from.getDate(), ""];
-					query_options.endkey = [date_till.getFullYear(), date_till.getMonth()+1, date_till.getDate(),"\uffff"]
+					query_options.endkey = [date_till.getFullYear(), date_till.getMonth()+1, date_till.getDate(),"\ufff0"]
 
 					return $p.wsql.pouch.local.doc.query("doc/cash_moving_date_cashbox", query_options)
 				})

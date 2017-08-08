@@ -30,7 +30,7 @@ export default function ($p) {
           group: true,
           group_level: 4,
           startkey: [],
-          endkey: [date_sub.getFullYear(), date_sub.getMonth() + 1, date_sub.getDate(), '\uffff']
+          endkey: [date_sub.getFullYear(), date_sub.getMonth() + 1, date_sub.getDate(), '\ufff0']
         };
         const start_total = {};
 
@@ -73,7 +73,7 @@ export default function ($p) {
             }
 
             query_options.startkey = [period_from.getFullYear(), period_from.getMonth() + 1, period_from.getDate(), ''];
-            query_options.endkey = [period_till.getFullYear(), period_till.getMonth() + 1, period_till.getDate(), '\uffff'];
+            query_options.endkey = [period_till.getFullYear(), period_till.getMonth() + 1, period_till.getDate(), '\ufff0'];
 
             return pouch.local.doc.query('doc/cash_moving_date_cashbox', query_options);
           })
@@ -148,12 +148,12 @@ export default function ($p) {
             data.group_by(dims, ress);
             data.forEach((row) => {
               data._rows.push(row);
-            })
-          })
+            });
+          });
       }
     },
 
-  })
+  });
 
 }
 

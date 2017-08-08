@@ -75,7 +75,11 @@ export default function ($p) {
       })
       .then(() => {
         // даём возможность завершиться другим обработчикам, подписанным на _pouch_load_data_loaded_
-        setTimeout(() => md.emit('predefined_elmnts_inited'), 100);
+        setTimeout(() => {
+          md.emit('predefined_elmnts_inited');
+          // излучаем событие "можно открывать формы"
+          adapters.pouch.emit('pouch_complete_loaded');
+        }, 100);
       });
   });
 

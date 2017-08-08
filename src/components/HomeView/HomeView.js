@@ -1,12 +1,18 @@
-/** @flow */
 import React, {Component} from 'react';
-import DataList from 'metadata-react-ui/DataList';
+import PropTypes from 'prop-types';
 
 export default class HomeView extends Component {
 
-  render() {
-    const {props, context} = this;
-
-    return <DataList {...props} _mgr={$p.doc.cash_moving}/>;
+  componentDidMount() {
+    this.props.handleNavigate('/doc.cash_moving/list');
   }
+
+  render() {
+    return <div>redirecting</div>;
+  }
+
 }
+
+HomeView.propTypes = {
+  handleNavigate: PropTypes.func.isRequired,
+};

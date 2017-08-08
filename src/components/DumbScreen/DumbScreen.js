@@ -18,18 +18,18 @@ class DumbScreen extends Component {
 
     return <div className='splash' style={{marginTop: top}}>
       <div className="description">
-        <h1 itemProp="name">Окнософт: Заказ дилера</h1>
-        <p>Категория: <span itemProp="applicationSubCategory">CRM, CAD, E-Commerce</span></p>
+        <h1 itemProp="name">Hello world for metadata.js</h1>
+        <p>Категория: <span itemProp="applicationSubCategory">CRM, E-Commerce</span></p>
         <p>Платформа: <i className="fa fa-chrome" aria-hidden="true"></i> браузер Chrome для <span itemProp="operatingSystem">Windows 8, 10 | Android | Mac | iOS</span>
         </p>
         <div itemProp="description">
-          <p>Заказ дилера - это веб-сервис компании <a href="http://www.oknosoft.ru/" title="Программы для оконных заводов и дилеров"
-                                                       target="_blank" rel="noopener noreferrer">Окнософт</a>, предназначенный для:</p>
+          <p>Веб-приложение на базе <a href="http://www.oknosoft.ru/metadata/" target="_blank" rel="noopener noreferrer">Metadata.js</a>
+            для демонстрации базовых возможностей фреймворка:</p>
           <ul>
-            <li>Расчета геометрии, спецификации и стоимости оконных и витражных конструкций (ПВХ, Дерево, Алюминий)</li>
-            <li>Aвтоматизации работы менеджеров и дилеров</li>
-            <li>Ускорения и упрощения подготовки производства</li>
-            <li>Планирования и контроля на всех этапах</li>
+            <li>Ввод и редактирование докумнтов поступления - выбытия - перемещения денег</li>
+            <li>Формирование отчета о движении денег</li>
+            <li>Автономная работа при отсутствии доступа к Интернет</li>
+            <li>Фоновая синхронизация с ИБ 1С</li>
           </ul>
         </div>
       </div>
