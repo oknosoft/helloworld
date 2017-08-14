@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Switch, Route} from 'react-router';
 
-import DataListPage from 'metadata-react-ui/DataList';
-import DataObjPage from 'metadata-react-ui/FrmObj';
+import DataListPage from 'metadata-react/DataList';
+import DataObjPage from 'metadata-react/FrmObj';
 //import MetaObjPage from '../../components/MetaObjPage';
 import NotFoundPage from '../NotFoundPage';
 

@@ -7,7 +7,7 @@ import Snackbar from 'material-ui/Snackbar';
 import Button from 'material-ui/Button';
 
 // навигация
-import Header from 'metadata-react-ui/Header';
+import Header from 'metadata-react/Header';
 import items from './menu_items'; // массив элементов меню
 
 // заставка "загрузка занных"
@@ -29,7 +29,7 @@ import NotFoundPage from '../NotFoundPage';
 import MetaTreePage from '../MetaTreePage';
 
 // логин и свойства подключения
-import FrmLogin from 'metadata-react-ui/FrmLogin';
+import FrmLogin from 'metadata-react/FrmLogin';
 
 import withNavigateAndMeta from 'metadata-redux/src/withNavigateAndMeta';
 
