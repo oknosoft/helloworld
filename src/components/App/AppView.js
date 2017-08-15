@@ -33,7 +33,6 @@ import FrmLogin from 'metadata-react/FrmLogin';
 
 import withNavigateAndMeta from 'metadata-redux/src/withNavigateAndMeta';
 
-
 class AppRoot extends Component {
 
   componentDidMount() {
@@ -113,7 +112,8 @@ class AppRoot extends Component {
       </div>
     );
   }
-}
+};
+
 AppRoot.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

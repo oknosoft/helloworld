@@ -1,9 +1,11 @@
-// конструктор metadata.js
+// подгрузим стили асинхронно
+import('metadata-react/styles/react-data-grid.css');
 
+
+// конструктор metadata.js
 import MetaEngine from 'metadata-core';
 import metadata_pouchdb from 'metadata-pouchdb';
 import metadata_ui from "metadata-abstract-ui";
-//import metadata_redux from 'metadata-redux';
 
 // функция установки параметров сеанса
 import settings from '../../config/app.settings';
@@ -24,8 +26,13 @@ MetaEngine
 
 // создаём экземпляр MetaEngine
 const $p = new MetaEngine();
+
 // параметры сеанса и метаданные инициализируем без лишних проволочек
 $p.wsql.init(settings, meta_init);
+
+// подгружаем дополнительные стили
+$p.utils.load_script('https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css', 'link');
+$p.utils.load_script('https://fonts.googleapis.com/css?family=Roboto', 'link');
 
 // скрипт инициализации в привязке к store приложения
 export function init(store) {
