@@ -5,26 +5,28 @@
  * Created 09.01.2017
  */
 
-import React, {Component, PropTypes} from "react";
-import DataListField from "metadata-ui/DataListField";
-import DataField from "metadata-ui/DataField";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
+import DataListField from 'metadata-react/DataListField';
+import DataField from 'metadata-react/DataField';
 
 export default class RepParams extends Component {
 
   static propTypes = {
     _obj: PropTypes.object.isRequired,  // DataObj (отчет)
     minHeight: PropTypes.number,
-  }
+  };
 
   handleValueChange = () => {
     const {_obj, scheme} = this.props;
     scheme.date_from = _obj.period_from;
     scheme.date_till = _obj.period_till;
-  }
+  };
 
   render() {
 
-    const {_obj, minHeight} = this.props
+    const {_obj, minHeight} = this.props;
 
     return (
       <div style={{height: '356px', marginTop: '16px'}}>
@@ -54,7 +56,7 @@ export default class RepParams extends Component {
         />
 
       </div>
-    )
+    );
 
   }
 }

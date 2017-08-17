@@ -6,6 +6,7 @@ import('metadata-react/styles/react-data-grid.css');
 import MetaEngine from 'metadata-core';
 import metadata_pouchdb from 'metadata-pouchdb';
 import metadata_ui from "metadata-abstract-ui";
+import metadata_react from "metadata-react/plugin";
 
 // функция установки параметров сеанса
 import settings from '../../config/app.settings';
@@ -21,8 +22,8 @@ import {metaActions} from 'metadata-redux';
 
 MetaEngine
   .plugin(metadata_pouchdb)     // подключаем pouchdb-адаптер к прототипу metadata.js
-  .plugin(metadata_ui);         // подключаем общие методы интерфейса пользователя
-//.plugin(metadata_redux)       // подключаем свойства redux к прототипу metadata.js
+  .plugin(metadata_ui)          // подключаем общие методы интерфейса пользователя
+  .plugin(metadata_react);      // подключаем react-специфичные модификаторы к scheme_settings
 
 // создаём экземпляр MetaEngine
 const $p = new MetaEngine();

@@ -7,6 +7,9 @@ import DataObjPage from 'metadata-react/FrmObj';
 //import MetaObjPage from '../../components/MetaObjPage';
 import NotFoundPage from '../NotFoundPage';
 
+// отчет
+import RepCashMoving from '../RepCashMoving';
+
 
 const DataRoute = ({match}) => {
 
@@ -14,11 +17,14 @@ const DataRoute = ({match}) => {
   const _mgr = $p[area][name];
   const _acl = $p.current_user.get_acl(_mgr.class_name);
 
-  return <Switch>
-    <Route path={`${match.url}/:ref([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})`} render={(props) => <DataObjPage _mgr={_mgr} _acl={_acl} {...props}/>} />
-    <Route path={`${match.url}/list`} render={(props) => <DataListPage _mgr={_mgr} _acl={_acl} {...props}/>} />
-    {/**<Route path={`${match.url}/meta`} render={(props) => <MetaObjPage _mgr={_mgr} {...props}/>} />**/}
-    <Route component={NotFoundPage}/>
+  return area === 'rep' ?
+    <RepCashMoving _mgr={_mgr} _acl={_acl} match={match} />
+    :
+    <Switch>
+      <Route path={`${match.url}/:ref([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})`} render={(props) => <DataObjPage _mgr={_mgr} _acl={_acl} {...props}/>} />
+      <Route path={`${match.url}/list`} render={(props) => <DataListPage _mgr={_mgr} _acl={_acl} {...props}/>} />
+      {/**<Route path={`${match.url}/meta`} render={(props) => <MetaObjPage _mgr={_mgr} {...props}/>} />**/}
+      <Route component={NotFoundPage}/>
   </Switch>;
 };
 DataRoute.propTypes = {
