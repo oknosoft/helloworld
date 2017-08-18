@@ -53,13 +53,13 @@ class AppRoot extends Component {
     let res = true;
 
     // если есть сохранённый пароль и online, пытаемся авторизоваться
-    if (!user.logged_in && user.has_login && !user.try_log_in && !offline) {
+    if(!user.logged_in && user.has_login && !user.try_log_in && !offline) {
       props.handleLogin();
       res = false;
     }
 
     // если это первый запуск или couch_direct и offline, переходим на страницу login
-    if (!path_log_in && ((data_empty === true && !user.try_log_in) || (couch_direct && !user.logged_in))) {
+    if(!path_log_in && ((data_empty === true && !user.try_log_in) || (couch_direct && !user.logged_in))) {
       history.push('/login');
       res = false;
     }
@@ -69,7 +69,7 @@ class AppRoot extends Component {
 
   handleNavigate() {
     const {handleNavigate, first_run} = this.props;
-    if (first_run) {
+    if(first_run) {
       $p.eve && ($p.eve.redirect = true);
       location.replace('/');
     }
@@ -88,17 +88,17 @@ class AppRoot extends Component {
         {
           (!props.path_log_in && !props.complete_loaded) ?
             <DumbScreen
-              title={props.doc_ram_loaded ? "Подготовка данных в памяти..." : "Загрузка из IndexedDB..."}
+              title={props.doc_ram_loaded ? 'Подготовка данных в памяти...' : 'Загрузка из IndexedDB...'}
               page={{text: props.doc_ram_loaded ? 'Цены и характеристики...' : 'Почти готово...'}}
-              top={92} />
+              top={92}/>
             :
             <Switch>
-              <Route exact path="/" render={(routeProps) => <HomeView handleNavigate={props.handleNavigate} {...routeProps} />} />
-              <Route path="/:area(doc|cat|ireg|cch|rep).:name" component={DataRoute} />
-              <Route path="/about" component={AboutPage} />
-              <Route path="/meta" component={MetaTreePage} />
-              <Route path="/login" component={FrmLogin} />
-              <Route component={NotFoundPage} />
+              <Route exact path="/" render={(routeProps) => <HomeView handleNavigate={props.handleNavigate} {...routeProps} />}/>
+              <Route path="/:area(doc|cat|ireg|cch|rep).:name" component={DataRoute}/>
+              <Route path="/about" component={AboutPage}/>
+              <Route path="/meta" component={MetaTreePage}/>
+              <Route path="/login" component={FrmLogin}/>
+              <Route component={NotFoundPage}/>
             </Switch>
         }
 
@@ -112,7 +112,7 @@ class AppRoot extends Component {
       </div>
     );
   }
-};
+}
 
 AppRoot.propTypes = {
   history: PropTypes.shape({

@@ -16,6 +16,7 @@ export default class RepParams extends Component {
   static propTypes = {
     _obj: PropTypes.object.isRequired,  // DataObj (отчет)
     minHeight: PropTypes.number,
+    scheme: PropTypes.object,
   };
 
   handleValueChange = () => {
@@ -29,7 +30,7 @@ export default class RepParams extends Component {
     const {_obj, minHeight} = this.props;
 
     return (
-      <div style={{height: '356px', marginTop: '16px'}}>
+      <div style={{height: minHeight || 356, marginTop: '16px'}}>
 
         <DataField
           _obj={_obj}

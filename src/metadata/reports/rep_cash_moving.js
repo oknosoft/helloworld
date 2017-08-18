@@ -22,7 +22,7 @@ export default function ($p) {
 
         const {moment} = $p.utils;
         const {pouch} = $p.adapters;
-        const {period_from, period_till, data, resources} = this;
+        const {period_from, period_till, data} = this;
         const date_sub = moment(period_from).subtract(1, 'day').toDate();
         const query_options = {
           reduce: true,
