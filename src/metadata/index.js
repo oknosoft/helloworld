@@ -1,3 +1,4 @@
+
 // подгрузим стили асинхронно
 import('metadata-react/styles/react-data-grid.css');
 
