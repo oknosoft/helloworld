@@ -6,6 +6,9 @@ import {Switch, Route} from 'react-router';
 import Snackbar from 'material-ui/Snackbar';
 import Button from 'material-ui/Button';
 
+// диалог сообщения пользователю
+import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog';
+
 // навигация
 import Header from 'metadata-react/Header';
 import items from './menu_items'; // массив элементов меню
@@ -34,6 +37,11 @@ import FrmLogin from 'metadata-react/FrmLogin';
 import withNavigateAndMeta from 'metadata-redux/src/withNavigateAndMeta';
 
 class AppRoot extends Component {
+
+  constructor(props, context) {
+    super(props, context);
+    this.handleAlertClose = this.handleDialogClose.bind(this, 'alert');
+  }
 
   componentDidMount() {
     const {handleOffline} = this.props;
@@ -67,7 +75,7 @@ class AppRoot extends Component {
     return res;
   }
 
-  handleNavigate() {
+  handleReset = () => {
     const {handleNavigate, first_run} = this.props;
     if(first_run) {
       $p.eve && ($p.eve.redirect = true);
@@ -78,9 +86,14 @@ class AppRoot extends Component {
     }
   }
 
-  render() {
+  handleDialogClose(name) {
+    this.props.handleIfaceState({component: '', name, value: {open: false}});
+  }
 
+
+  render() {
     const {props} = this;
+    const {snack, alert, doc_ram_loaded} = props;
 
     return (
       <div>
@@ -88,8 +101,8 @@ class AppRoot extends Component {
         {
           (!props.path_log_in && !props.complete_loaded) ?
             <DumbScreen
-              title={props.doc_ram_loaded ? 'Подготовка данных в памяти...' : 'Загрузка из IndexedDB...'}
-              page={{text: props.doc_ram_loaded ? 'Цены и характеристики...' : 'Почти готово...'}}
+              title={doc_ram_loaded ? 'Подготовка данных в памяти...' : 'Загрузка из IndexedDB...'}
+              page={{text: doc_ram_loaded ? 'Цены и характеристики...' : 'Почти готово...'}}
               top={92}/>
             :
             <Switch>
@@ -102,12 +115,33 @@ class AppRoot extends Component {
             </Switch>
         }
 
-        <Snackbar
+        {((snack && snack.open) || (props.first_run && doc_ram_loaded)) && <Snackbar
           anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-          open={props.first_run && props.doc_ram_loaded}
-          message={<span>Требуется перезагрузить страницу после первой синхронизации данных</span>}
-          action={<Button color="accent" onClick={this.handleNavigate.bind(this)}>Выполнить</Button>}
-        />
+          open
+          message={snack && snack.open ? snack.message : 'Требуется перезагрузить страницу после первой синхронизации данных'}
+          action={<Button
+            color="accent"
+            onClick={snack && snack.open ? this.handleDialogClose.bind(this, 'snack') : this.handleReset}
+          >Выполнить</Button>}
+        />}
+
+        {
+          alert && alert.open && <Dialog open onRequestClose={this.handleAlertClose}>
+            <DialogTitle>
+              {alert.title}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                {alert.text}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleAlertClose} color="primary">
+                Ок
+              </Button>
+            </DialogActions>
+          </Dialog>
+        }
 
       </div>
     );
@@ -120,6 +154,7 @@ AppRoot.propTypes = {
   }).isRequired,
   handleOffline: PropTypes.func.isRequired,
   handleNavigate: PropTypes.func.isRequired,
+  handleIfaceState: PropTypes.func.isRequired,
   first_run: PropTypes.bool.isRequired,
 };
 
