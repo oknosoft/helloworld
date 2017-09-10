@@ -1,13 +1,13 @@
-
 // подгрузим стили асинхронно
 import('metadata-react/styles/react-data-grid.css');
 
 
 // конструктор metadata.js
 import MetaEngine from 'metadata-core';
-import metadata_pouchdb from 'metadata-pouchdb';
-import metadata_ui from "metadata-abstract-ui";
-import metadata_react from "metadata-react/plugin";
+import plugin_pouchdb from 'metadata-pouchdb';
+import plugin_ui from 'metadata-abstract-ui';
+import plugin_ui_tabulars from 'metadata-abstract-ui/tabulars';
+import plugin_react from 'metadata-react/plugin';
 
 // функция установки параметров сеанса
 import settings from '../../config/app.settings';
@@ -22,9 +22,10 @@ import modifiers from './modifiers';
 import {metaActions} from 'metadata-redux';
 
 MetaEngine
-  .plugin(metadata_pouchdb)     // подключаем pouchdb-адаптер к прототипу metadata.js
-  .plugin(metadata_ui)          // подключаем общие методы интерфейса пользователя
-  .plugin(metadata_react);      // подключаем react-специфичные модификаторы к scheme_settings
+  .plugin(plugin_pouchdb)     // подключаем pouchdb-адаптер к прототипу metadata.js
+  .plugin(plugin_ui)          // подключаем общие методы интерфейса пользователя
+  .plugin(plugin_ui_tabulars) // подключаем методы экспорта табличной части
+  .plugin(plugin_react);      // подключаем react-специфичные модификаторы к scheme_settings
 
 // создаём экземпляр MetaEngine
 const $p = new MetaEngine();

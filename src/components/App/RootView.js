@@ -25,7 +25,7 @@ class RootView extends Component {
     super(props);
     this.state = {
       path_log_in: this.isPathLogIn(),
-      browser_compatible: browser_compatible(),
+      browser_compatible: true, //browser_compatible(),
     };
   }
 
