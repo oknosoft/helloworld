@@ -8,97 +8,90 @@
 
 export default function ($p) {
 
-  // свойства объекта отчета _Потребность по материалам_
-  Object.defineProperties($p.RepCash_moving.prototype, {
+  $p.RepCash_moving = class RepCash_moving extends $p.RepCash_moving {
 
-    resources: {
-      value: ['debit', 'credit', 'initial_balance', 'final_balance']
-    },
+    // ресурсы по умолчанию
+    // TODO: сделать признак в метаданных
+    get resources() {
+      return ['debit', 'credit', 'initial_balance', 'final_balance'];
+    }
 
     // пересчитывает данные в табличной части
-    prepare: {
+    prepare(scheme) {
+      const {moment} = $p.utils;
+      const {pouch} = $p.adapters;
+      const {period_from, period_till, data} = this;
+      const date_sub = moment(period_from).subtract(1, 'day').toDate();
+      const query_options = {
+        reduce: true,
+        limit: 100000,
+        group: true,
+        group_level: 4,
+        startkey: [],
+        endkey: [date_sub.getFullYear(), date_sub.getMonth() + 1, date_sub.getDate(), '\ufff0']
+      };
+      const start_total = {};
+      const default_query = 'doc/cash_moving_date_cashbox';
 
-      value: function () {
+      // признак варианта
+      const by_cashboxes = scheme.query == default_query;
 
-        const {moment} = $p.utils;
-        const {pouch} = $p.adapters;
-        const {period_from, period_till, data} = this;
-        const date_sub = moment(period_from).subtract(1, 'day').toDate();
-        const query_options = {
-          reduce: true,
-          limit: 10000,
-          group: true,
-          group_level: 4,
-          startkey: [],
-          endkey: [date_sub.getFullYear(), date_sub.getMonth() + 1, date_sub.getDate(), '\ufff0']
-        };
-        const start_total = {};
+      // массив гвидов касс
+      const cashboxes = [];
+      this.cashboxes.forEach((row) => cashboxes.push(row.cashbox.ref));
 
-        // массив гвидов касс
-        const cashboxes = [];
-        this.cashboxes.forEach((row) => {
-          cashboxes.push(row.cashbox.ref);
-        });
+      // массив гвидов статей ддс
+      const cash_flow_articles = [];
+      this.cash_flow_articles.forEach((row) => cash_flow_articles.push(row.cash_flow_article.ref));
 
-        // массив гвидов статей ддс
-        const cash_flow_articles = [];
-        this.cash_flow_articles.forEach((row) => {
-          cash_flow_articles.push(row.cash_flow_article.ref);
-        });
 
-        // фильтр для отбрасывания лишних строк
-        function discard(row) {
-          return cashboxes.length && cashboxes.indexOf(row.key[3]) == -1;
-        }
+      // фильтр для отбрасывания лишних строк
+      function discard(key) {
+        return by_cashboxes ?
+          cashboxes.length && cashboxes.indexOf(key[3]) == -1
+          :
+          cash_flow_articles.length && cash_flow_articles.indexOf(key[2]) == -1;
+      }
 
-        return pouch.local.doc.query('doc/cash_moving_date_cashbox', query_options)
-
+      if(by_cashboxes){
+        // получаем начальные остатки
+        return pouch.local.doc.query(scheme.query || default_query, query_options)
           .then((res) => {
-
             if(res.rows) {
-              res.rows.forEach((row) => {
-
-                if(discard(row)) {
+              res.rows.forEach(({key, value}) => {
+                if(discard(key)) {
                   return;
                 }
-
-                if(!start_total.hasOwnProperty(row.key[3])) {
-                  start_total[row.key[3]] = [0, 0, 0, 0];
+                if(!start_total.hasOwnProperty(key[3])) {
+                  start_total[key[3]] = [0, 0, 0, 0];
                 }
-
-                start_total[row.key[3]][0] += row.value.total;
-                start_total[row.key[3]][3] = start_total[row.key[3]][0];
-
+                start_total[key[3]][0] += value.total;
+                start_total[key[3]][3] = start_total[key[3]][0];
               });
             }
 
             query_options.startkey = [period_from.getFullYear(), period_from.getMonth() + 1, period_from.getDate(), ''];
             query_options.endkey = [period_till.getFullYear(), period_till.getMonth() + 1, period_till.getDate(), '\ufff0'];
 
-            return pouch.local.doc.query('doc/cash_moving_date_cashbox', query_options);
+            return pouch.local.doc.query(scheme.query || default_query, query_options);
           })
+          // получаем обороты
           .then((res) => {
-
             if(res.rows) {
-
-              res.rows.forEach((row) => {
-
-                if(discard(row)) {
+              res.rows.forEach(({key, value}) => {
+                if(discard(key)) {
                   return;
                 }
-
-                if(!start_total.hasOwnProperty(row.key[3])) {
-                  start_total[row.key[3]] = [0, row.value.debit, row.value.credit, row.value.total];
+                if(!start_total.hasOwnProperty(key[3])) {
+                  start_total[key[3]] = [0, value.debit, value.credit, value.total];
                 }
                 else {
-                  start_total[row.key[3]][1] += row.value.debit;
-                  start_total[row.key[3]][2] += row.value.credit;
-                  start_total[row.key[3]][3] += row.value.debit - row.value.credit;
+                  start_total[key[3]][1] += value.debit;
+                  start_total[key[3]][2] += value.credit;
+                  start_total[key[3]][3] += value.debit - value.credit;
                 }
-
               });
-
-              for (var key in start_total) {
+              for (const key in start_total) {
                 const row = start_total[key];
                 data.add({
                   cashbox: key,
@@ -109,52 +102,76 @@ export default function ($p) {
                 });
               }
             }
-
             return res;
           });
       }
 
-    },
-
-    // сворачивает табличную часть с учетом выбранных колонок
-    calculate: {
-      value: function (_columns) {
-
-        const {data, resources} = this;
-
-        // чистим таблицу результата
-        data.clear();
-        if(!data._rows) {
-          data._rows = [];
-        }
-        else {
-          data._rows.length = 0;
-        }
-
-        return this.prepare()
-          .then(() => {
-
-            // сворачиваем результат и сохраняем его в data._rows
-            const dims = [], ress = [];
-            _columns.forEach(fld => {
-              const {key} = fld;
-              if(resources.indexOf(key) != -1) {
-                ress.push(key);
+      // если нужны только обороты, результат получаем "в лоб" - прямым запросом к couchdb
+      query_options.startkey = [period_from.getFullYear(), period_from.getMonth() + 1, ''];
+      query_options.endkey = [period_till.getFullYear(), period_till.getMonth() + 1, '\ufff0'];
+      return pouch.local.doc.query(scheme.query, query_options)
+        .then((res) => {
+          if(res.rows) {
+            res.rows.forEach(({key, value}) => {
+              if(discard(key)) {
+                return;
               }
-              else {
-                dims.push(key);
-              }
-            });
-            data.group_by(dims, ress);
-            data.forEach((row) => {
-              data._rows.push(row);
-            });
+              data.add({
+                period: new Date(`${key[0].pad(4)}-${key[1].pad(2)}-01`),
+                cash_flow_article: key[2],
+                debit: value,
+              });
           });
+          return res;
+        }
+      });
+    }
+
+    // вызывает пересчет и сворачивает табличную часть с учетом выбранных колонок
+    calculate(scheme) {
+      const {data, resources, _manager} = this;
+      const _columns = scheme.rx_columns({
+        mode: 'ts',
+        fields: _manager.metadata('data').fields,
+        _obj: this
+      });
+
+      // чистим таблицу результата
+      data.clear();
+      if(!data._rows) {
+        data._rows = [];
       }
-    },
+      else {
+        data._rows.length = 0;
+      }
 
-  });
+      return this.prepare(scheme)
+        .then(() => {
 
+          // сворачиваем результат и сохраняем его в data._rows
+          const dims = [], ress = [];
+          _columns.forEach(({key}) => {
+            if(resources.indexOf(key) != -1) {
+              ress.push(key);
+            }
+            else {
+              dims.push(key);
+            }
+          });
+          scheme.dims().forEach((key) => {
+            if(dims.indexOf(key) == -1) {
+              dims.push(key);
+            }
+          });
+          data.group_by(dims, ress);
+          data.forEach((row) => {
+            data._rows.push(row);
+          });
+        });
+    }
+
+  };
 }
+
 
 

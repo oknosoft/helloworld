@@ -31,7 +31,7 @@ export default class RepParams extends Component {
     const {_obj, minHeight} = this.props;
 
     return (
-      <FormGroup style={{height: minHeight || 356, margin: 16}}>
+      <FormGroup style={{height: minHeight || 356, margin: 8}}>
 
         <FormGroup row>
           <DataField _obj={_obj} _fld="period_from" handleValueChange={this.handleValueChange} />
