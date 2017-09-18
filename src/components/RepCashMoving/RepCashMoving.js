@@ -10,7 +10,7 @@ export default class Report extends Component {
     const {props} = this;
     return <FrmReport
       {...props}
-      TabParams={RepParams}
+      RepParams={RepParams}
       handleSchemeChange={(component, scheme) => {
         const {_obj} = component.state;
         _obj.period_from = scheme.date_from;
