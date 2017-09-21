@@ -2,18 +2,27 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Switch, Route} from 'react-router';
 
-import WindowSizer from 'metadata-react/WindowSize';
 import withObj from 'metadata-redux/src/withObj';
-
+import WindowSizer from 'metadata-react/WindowSize';
 import DataList from 'metadata-react/DataList';
 import DataObj from 'metadata-react/FrmObj';
+import FrmReport from 'metadata-react/FrmReport';
+
 //import MetaObjPage from '../../components/MetaObjPage';
 import NotFoundPage from '../NotFoundPage';
 
-// отчет
-import RepCashMoving from '../RepCashMoving';
-
 class DataRoute extends Component {
+
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    windowHeight: PropTypes.number.isRequired,
+    windowWidth: PropTypes.number.isRequired,
+    handlers: PropTypes.object.isRequired,
+  };
+
+  static childContextTypes = {
+    components: PropTypes.object,
+  };
 
   render() {
     const {match, handlers, windowHeight, windowWidth} = this.props;
@@ -26,16 +35,24 @@ class DataRoute extends Component {
       width: windowWidth > 800 ? windowWidth - (windowHeight < 480 ? 20 : 0) : 800
     };
 
-    const wraper = (Component, props) => {
+    const wraper = (Component, props, type) => {
+      if(type === 'obj' && _mgr.FrmObj) {
+        Component = _mgr.FrmObj;
+      }
+      else if(type === 'list' && _mgr.FrmList) {
+        Component = _mgr.FrmList;
+      }
       return <Component _mgr={_mgr} _acl={_acl} handlers={handlers} {...props} {...sizes}  />;
     };
 
-    return area === 'rep' ?
-      <RepCashMoving _mgr={_mgr} _acl={_acl} match={match}/>
-      :
-      <Switch>
-        <Route path={`${match.url}/:ref([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})`} render={(props) => wraper(DataObj, props)}/>
-        <Route path={`${match.url}/list`} render={(props) => wraper(DataList, props)}/>
+    if(match.params.area === 'rep') {
+      const Component = _mgr.FrmObj || FrmReport;
+      return <Component _mgr={_mgr} _acl={_acl} match={match} {...sizes} />;
+    }
+
+    return <Switch>
+        <Route path={`${match.url}/:ref([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})`} render={(props) => wraper(DataObj, props, 'obj')}/>
+        <Route path={`${match.url}/list`} render={(props) => wraper(DataList, props, 'list')}/>
         {/**<Route path={`${match.url}/meta`} render={(props) => wraper(MetaObjPage, props)} />**/}
         <Route component={NotFoundPage}/>
       </Switch>;
@@ -44,17 +61,6 @@ class DataRoute extends Component {
   getChildContext() {
     return {components: {DataObj, DataList}};
   }
-
-  static propTypes = {
-    match: PropTypes.object.isRequired,
-    windowHeight: PropTypes.number.isRequired,
-    windowWidth: PropTypes.number.isRequired,
-    handlers: PropTypes.object.isRequired,
-  };
-
-  static childContextTypes = {
-    components: PropTypes.object,
-  };
 }
 
 export default WindowSizer(withObj(DataRoute));

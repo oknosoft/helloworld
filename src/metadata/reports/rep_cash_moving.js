@@ -6,6 +6,8 @@
  * Created 07.11.2016
  */
 
+import RepParams from '../../components/RepCashMoving/RepParams';
+
 export default function ($p) {
 
   $p.RepCash_moving = class RepCash_moving extends $p.RepCash_moving {
@@ -128,8 +130,8 @@ export default function ($p) {
     }
 
     // вызывает пересчет и сворачивает табличную часть с учетом выбранных колонок
-    calculate(scheme) {
-      const {data, resources, _manager} = this;
+    calculate() {
+      const {data, scheme, resources, _manager} = this;
       const _columns = scheme.rx_columns({
         mode: 'ts',
         fields: _manager.metadata('data').fields,
@@ -171,6 +173,13 @@ export default function ($p) {
     }
 
   };
+
+  /**
+   * Класс-компонент панели параметров отчета
+   * @type {RepParams}
+   */
+  $p.rep.cash_moving.RepParams = RepParams;
+
 }
 
 
