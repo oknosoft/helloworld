@@ -22,8 +22,9 @@ export default function ($p) {
     prepare(scheme) {
       const {moment} = $p.utils;
       const {pouch} = $p.adapters;
-      const {period_from, period_till, data} = this;
-      const date_sub = moment(period_from).subtract(1, 'day').toDate();
+      const {date_from, date_till, query} = scheme;
+      const {data} = this;
+      const date_sub = moment(date_from).subtract(1, 'day').toDate();
       const query_options = {
         reduce: true,
         limit: 100000,
@@ -36,7 +37,7 @@ export default function ($p) {
       const default_query = 'doc/cash_moving_date_cashbox';
 
       // признак варианта
-      const by_cashboxes = scheme.query == default_query;
+      const by_cashboxes = query == default_query;
 
       // массив гвидов касс
       const cashboxes = [];
@@ -72,8 +73,8 @@ export default function ($p) {
               });
             }
 
-            query_options.startkey = [period_from.getFullYear(), period_from.getMonth() + 1, period_from.getDate(), ''];
-            query_options.endkey = [period_till.getFullYear(), period_till.getMonth() + 1, period_till.getDate(), '\ufff0'];
+            query_options.startkey = [date_from.getFullYear(), date_from.getMonth() + 1, date_from.getDate(), ''];
+            query_options.endkey = [date_till.getFullYear(), date_till.getMonth() + 1, date_till.getDate(), '\ufff0'];
 
             return pouch.local.doc.query(scheme.query || default_query, query_options);
           })
@@ -109,9 +110,9 @@ export default function ($p) {
       }
 
       // если нужны только обороты, результат получаем "в лоб" - прямым запросом к couchdb
-      query_options.startkey = [period_from.getFullYear(), period_from.getMonth() + 1, ''];
-      query_options.endkey = [period_till.getFullYear(), period_till.getMonth() + 1, '\ufff0'];
-      return pouch.local.doc.query(scheme.query, query_options)
+      query_options.startkey = [date_from.getFullYear(), date_from.getMonth() + 1, ''];
+      query_options.endkey = [date_till.getFullYear(), date_till.getMonth() + 1, '\ufff0'];
+      return pouch.local.doc.query(query, query_options)
         .then((res) => {
           if(res.rows) {
             res.rows.forEach(({key, value}) => {

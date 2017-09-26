@@ -20,20 +20,14 @@ export default class RepParams extends Component {
     scheme: PropTypes.object,
   };
 
-  handleValueChange = () => {
-    const {_obj, scheme} = this.props;
-    scheme.date_from = _obj.period_from;
-    scheme.date_till = _obj.period_till;
-  };
-
   render() {
 
-    const {_obj, minHeight} = this.props;
+    const {_obj, scheme, minHeight} = this.props;
 
     return (
       <FormGroup style={{height: minHeight || 356, margin: 8}}>
 
-        <FieldDateRange _obj={_obj} _fld="period" _meta={_obj._metadata('period_from')} handleValueChange={this.handleValueChange} />
+        <FieldDateRange _obj={scheme} _fld="date" _meta={{synonym: 'Период'}} />
 
         <DataListField _tabular={_obj.cashboxes} _fld="cashbox" _meta={_obj._metadata('cashboxes')} />
 
