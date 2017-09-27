@@ -34,7 +34,7 @@ export default function ($p) {
         endkey: [date_sub.getFullYear(), date_sub.getMonth() + 1, date_sub.getDate(), '\ufff0']
       };
       const start_total = {};
-      const default_query = 'doc/cash_moving_date_cashbox';
+      const default_query = 'rep/cash_moving_date_cashbox';
 
       // признак варианта
       const by_cashboxes = query == default_query;
