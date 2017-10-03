@@ -34,6 +34,8 @@ import MetaTreePage from '../MetaTreePage';
 // логин и свойства подключения
 import FrmLogin from 'metadata-react/FrmLogin';
 
+import Settings from '../Settings';
+
 import withNavigateAndMeta from 'metadata-redux/src/withNavigateAndMeta';
 
 class AppRoot extends Component {
@@ -111,6 +113,7 @@ class AppRoot extends Component {
               <Route path="/about" component={AboutPage}/>
               <Route path="/meta" component={MetaTreePage}/>
               <Route path="/login" component={FrmLogin}/>
+              <Route path="/settings" component={Settings} />
               <Route component={NotFoundPage}/>
             </Switch>
         }

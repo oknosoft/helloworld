@@ -25,7 +25,7 @@ class RootView extends Component {
     super(props);
     this.state = {
       path_log_in: this.isPathLogIn(),
-      browser_compatible: true, //browser_compatible(),
+      browser_compatible: browser_compatible() || true,
     };
   }
 
@@ -66,9 +66,9 @@ class RootView extends Component {
       (data_empty === undefined) ||
       (data_empty === false && !data_loaded);
 
-    if(theme != 0){
+    if(theme != 0) {
       window._theme = theme;
-    };
+    }
 
     return <MuiThemeProvider theme={theme}>
       {
