@@ -1,5 +1,5 @@
 /**
- * ### Отчет _Движение денег_
+ * ### Отчет _Движение денег_ (невизуальная часть)
  *
  * @module rep_cash_moving
  *
@@ -18,7 +18,10 @@ export default function ($p) {
       return ['debit', 'credit', 'initial_balance', 'final_balance'];
     }
 
-    // пересчитывает данные в табличной части
+    /**
+     * пересчитывает данные в табличной части - запрос к серверу с фильтром по параметрам
+     * @param scheme
+     */
     prepare(scheme) {
       const {moment} = $p.utils;
       const {pouch} = $p.adapters;
@@ -130,7 +133,9 @@ export default function ($p) {
       });
     }
 
-    // вызывает пересчет и сворачивает табличную часть с учетом выбранных колонок
+    /**
+     * Фильтр по отбору схемы + свёртка по измерениям + группировка по схеме
+     */
     calculate() {
       const {data, scheme, resources, _manager} = this;
       const _columns = scheme.rx_columns({
@@ -151,6 +156,8 @@ export default function ($p) {
       return this.prepare(scheme)
         .then(() => {
 
+          // TODO фильтруем по отбору
+
           // сворачиваем результат и сохраняем его в data._rows
           const dims = [], ress = [];
           _columns.forEach(({key}) => {
@@ -167,7 +174,43 @@ export default function ($p) {
             }
           });
           data.group_by(dims, ress);
-          data.forEach((row) => {
+
+          // группируем по схеме
+          let grouped = false;
+          scheme.dimensions.find_rows({use: true}, ({field}) => {
+
+            // TODO в группировке может потребоваться разыменовать поля
+
+            // TODO итоги надо считать не по всем русурсам и с учетом формулы
+
+            // TODO сейчас набор полей не поддержан в интерфейсе, но решаем сразу для группировки по нескольким полям
+            for(const dim of field.split(',')) {
+              const sql = `select ${ress.map(res => `sum(${res}) as ${res}`).join(', ')} from ? ${
+                // это общий итог или группировка по полю?
+                dim ? 'group by ' + dim : ''
+                }`;
+              // TODO возможно, в alasql надо передавать не массив примитивов, а массив DataObj
+              const res = $p.wsql.alasql(sql, [data._obj]);
+              for(const row of res){
+                const fld = dim ? dim : _columns[0].key;
+                if(!row[fld]){
+                  row[fld] = {presentation: 'Σ'};
+                };
+                row.row = '0-0';
+                data._rows.push(row);
+                row.children = [];
+                data.forEach((sub) => {
+                  row.children.push(sub);
+                });
+              }
+
+              grouped = true;
+            }
+
+          });
+
+          // или заполняем без группировки
+          !grouped && data.forEach((row) => {
             data._rows.push(row);
           });
         });
