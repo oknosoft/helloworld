@@ -59,7 +59,7 @@ export default function ($p) {
           cash_flow_articles.length && cash_flow_articles.indexOf(key[2]) == -1;
       }
 
-      if(by_cashboxes){
+      if(by_cashboxes) {
         // получаем начальные остатки
         return pouch.local.doc.query(scheme.query || default_query, query_options)
           .then((res) => {
@@ -127,10 +127,10 @@ export default function ($p) {
                 cash_flow_article: key[2],
                 debit: value,
               });
-          });
-          return res;
-        }
-      });
+            });
+            return res;
+          }
+        });
     }
 
     /**
@@ -156,63 +156,112 @@ export default function ($p) {
       return this.prepare(scheme)
         .then(() => {
 
-          // TODO фильтруем по отбору
+          // TODO фильтруем по отбору с учетом разыменования и видов сравнения
+          // TODO не забываем про методы $p.utils._find_rows и $p.CchProperties.check_compare, $p.CchProperties.check_condition (из windowbuilder)
 
           // сворачиваем результат и сохраняем его в data._rows
           const dims = [], ress = [];
+          scheme.dims().forEach((field) => {
+            for (const key of field.split(',').map(v => v.trim())) {
+              dims.indexOf(key) == -1 && dims.push(key);
+            }
+          });
           _columns.forEach(({key}) => {
-            if(resources.indexOf(key) != -1) {
+            if(dims.indexOf(key) == -1 && resources.indexOf(key) != -1) {
               ress.push(key);
             }
             else {
-              dims.push(key);
+              dims.indexOf(key) == -1 && dims.push(key);
             }
           });
-          scheme.dims().forEach((key) => {
-            if(dims.indexOf(key) == -1) {
-              dims.push(key);
-            }
-          });
-          data.group_by(dims, ress);
 
           // группируем по схеме
           let grouped = false;
+
+          // TODO сейчас поддержана только первая запись иерархии
+
+          // TODO сейчас нет понятия детальных записей - всё сворачивается по измерениям
+
           scheme.dimensions.find_rows({use: true}, ({field}) => {
 
             // TODO в группировке может потребоваться разыменовать поля
 
-            // TODO итоги надо считать не по всем русурсам и с учетом формулы
+            // TODO итоги надо считать не по всем русурсам
+
+            // TODO итоги надо считать с учетом формулы
 
             // TODO сейчас набор полей не поддержан в интерфейсе, но решаем сразу для группировки по нескольким полям
-            for(const dim of field.split(',')) {
-              const sql = `select ${ress.map(res => `sum(${res}) as ${res}`).join(', ')} from ? ${
-                // это общий итог или группировка по полю?
-                dim ? 'group by ' + dim : ''
-                }`;
-              // TODO возможно, в alasql надо передавать не массив примитивов, а массив DataObj
-              const res = $p.wsql.alasql(sql, [data._obj]);
-              for(const row of res){
-                const fld = dim ? dim : _columns[0].key;
-                if(!row[fld]){
-                  row[fld] = {presentation: 'Σ'};
-                };
-                row.row = '0-0';
-                data._rows.push(row);
-                row.children = [];
-                data.forEach((sub) => {
-                  row.children.push(sub);
-                });
+            const dims = field.split(',').map(v => v.trim());
+            const sql = `select ${ress.map(res => `sum(${res}) as ${res}`).join(', ')
+              } ${field ? ((ress.length ? ', ' : '') + field) : ''} from ? ${field ? 'group by ROLLUP(' + field + ')' : ''}`;
+            // TODO возможно, в alasql надо передавать не массив примитивов, а массив DataObj
+            // TODO еще, в alasql есть ROLLUP, CUBE и GROUPING SETS (аналог 1С-ного ИТОГИ) - можно задействовать
+            const res = $p.wsql.alasql(sql, [data._obj]);
+
+            // складываем результат в иерархическую структуру
+            const levels = [];
+            let index = 0;
+            for (const row of res) {
+
+              row.row = (index++).toString();
+
+              // является ли строка группировкой?
+              const is_group = dims.some(v => row[v] === null);
+              const parent_group = {};
+              const parent_dims = [];
+              is_group && dims.forEach(v => {
+                if(row[v] !== null) {
+                  parent_dims.push(v);
+                  parent_group[v] = row[v];
+                }
+              });
+
+              // ищем подходящего родителя
+              let parent;
+              for (const level of levels) {
+                if(is_group) {
+                  const lim = parent_dims.length - 1;
+                  if(parent_dims.every((v, i) => level[v] === row[v] || i === lim)) {
+                    parent = level;
+                  }
+                  // если мы группировка, добавляем себя в levels
+                  row.children = [];
+                  levels.push(row);
+                  break;
+                }
+                else {
+                  const lim = dims.length - 1;
+                  if(dims.every((v, i) => level[v] === row[v] || i === lim)) {
+                    parent = level;
+                    break;
+                  }
+                }
+              }
+              if(parent) {
+                parent.children.push(row);
+              }
+              else {
+                if(!levels.length) {
+                  row.children = [];
+                  levels.push(row);
+                }
               }
 
-              grouped = true;
             }
+
+            data._rows.push(levels[0]);
+            grouped = true;
+            return false;
 
           });
 
           // или заполняем без группировки
-          !grouped && data.forEach((row) => {
-            data._rows.push(row);
-          });
+          if(!grouped) {
+            data.group_by(dims, ress);
+            data.forEach((row) => {
+              data._rows.push(row);
+            });
+          }
         });
     }
 
