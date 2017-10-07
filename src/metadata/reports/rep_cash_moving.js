@@ -201,8 +201,6 @@ export default function ($p) {
             let index = 0;
             for (const row of res) {
 
-              // TODO для ссылочных полей надо выполнить приведение типов, т.к в alasql возвращает guid`s вместо объектов
-
               row.row = (index++).toString();
 
               // является ли строка группировкой?
@@ -221,7 +219,8 @@ export default function ($p) {
               for (const level of levels) {
                 if(is_group) {
                   const lim = parent_dims.length - 1;
-                  if(parent_dims.every((v, i) => level[v] === row[v] || i === lim)) {
+                  if(parent_dims.every((v, i) => (level[v] instanceof Date && row[v] instanceof Date ?
+                      level[v].valueOf() === row[v].valueOf() : level[v] === row[v]) || i === lim)) {
                     parent = level;
                   }
                   // если мы группировка, добавляем себя в levels
@@ -249,6 +248,10 @@ export default function ($p) {
             }
 
             data._rows.push(levels[0]);
+            data._rows._count = index;
+
+            // TODO для ссылочных полей надо выполнить приведение типов, т.к в alasql возвращает guid`s вместо объектов
+            this.cast(data._rows, 0, dims);
 
           }
           else {
@@ -257,9 +260,49 @@ export default function ($p) {
             data.forEach((row) => {
               data._rows.push(row);
             });
+            data._rows._count = data._rows.length;
           }
 
         });
+    }
+
+    /**
+     * Выполняет приведение типов в группировках и ссылочных полях после alasql
+     */
+    cast(rows, level, dims, dim, meta) {
+      if(!meta){
+        meta = this._metadata(this._manager._tabular || 'data').fields;
+        dim = dims[dims.length - 1];
+      }
+      const {utils} = $p;
+      for(const row of rows) {
+        if(row.children){
+          // если это группировка верхнего уровня
+          if(level == 0){
+            row[dim] = meta[dim].type.is_ref ? {presentation: 'Σ'} : 'Σ';
+          }
+          else{
+            const gdim = dims[level - 1];
+            const mgr = this._manager.value_mgr(row, gdim, meta[gdim].type);
+            const val = utils.is_data_mgr(mgr) ? mgr.get(row[gdim]) : row[gdim];
+            row[dim] = this._manager.value_mgr(row, dim, meta[dim].type) ?
+              (
+                utils.is_data_obj(val) ? val : {presentation: val instanceof Date ? utils.moment(val).format(utils.moment._masks[meta[gdim].type.date_part]) : val }
+              )
+              :
+              (
+                utils.is_data_obj(val) ? val.toString() : val
+              );
+          }
+          this.cast(row.children, level + 1, dims, dim, meta);
+        }
+        else{
+          const mgr = this._manager.value_mgr(row, dim, meta[dim].type);
+          if(utils.is_data_mgr(mgr)) {
+            row[dim] =  mgr.get(row[dim]);
+          }
+        }
+      }
     }
 
   };
