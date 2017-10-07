@@ -160,29 +160,29 @@ export default function ($p) {
           // TODO не забываем про методы $p.utils._find_rows и $p.CchProperties.check_compare, $p.CchProperties.check_condition (из windowbuilder)
 
           // сворачиваем результат и сохраняем его в data._rows
-          const dims = [], ress = [];
-          scheme.dims().forEach((field) => {
-            for (const key of field.split(',').map(v => v.trim())) {
-              dims.indexOf(key) == -1 && dims.push(key);
-            }
-          });
+          const dims = scheme.dims();
+          const ress = [];
           _columns.forEach(({key}) => {
             if(dims.indexOf(key) == -1 && resources.indexOf(key) != -1) {
               ress.push(key);
             }
             else {
+              // для базовой группировки, подмешиваем в измерения всё, что не ресурс
               dims.indexOf(key) == -1 && dims.push(key);
             }
           });
 
           // группируем по схеме
-          let grouped = false;
 
           // TODO сейчас поддержана только первая запись иерархии
 
           // TODO сейчас нет понятия детальных записей - всё сворачивается по измерениям
 
-          scheme.dimensions.find_rows({use: true}, ({field}) => {
+          // TODO сейчас набор полей не поддержан в интерфейсе, но решаем сразу для группировки по нескольким полям
+          const grouping = scheme.dims();
+          if(grouping.length) {
+            // строка полей группировки без пустых полей
+            const dflds = dims.filter(v => v).join(', ');
 
             // TODO в группировке может потребоваться разыменовать поля
 
@@ -190,11 +190,9 @@ export default function ($p) {
 
             // TODO итоги надо считать с учетом формулы
 
-            // TODO сейчас набор полей не поддержан в интерфейсе, но решаем сразу для группировки по нескольким полям
-            const dims = field.split(',').map(v => v.trim());
             const sql = `select ${ress.map(res => `sum(${res}) as ${res}`).join(', ')
-              } ${field ? ((ress.length ? ', ' : '') + field) : ''} from ? ${field ? 'group by ROLLUP(' + field + ')' : ''}`;
-            // TODO возможно, в alasql надо передавать не массив примитивов, а массив DataObj
+              } ${dflds ? ((ress.length ? ', ' : '') + dflds) : ''} from ? ${dflds ? 'group by ROLLUP(' + dflds + ')' : ''}`;
+
             // TODO еще, в alasql есть ROLLUP, CUBE и GROUPING SETS (аналог 1С-ного ИТОГИ) - можно задействовать
             const res = $p.wsql.alasql(sql, [data._obj]);
 
@@ -202,6 +200,8 @@ export default function ($p) {
             const levels = [];
             let index = 0;
             for (const row of res) {
+
+              // TODO для ссылочных полей надо выполнить приведение типов, т.к в alasql возвращает guid`s вместо объектов
 
               row.row = (index++).toString();
 
@@ -246,22 +246,19 @@ export default function ($p) {
                   levels.push(row);
                 }
               }
-
             }
 
             data._rows.push(levels[0]);
-            grouped = true;
-            return false;
 
-          });
-
-          // или заполняем без группировки
-          if(!grouped) {
+          }
+          else {
+            // или заполняем без группировки
             data.group_by(dims, ress);
             data.forEach((row) => {
               data._rows.push(row);
             });
           }
+
         });
     }
 
