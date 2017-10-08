@@ -26,6 +26,7 @@ class RootProvider extends Component {
   }
 }
 
+// TODO: перенести загрузку библиотек из jsdelivr сюда
 render(
   <RootProvider />,
   document.getElementById('root'),
