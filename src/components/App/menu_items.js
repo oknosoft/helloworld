@@ -1,11 +1,11 @@
 import React from 'react';
-import IconDrafts from 'material-ui-icons/Drafts';
 import IconChart from 'material-ui-icons/InsertChart';
 import IconDoc from 'material-ui-icons/EventNote';
-import IconList from 'material-ui-icons/List';
 import IconInfo from 'material-ui-icons/Info';
 import IconPerson from 'material-ui-icons/Person';
 import IconSettings from 'material-ui-icons/Settings';
+// import IconDrafts from 'material-ui-icons/Drafts';
+// import IconList from 'material-ui-icons/List';
 
 const items = [
   {
@@ -18,7 +18,7 @@ const items = [
         text: 'Перемещение денег',
         id: 'doc_cash_moving',
         navigate: '/doc.cash_moving/list',
-        icon: <IconDrafts/>
+        //icon: <IconDrafts/>
       },
     ]
   },
@@ -32,7 +32,7 @@ const items = [
         text: 'Движение денег',
         id: 'rep_cash_moving',
         navigate: '/rep.cash_moving/main',
-        icon: <IconList/>
+        //icon: <IconList/>
       }
     ]
   },
