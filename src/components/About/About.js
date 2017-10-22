@@ -121,7 +121,7 @@ class About extends Component {
                   rel="noopener noreferrer">MIT</a></p>
 
             <h3><i className="fa fa-question-circle"></i> Вопросы</h3>
-            <p>Если обнаружили ошибку, пожалуйста, <a href="https://github.com/oknosoft/windowbuilder/issues/new" target="_blank" rel="noopener noreferrer">зарегистрируйте вопрос в GitHub</a> или <a href="http://www.oknosoft.ru/metadata/#page-118" target="_blank" rel="noopener noreferrer">свяжитесь с разработчиком</a> напрямую</p>
+            <p>Если обнаружили ошибку, пожалуйста, зарегистрируйте <a href="https://github.com/oknosoft/windowbuilder/issues?utf8=%E2%9C%93&q=is%3Aissue" target="_blank" rel="noopener noreferrer">вопрос в GitHub</a> или <a href="mailto:info@oknosoft.ru?subject=metadata.js">свяжитесь с разработчиком</a> напрямую</p>
           </Grid>
         </Grid>
       </div>);

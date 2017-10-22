@@ -54,13 +54,11 @@ $p.wsql.init((prm) => {
 
 }, ($p) => {
 
-  const db = new MetaEngine.classes.PouchDB(config.couch_local + 'meta', {
-    skip_setup: true,
-  });
+  const db = new MetaEngine.classes.PouchDB(config.couch_local + 'meta', {skip_setup: true});
 
   let _m;
 
-  debug('Читаем описание метаданных из CouchDB');
+  debug(`Читаем описание метаданных из CouchDB ${config.couch_local}`);
   return db.info()
     .then(() => db.get('meta'))
     .catch((err) => {

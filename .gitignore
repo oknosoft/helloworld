@@ -1,4 +1,26 @@
-node_modules/
-build/
-.idea/
+# Exclude compiled files
+build
+/lib
+/.eslintcache
+/tmp
+coverage
+
+# Private config files
+config/superlogin.config.server.js
+
+# TODO
+.github
+
+# OS files
+.DS_STORE
+
+# npm files
+node_modules
+package-lock.json
 *.log
+
+# Editor files
+.idea
+.vscode
+
+.nyc_output

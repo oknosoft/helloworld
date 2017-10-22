@@ -17,22 +17,19 @@ module.exports = function settings(prm = {}) {
       password: "hQI7OhIGlVeOWi8="
     }],
 
-    // если понадобится обратиться к 1С, будем использовать irest
-    irest_enabled: true,
-
-    // расположение rest-сервиса 1c по умолчанию
-    rest_path: '',
-
-    // расположение couchdb для сайта
+    // расположение couchdb для сайта (редирект настроен в nginx)
     couch_path: "/couchdb/hw_",
 
-    // расположение couchdb для nodejs
+    // расположение couchdb для nodejs (компиляция метаданных)
     couch_local: "http://cou200:5984/hw_",
 
+    // используем базу meta и широковещательные сообщение всем абонентам
+    use_meta: false,
+
     // фильтр для репликации с CouchDB не используем
-    pouch_filter: {
-      meta: 'auth/meta',
-    },
+    // pouch_filter: {
+    //   meta: 'auth/meta',
+    // },
 
     // по умолчанию, обращаемся к зоне 1
     zone: 1,
@@ -46,11 +43,11 @@ module.exports = function settings(prm = {}) {
     // разрешаем сохранение пароля
     enable_save_pwd: true,
 
-    // используем геокодер
-    use_ip_geo: true,
+    // геокодер не используем
+    use_ip_geo: false,
 
-    // используем карты google
-    use_google_geo: 'AIzaSyAO-Jca5NTE5bQ7IY7BxFCl0jgW9OsJvuM',
+    // карты google не используем
+    use_google_geo: '',
 
   });
 

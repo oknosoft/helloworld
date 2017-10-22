@@ -1,6 +1,3 @@
-// подгрузим стили асинхронно
-import('metadata-react/styles/react-data-grid.css');
-
 
 // конструктор metadata.js
 import MetaEngine from 'metadata-core';
@@ -12,15 +9,10 @@ import plugin_react from 'metadata-react/plugin';
 // функция установки параметров сеанса
 import settings from '../../config/app.settings';
 
-// скрипт инициализации метаданных
-import meta_init from './init';
-
-// скрипты модификаторов DataObj`s и DataManager`s
-import modifiers from './modifiers';
-
 // генератор события META_LOADED для redux
 import {metaActions} from 'metadata-redux';
 
+// подключаем плагины к MetaEngine
 MetaEngine
   .plugin(plugin_pouchdb)     // подключаем pouchdb-адаптер к прототипу metadata.js
   .plugin(plugin_ui)          // подключаем общие методы интерфейса пользователя
@@ -30,33 +22,44 @@ MetaEngine
 // создаём экземпляр MetaEngine
 const $p = new MetaEngine();
 
-// параметры сеанса и метаданные инициализируем без лишних проволочек
-$p.wsql.init(settings, meta_init);
-
-// подгружаем дополнительные стили
-$p.utils.load_script('https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css', 'link');
-$p.utils.load_script('https://fonts.googleapis.com/css?family=Roboto', 'link');
+// параметры сеанса инициализируем сразу
+$p.wsql.init(settings);
 
 // скрипт инициализации в привязке к store приложения
-export function init(store) {
+export function init(dispatch) {
 
-  return Promise.resolve()
-    .then(() => {
+  // плагин pouchdb-authentication подключаем асинхронно
+  return import('pouchdb-authentication/dist/pouchdb.authentication.min')
+
+    // читаем скрипт инициализации метаданных, полученный в результате выполнения meta:prebuild
+    .then(() => import('./init'))
+    .then((meta_init) => {
+
+    // выполняем скрипт инициализации метаданных
+    meta_init($p);
+
+    // сообщяем адаптерам пути, суффиксы и префиксы
+    const {wsql, job_prm, adapters} = $p;
+    adapters.pouch.init(wsql, job_prm);
+
+    // читаем скрипты модификаторов DataObj`s и DataManager`s
+    return import('./modifiers');
+  })
+    .then((modifiers) => {
 
       // выполняем модификаторы
-      modifiers($p);
+      modifiers.default($p);
 
       // информируем хранилище о готовности MetaEngine
-      store.dispatch(metaActions.META_LOADED($p));
+      dispatch(metaActions.META_LOADED($p));
 
       // читаем локальные данные в ОЗУ
       return $p.adapters.pouch.load_data();
-
-    });
+    })
+    .catch($p && $p.record_log);
 }
 
 // экспортируем $p и PouchDB глобально
 global.$p = $p;
-global.PouchDB = MetaEngine.classes.PouchDB;
 
 export default $p;
