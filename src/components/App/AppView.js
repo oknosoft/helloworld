@@ -36,7 +36,7 @@ import FrmLogin from 'metadata-react/FrmLogin';
 
 import Settings from '../Settings';
 
-import withNavigateAndMeta from 'metadata-redux/src/withNavigateAndMeta';
+import {withNavigateAndMeta} from 'metadata-redux';
 
 class AppRoot extends Component {
 

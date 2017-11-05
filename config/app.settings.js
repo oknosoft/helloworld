@@ -4,7 +4,11 @@
  *
  * @param prm {Object} - в свойствах этого объекта определяем параметры работы программы
  */
-module.exports = function settings(prm = {}) {
+module.exports = function settings(prm) {
+
+  if(!prm){
+    prm = {};
+  };
 
   return Object.assign(prm, {
 
@@ -23,13 +27,10 @@ module.exports = function settings(prm = {}) {
     // расположение couchdb для nodejs (компиляция метаданных)
     couch_local: "http://cou200:5984/hw_",
 
-    // используем базу meta и широковещательные сообщение всем абонентам
-    use_meta: false,
-
     // фильтр для репликации с CouchDB не используем
-    // pouch_filter: {
-    //   meta: 'auth/meta',
-    // },
+    pouch_filter: {
+      meta: 'auth/meta',
+    },
 
     // по умолчанию, обращаемся к зоне 1
     zone: 1,
@@ -37,7 +38,11 @@ module.exports = function settings(prm = {}) {
     // объявляем номер демо-зоны
     zone_demo: 1,
 
-    // размер вложений
+    // если use_meta === false, не используем базу meta в рантайме
+    // см.: https://github.com/oknosoft/metadata.js/issues/255
+    use_meta: false,
+
+    // размер вложений 2Mb
     attachment_max_size: 2000000,
 
     // разрешаем сохранение пароля
