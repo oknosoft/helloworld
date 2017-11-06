@@ -9,7 +9,7 @@ import DataObj from 'metadata-react/FrmObj';
 import FrmReport from 'metadata-react/FrmReport';
 
 //import MetaObjPage from '../../components/MetaObjPage';
-import NotFoundPage from '../NotFoundPage';
+import NotFound from '../../pages/NotFound';
 
 class DataRoute extends Component {
 
@@ -28,6 +28,17 @@ class DataRoute extends Component {
     const {match, handlers, windowHeight, windowWidth} = this.props;
     const {area, name} = match.params;
     const _mgr = $p[area][name];
+
+    if(!_mgr) {
+      return <NotFound/>;
+    }
+
+    // если нет текущего пользователя, переходим на страницу login
+    if(!$p.current_user) {
+      handlers.handleNavigate('/login');
+      return false;
+    }
+
     const _acl = $p.current_user.get_acl(_mgr.class_name);
 
     const sizes = {
@@ -51,11 +62,11 @@ class DataRoute extends Component {
     }
 
     return <Switch>
-        <Route path={`${match.url}/:ref([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})`} render={(props) => wraper(DataObj, props, 'obj')}/>
-        <Route path={`${match.url}/list`} render={(props) => wraper(DataList, props, 'list')}/>
-        {/**<Route path={`${match.url}/meta`} render={(props) => wraper(MetaObjPage, props)} />**/}
-        <Route component={NotFoundPage}/>
-      </Switch>;
+      <Route path={`${match.url}/:ref([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})`} render={(props) => wraper(DataObj, props, 'obj')}/>
+      <Route path={`${match.url}/list`} render={(props) => wraper(DataList, props, 'list')}/>
+      {/**<Route path={`${match.url}/meta`} render={(props) => wraper(MetaObjPage, props)} />**/}
+      <Route component={NotFound}/>
+    </Switch>;
   }
 
   getChildContext() {

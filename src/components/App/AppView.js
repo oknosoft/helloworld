@@ -11,7 +11,7 @@ import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} fr
 
 // навигация
 import Header from 'metadata-react/Header';
-import items from './menu_items'; // массив элементов меню
+import items from '../../pages'; // массив элементов меню
 
 // заставка "загрузка занных"
 import DumbScreen from '../DumbScreen';
@@ -22,11 +22,8 @@ import DataRoute from '../DataRoute';
 // домашняя страница, в данном проекте - просто редирект на список заказов
 import HomeView from '../HomeView';
 
-// информация о программе
-import AboutPage from '../About';
-
-// 404
-import NotFoundPage from '../NotFoundPage';
+// 404 живёт внутри MarkdownRoute
+import MarkdownRoute from '../MarkdownRoute';
 
 // дерево метаданных
 import MetaTreePage from '../MetaTreePage';
@@ -38,7 +35,7 @@ import Settings from '../Settings';
 
 import {withNavigateAndMeta} from 'metadata-redux';
 
-class AppRoot extends Component {
+class AppView extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -59,17 +56,17 @@ class AppRoot extends Component {
   }
 
   shouldComponentUpdate(props) {
-    const {user, data_empty, couch_direct, offline, path_log_in} = props;
+    const {meta_loaded, user, data_empty, couch_direct, offline, path_log_in} = props;
     let res = true;
 
     // если есть сохранённый пароль и online, пытаемся авторизоваться
-    if(!user.logged_in && user.has_login && !user.try_log_in && !offline) {
+    if(meta_loaded && !user.logged_in && user.has_login && !user.try_log_in && !offline) {
       props.handleLogin();
       res = false;
     }
 
     // если это первый запуск или couch_direct и offline, переходим на страницу login
-    if(!path_log_in && ((data_empty === true && !user.try_log_in && !user.logged_in) || (couch_direct && offline))) {
+    if(meta_loaded && !path_log_in && ((data_empty === true && !user.try_log_in && !user.logged_in) || (couch_direct && offline))) {
       props.handleNavigate('/login');
       res = false;
     }
@@ -86,12 +83,11 @@ class AppRoot extends Component {
     else {
       handleNavigate('/');
     }
-  }
+  };
 
   handleDialogClose(name) {
     this.props.handleIfaceState({component: '', name, value: {open: false}});
   }
-
 
   render() {
     const {props} = this;
@@ -110,11 +106,10 @@ class AppRoot extends Component {
             <Switch>
               <Route exact path="/" render={(routeProps) => <HomeView handleNavigate={props.handleNavigate} {...routeProps} />}/>
               <Route path="/:area(doc|cat|ireg|cch|rep).:name" component={DataRoute}/>
-              <Route path="/about" component={AboutPage}/>
               <Route path="/meta" component={MetaTreePage}/>
               <Route path="/login" component={FrmLogin}/>
-              <Route path="/settings" component={Settings} />
-              <Route component={NotFoundPage}/>
+              <Route path="/settings" component={Settings}/>
+              <Route render={(routeProps) => <MarkdownRoute {...routeProps} />} />
             </Switch>
         }
 
@@ -151,12 +146,12 @@ class AppRoot extends Component {
   }
 }
 
-AppRoot.propTypes = {
+AppView.propTypes = {
   handleOffline: PropTypes.func.isRequired,
   handleNavigate: PropTypes.func.isRequired,
   handleIfaceState: PropTypes.func.isRequired,
   first_run: PropTypes.bool.isRequired,
 };
 
-export default withNavigateAndMeta(AppRoot);
+export default withNavigateAndMeta(AppView);
 
