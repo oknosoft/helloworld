@@ -1,2 +1,2 @@
-import AppView from './AppView';
+import AppView from './AppViewTemporaryDrawer';
 export default AppView;
