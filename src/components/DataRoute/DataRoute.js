@@ -8,6 +8,8 @@ import DataList from 'metadata-react/DataList';
 import DataObj from 'metadata-react/FrmObj';
 import FrmReport from 'metadata-react/FrmReport';
 
+import AppContent from 'metadata-react/App/AppContent';
+
 //import MetaObjPage from '../../components/MetaObjPage';
 import NotFound from '../../pages/NotFound';
 
@@ -41,9 +43,15 @@ class DataRoute extends Component {
 
     const _acl = $p.current_user.get_acl(_mgr.class_name);
 
+    const dx = windowWidth > 1280 ? 280 : 0;
+    const dstyle = {marginTop: 48};
+    if(dx){
+      dstyle.marginLeft = dx;
+    }
+
     const sizes = {
       height: windowHeight > 480 ? windowHeight - 52 : 428,
-      width: windowWidth > 800 ? windowWidth - (windowHeight < 480 ? 20 : 0) : 800
+      width: windowWidth > 800 ? windowWidth - (windowHeight < 480 ? 20 : dx) : 800
     };
 
     const wraper = (Component, props, type) => {
@@ -53,12 +61,12 @@ class DataRoute extends Component {
       else if(type === 'list' && _mgr.FrmList) {
         Component = _mgr.FrmList;
       }
-      return <Component _mgr={_mgr} _acl={_acl} handlers={handlers} {...props} {...sizes}  />;
+      return <div style={dstyle}><Component _mgr={_mgr} _acl={_acl} handlers={handlers} {...props} {...sizes} /></div>;
     };
 
     if(match.params.area === 'rep') {
       const Component = _mgr.FrmObj || FrmReport;
-      return <Component _mgr={_mgr} _acl={_acl} match={match} {...sizes} />;
+      return <div style={dstyle}><Component _mgr={_mgr} _acl={_acl} match={match} {...sizes} /></div>;
     }
 
     return <Switch>

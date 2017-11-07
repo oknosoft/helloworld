@@ -14,11 +14,11 @@ const theme = createMuiTheme({
     }
   },
 
-  // custom: {
-  //   appbar: {
-  //     position: 'fixed',
-  //   }
-  // },
+  custom: {
+    appbar: {
+      position: 'fixed',
+    }
+  },
 
   // overrides: {
   //   MuiToolbar: {
