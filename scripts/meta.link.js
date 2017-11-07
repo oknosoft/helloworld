@@ -4,12 +4,40 @@
 
 const path = require('path');
 const fs = require('fs');
-const appDirectory = fs.realpathSync(process.cwd());
-const localNodeModules = path.resolve(appDirectory, 'node_modules');
+const localNodeModules = path.resolve(__dirname, '../node_modules');
 const remoteNodeModules = 'D:\\WORK\\0KNOSOFT\\UniServer\\www\\builder2\\git-osde\\packages';
-const libs = 'metadata-core,metadata-redux,metadata-pouchdb,metadata-abstract-ui,metadata-react,metadata-external'.split(',');
+const {dependencies} = require(path.resolve(__dirname, '../package.json'));
+const libs = Object.keys(dependencies).filter(v => /^metadata-/.test(v));
 
-for(const lib of libs){
+function fromDir(startPath, filter, callback) {
+
+  if(!fs.existsSync(startPath)) {
+    console.log('no dir ', startPath);
+    return;
+  }
+
+  const files = fs.readdirSync(startPath);
+  for (let i = 0; i < files.length; i++) {
+    const filename = path.join(startPath, files[i]);
+    if(/node_modules/.test(filename)){
+      continue;
+    }
+    const stat = fs.lstatSync(filename);
+    if(stat.isDirectory()) {
+      fromDir(filename, filter, callback); //recurse
+    }
+    else if(filter.test(filename)) callback(filename);
+  };
+};
+
+for (const lib of libs) {
   const lpath = path.resolve(localNodeModules, lib);
   const rpath = path.resolve(remoteNodeModules, lib);
+  let i = 0;
+  fromDir(rpath, /\.(css|js|mjs|md|map)$/, (filename) => {
+    i++;
+    const name = filename.replace(rpath, '');
+    fs.createReadStream(filename).pipe(fs.createWriteStream(path.join(lpath, name)));
+  });
+  console.log(`from ${rpath} written ${i} files`);
 }

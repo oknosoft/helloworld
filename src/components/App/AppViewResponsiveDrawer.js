@@ -145,7 +145,7 @@ class AppView extends Component {
       // основной layout
       <div key="content" className={classes.root}>
         <AppBar className={appBarClassName}>
-          <Toolbar>
+          <Toolbar disableGutters>
             <IconButton
               color="contrast"
               aria-label="open drawer"
