@@ -4,7 +4,7 @@
  */
 export default {
   'common': {
-    title: 'Metadata hello world',
+    title: 'Демо metadata.js',
   },
   OrderList: {
     state_filter: '',

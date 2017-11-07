@@ -8,8 +8,6 @@ import DataList from 'metadata-react/DataList';
 import DataObj from 'metadata-react/FrmObj';
 import FrmReport from 'metadata-react/FrmReport';
 
-import AppContent from 'metadata-react/App/AppContent';
-
 //import MetaObjPage from '../../components/MetaObjPage';
 import NotFound from '../../pages/NotFound';
 
