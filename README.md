@@ -53,10 +53,11 @@
 Конфигурацию 1С можно взять [здесь](https://github.com/oknosoft/metadata.js/tree/master/integration_1c)  
 Дистрибутив CouchDB опубликован [здесь](http://couchdb.apache.org/#download)
 
-Для настройки CouchDB в режиме единичного узла или кластера необходимо выбрать соответствующую опцию в [Fauxton](http://localhost:5984/_utils#setup) или проделать тоже самое вручную:
+Для настройки CouchDB в режиме единичного узла или кластера необходимо выбрать соответствующую опцию в `fauxton` или проделать тоже самое вручную:
 - создать пользователя с правами администратора
-- чтобы разрешить доступ к `couchdb` по ip адресу, отличному от `localhost` необходимо установить `bind_address` равный `0.0.0.0`
-- включить CORS, перейдя в `Configuration/CORS`
+- чтобы разрешить доступ к серверу по ip адресу, отличному от `localhost` необходимо установить `bind_address` равный `0.0.0.0`
+- включить CORS, перейдя в `Config/CORS`
+- установить `reduce_limit = false` в `Config/query_server_config`
 
 Следуя [этой](https://github.com/oknosoft/metadata.js/tree/master/integration_1c) инструкции загрузить конфигурацию 1С.
 
