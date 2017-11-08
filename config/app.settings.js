@@ -10,10 +10,12 @@ module.exports = function settings(prm) {
     prm = {};
   };
 
+  var lsprefix = 'hw_';
+
   return Object.assign(prm, {
 
     // разделитель для localStorage
-    local_storage_prefix: 'hw_',
+    local_storage_prefix: lsprefix,
 
     // гостевые пользователи для демо-режима
     guests: [{
@@ -22,10 +24,11 @@ module.exports = function settings(prm) {
     }],
 
     // расположение couchdb для сайта (редирект настроен в nginx)
-    couch_path: "/couchdb/hw_",
+    // если couchdb выполняется на том же сервере, что и nginx, можно указать "//localhost:5984/",
+    couch_path: "/couchdb/" + lsprefix,
 
     // расположение couchdb для nodejs (компиляция метаданных)
-    couch_local: "http://cou200:5984/hw_",
+    couch_local: "http://cou200:5984/" + lsprefix,
 
     // фильтр для репликации с CouchDB не используем
     pouch_filter: {

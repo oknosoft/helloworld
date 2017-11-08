@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import AppContent from 'metadata-react/App/AppContent';
+
 class DumbScreen extends Component {
 
   render() {
 
-    let {title, page, top, first_run} = this.props;
+    let {title, page, first_run} = this.props;
     const over = page && page.limit * page.page > page.total_rows;
     if(!title) {
       title = (first_run || over) ? 'Первый запуск требует дополнительного времени...' : 'Загрузка модулей...';
@@ -15,29 +17,41 @@ class DumbScreen extends Component {
       :
       page.text || `Такт №${page.page}, загружено ${Math.min(page.page * page.limit, page.total_rows)} из ${page.total_rows} объектов`)
       : '';
+    // style={{
+    //   flex: '0 0 auto',
+    //     display: 'flex',
+    //     minHeight: '80vh',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     width: '100%',
+    // }}
+    return <AppContent>
+      <div className="back" style={{marginTop: -64}}>
+        <div className="splash">
+          <div className="description">
+            <h1 itemProp="name">Hello world for metadata.js</h1>
+            <p>Категория: <span itemProp="applicationSubCategory">CRM, E-Commerce</span></p>
+            <p>Платформа: <i className="fa fa-chrome" aria-hidden="true"></i> браузер Chrome для <span itemProp="operatingSystem">Windows 8, 10 | Android | Mac | iOS</span>
+            </p>
+            <div itemProp="description">
+              <p>Веб-приложение на базе <a href="http://www.oknosoft.ru/metadata/" target="_blank" rel="noopener noreferrer">Metadata.js</a>
+                для демонстрации базовых возможностей фреймворка:</p>
+              <ul>
+                <li>Ввод и редактирование докумнтов поступления - выбытия - перемещения денег</li>
+                <li>Формирование отчета о движении денег</li>
+                <li>Автономная работа при отсутствии доступа к Интернет</li>
+                <li>Фоновая синхронизация с ИБ 1С</li>
+              </ul>
+            </div>
+          </div>
 
-    return <div className='splash' style={{marginTop: top}}>
-      <div className="description">
-        <h1 itemProp="name">Hello world for metadata.js</h1>
-        <p>Категория: <span itemProp="applicationSubCategory">CRM, E-Commerce</span></p>
-        <p>Платформа: <i className="fa fa-chrome" aria-hidden="true"></i> браузер Chrome для <span itemProp="operatingSystem">Windows 8, 10 | Android | Mac | iOS</span>
-        </p>
-        <div itemProp="description">
-          <p>Веб-приложение на базе <a href="http://www.oknosoft.ru/metadata/" target="_blank" rel="noopener noreferrer">Metadata.js</a>
-            для демонстрации базовых возможностей фреймворка:</p>
-          <ul>
-            <li>Ввод и редактирование докумнтов поступления - выбытия - перемещения денег</li>
-            <li>Формирование отчета о движении денег</li>
-            <li>Автономная работа при отсутствии доступа к Интернет</li>
-            <li>Фоновая синхронизация с ИБ 1С</li>
-          </ul>
+          <div style={{position: 'absolute', bottom: '-24px'}}>{title}</div>
+          {page && <div style={{position: 'absolute', bottom: '-52px'}}>{footer}</div>}
+
         </div>
+
       </div>
-
-      <div style={{position: 'absolute', bottom: '-24px'}}>{title}</div>
-      {page && <div style={{position: 'absolute', bottom: '-52px'}}>{footer}</div>}
-
-    </div>;
+    </AppContent>;
   }
 }
 
@@ -45,7 +59,6 @@ DumbScreen.propTypes = {
   step: PropTypes.number,
   step_size: PropTypes.number,
   count_all: PropTypes.number,
-  top: PropTypes.number,
   first_run: PropTypes.bool,
   title: PropTypes.string,
   processed: PropTypes.string,

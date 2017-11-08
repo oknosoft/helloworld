@@ -5,7 +5,7 @@ import Typography from 'material-ui/Typography';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import Tooltip from 'material-ui/Tooltip';
+//import Tooltip from 'material-ui/Tooltip';
 import MenuIcon from 'material-ui-icons/Menu';
 import {Switch, Route} from 'react-router';
 import {withIfaceAndMeta} from 'metadata-redux';
@@ -28,7 +28,7 @@ import FrmLogin from 'metadata-react/FrmLogin';     // логин и свойс�
 import Settings from '../Settings';                 // страница настроек приложения
 import {item_props} from '../../pages';             // метод для вычисления need_meta, need_user для location.pathname
 
-//import Github from '../../styles/icons/GitHub';
+import NeedAuth from '../../pages/NeedAuth';
 
 import AppDrawer from 'metadata-react/App/AppDrawer';
 import HeaderButtons from 'metadata-react/Header/HeaderButtons';
@@ -63,7 +63,7 @@ class AppView extends Component {
   }
 
   shouldComponentUpdate(props, {need_user, need_meta}) {
-    const {meta_loaded, user, data_empty, couch_direct, offline} = props;
+    const {meta_loaded, user, offline} = props;
     const iprops = item_props();
     let res = true;
 
@@ -80,12 +80,6 @@ class AppView extends Component {
     // если есть сохранённый пароль и online, пытаемся авторизоваться
     if(meta_loaded && !user.logged_in && user.has_login && !user.try_log_in && !offline) {
       props.handleLogin();
-      res = false;
-    }
-
-    // если это первый запуск или couch_direct и offline, переходим на страницу login
-    if(meta_loaded && res && need_user && ((data_empty === true && !user.try_log_in && !user.logged_in) || (couch_direct && offline))) {
-      props.handleNavigate('/login');
       res = false;
     }
 
@@ -124,7 +118,7 @@ class AppView extends Component {
 
   render() {
     const {props, state} = this;
-    const {classes, handleNavigate, location, snack, alert, doc_ram_loaded, title, sync_started, user} = props;
+    const {classes, handleNavigate, location, snack, alert, doc_ram_loaded, title, sync_started, user, couch_direct, offline, meta_loaded} = props;
     const isHome = location.pathname === '/';
 
     let disablePermanent = false;
@@ -181,21 +175,31 @@ class AppView extends Component {
         />
         {
           // основной контент
-          (!props.path_log_in && state.need_meta && !props.complete_loaded) ?
-            <DumbScreen
-              key="dumb"
-              title={doc_ram_loaded ? 'Подготовка данных в памяти...' : 'Загрузка из IndexedDB...'}
-              page={{text: doc_ram_loaded ? 'Цены и характеристики...' : 'Почти готово...'}}
-              top={92}/>
+          meta_loaded && state.need_user && ((!user.try_log_in && !user.logged_in) || (couch_direct && offline)) ?
+            <NeedAuth
+              handleNavigate={handleNavigate}
+              handleIfaceState={props.handleIfaceState}
+              title={title}
+              offline={couch_direct && offline}
+            />
             :
-            <Switch key="switch">
-              <Route exact path="/" render={(routeProps) => <HomeView handleNavigate={props.handleNavigate} {...routeProps} />}/>
-              <Route path="/:area(doc|cat|ireg|cch|rep).:name" component={DataRoute}/>
-              <Route path="/meta" component={MetaTreePage}/>
-              <Route path="/login" component={FrmLogin}/>
-              <Route path="/settings" component={Settings}/>
-              <Route component={MarkdownRoute}/>
-            </Switch>
+            (
+              (!location.pathname.match(/\/login$/) && ((state.need_meta && !meta_loaded) || (state.need_user && !props.complete_loaded))) ?
+                <DumbScreen
+                  key="dumb"
+                  title={doc_ram_loaded ? 'Подготовка данных в памяти...' : (user.try_log_in ? 'Авторизация на сервере CouchDB...' : 'Загрузка из IndexedDB...')}
+                  page={{text: doc_ram_loaded ? 'Индексы в памяти...' : (user.logged_in ? 'Почти готово...' : 'Получение данных...')}}
+                />
+                :
+                <Switch key="switch">
+                  <Route exact path="/" render={(routeProps) => <HomeView handleNavigate={props.handleNavigate} {...routeProps} />}/>
+                  <Route path="/:area(doc|cat|ireg|cch|rep).:name" component={DataRoute}/>
+                  <Route path="/meta" component={MetaTreePage}/>
+                  <Route path="/login" component={FrmLogin}/>
+                  <Route path="/settings" component={Settings}/>
+                  <Route component={MarkdownRoute}/>
+                </Switch>
+            )
         }
       </div>,
 

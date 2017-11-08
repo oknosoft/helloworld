@@ -16,7 +16,7 @@ import configureStore, {history} from './redux';
 import {item_props} from './pages';
 
 // заставка "загрузка занных"
-import DumbScreen from './components/DumbScreen';
+//import DumbScreen from './components/DumbScreen';
 
 // корневыой контейнер приложения
 import AppView from './components/App';
@@ -43,7 +43,6 @@ class RootProvider extends Component {
         history={history}
         item_props={item_props}
         theme={theme}
-        DumbScreen={DumbScreen}
         AppView={AppView}
       />
     </Provider>;
