@@ -76,21 +76,23 @@ class AppView extends Component {
     this.props.handleIfaceState({component: '', name, value: {open: false}});
   }
 
+  handleReset(reset) {
+    const {handleNavigate, first_run} = this.props;
+    (first_run || reset) ? location.replace('/') : handleNavigate('/');
+  }
+
   handleDrawerToggle = () => {
     this.setState({mobileOpen: !this.state.mobileOpen});
   };
 
-  handleReset = () => {
-    const {handleNavigate, first_run} = this.props;
-    first_run ? location.replace('/') : handleNavigate('/');
-  };
-
   renderHome = (routeProps) => {
-    const {classes, handleNavigate} = this.props;
+    const {classes, title, handleNavigate, handleIfaceState} = this.props;
     const {root, hero, content, text, headline, button, logo} = classes;
     return <HomeView
       classes={{root, hero, content, text, headline, button, logo}}
+      title={title}
       handleNavigate={handleNavigate}
+      handleIfaceState={handleIfaceState}
       {...routeProps}
     />;
   };
@@ -174,7 +176,7 @@ class AppView extends Component {
                 />
                 :
                 <Switch key="switch">
-                  <Route exact path="/" render={(routeProps) => <HomeView handleNavigate={props.handleNavigate} {...routeProps} />}/>
+                  <Route exact path="/" render={this.renderHome}/>
                   <Route path="/:area(doc|cat|ireg|cch|rep).:name" component={DataRoute}/>
                   <Route path="/meta" component={MetaTreePage}/>
                   <Route path="/login" component={FrmLogin}/>
@@ -193,7 +195,7 @@ class AppView extends Component {
         message={snack && snack.open ? snack.message : 'Требуется перезагрузить страницу после первой синхронизации данных'}
         action={<Button
           color="accent"
-          onClick={snack && snack.open ? this.handleDialogClose.bind(this, 'snack') : this.handleReset}
+          onClick={snack && snack.open && !snack.reset ? this.handleDialogClose.bind(this, 'snack') : () => this.handleReset(snack.reset)}
         >Выполнить</Button>}
       />,
 
@@ -223,6 +225,7 @@ AppView.propTypes = {
   first_run: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default withStyles(withIfaceAndMeta(AppView));

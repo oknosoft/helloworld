@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
@@ -10,34 +11,30 @@ import {withIface, withPrm} from 'metadata-redux';
 
 const ltitle = 'Настройки';
 
-class Settings extends Component {
+function Settings(props) {
 
-  componentDidMount() {
-    this.shouldComponentUpdate(this.props);
+  const {classes, title} = props;
+
+  if(title != ltitle) {
+    props.handleIfaceState({
+      component: '',
+      name: 'title',
+      value: ltitle,
+    });
   }
 
-  shouldComponentUpdate({handleIfaceState, title}) {
-    if(title != ltitle) {
-      handleIfaceState({
-        component: '',
-        name: 'title',
-        value: ltitle,
-      });
-      return false;
-    }
-    return true;
-  }
+  return <Paper className={classes.root} elevation={4}>
+      <Helmet title={ltitle} />
+      <Typography type="title" style={{paddingTop: 16}}>Подключение к базе данных</Typography>
+      <CnnSettings {...props} />
+    </Paper>;
 
-  render() {
-    const {props} = this;
-    return (
-      <Paper className={props.classes.root} elevation={4}>
-        <Helmet title={props.title} />
-        <Typography type="title" style={{paddingTop: 16}}>Подключение к базе данных</Typography>
-        <CnnSettings {...props} />
-      </Paper>
-    );
-  }
 }
+
+Settings.propTypes = {
+  classes: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  handleIfaceState: PropTypes.func.isRequired,
+};
 
 export default compose(withStyles, withIface, withPrm)(Settings);
