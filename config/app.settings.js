@@ -30,6 +30,10 @@ module.exports = function settings(prm) {
     // расположение couchdb для nodejs (компиляция метаданных)
     couch_local: "http://cou200:5984/" + lsprefix,
 
+    // если указать режим couch_direct здесь (не важно, true или false),
+    // будет использовано это значение, а не константа из localStorage
+    //couch_direct: true,
+
     // фильтр для репликации с CouchDB не используем
     pouch_filter: {
       meta: 'auth/meta',

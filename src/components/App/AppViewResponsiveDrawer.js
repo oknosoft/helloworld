@@ -28,8 +28,7 @@ import FrmLogin from 'metadata-react/FrmLogin';     // логин и свойс�
 import Settings from '../Settings';                 // страница настроек приложения
 import {item_props} from '../../pages';             // метод для вычисления need_meta, need_user для location.pathname
 
-import NeedAuth from '../../pages/NeedAuth';
-
+import NeedAuth from 'metadata-react/App/NeedAuth';
 import AppDrawer from 'metadata-react/App/AppDrawer';
 import HeaderButtons from 'metadata-react/Header/HeaderButtons';
 
@@ -47,19 +46,6 @@ class AppView extends Component {
       need_user: !!iprops.need_user,
       mobileOpen: false,
     };
-  }
-
-  componentDidMount() {
-    const {handleOffline} = this.props;
-    this._online = handleOffline.bind(this, false);
-    this._offline = handleOffline.bind(this, true);
-    window.addEventListener('online', this._online, false);
-    window.addEventListener('offline', this._offline, false);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('online', this._online);
-    window.removeEventListener('offline', this._offline);
   }
 
   shouldComponentUpdate(props, {need_user, need_meta}) {
@@ -86,8 +72,17 @@ class AppView extends Component {
     return res;
   }
 
+  handleDialogClose(name) {
+    this.props.handleIfaceState({component: '', name, value: {open: false}});
+  }
+
   handleDrawerToggle = () => {
     this.setState({mobileOpen: !this.state.mobileOpen});
+  };
+
+  handleReset = () => {
+    const {handleNavigate, first_run} = this.props;
+    first_run ? location.replace('/') : handleNavigate('/');
   };
 
   renderHome = (routeProps) => {
@@ -100,25 +95,9 @@ class AppView extends Component {
     />;
   };
 
-
-  handleReset = () => {
-    const {handleNavigate, first_run} = this.props;
-    if(first_run) {
-      $p.eve && ($p.eve.redirect = true);
-      location.replace('/');
-    }
-    else {
-      handleNavigate('/');
-    }
-  };
-
-  handleDialogClose(name) {
-    this.props.handleIfaceState({component: '', name, value: {open: false}});
-  }
-
   render() {
     const {props, state} = this;
-    const {classes, handleNavigate, location, snack, alert, doc_ram_loaded, title, sync_started, user, couch_direct, offline, meta_loaded} = props;
+    const {classes, handleNavigate, location, snack, alert, doc_ram_loaded, title, sync_started, fetch, user, couch_direct, offline, meta_loaded} = props;
     const isHome = location.pathname === '/';
 
     let disablePermanent = false;
@@ -157,6 +136,8 @@ class AppView extends Component {
 
             <HeaderButtons
               sync_started={sync_started}
+              fetch={fetch}
+              offline={offline}
               user={user}
               handleNavigate={handleNavigate}
             />
@@ -187,7 +168,8 @@ class AppView extends Component {
               (!location.pathname.match(/\/login$/) && ((state.need_meta && !meta_loaded) || (state.need_user && !props.complete_loaded))) ?
                 <DumbScreen
                   key="dumb"
-                  title={doc_ram_loaded ? 'Подготовка данных в памяти...' : (user.try_log_in ? 'Авторизация на сервере CouchDB...' : 'Загрузка из IndexedDB...')}
+                  title={doc_ram_loaded ? 'Подготовка данных в памяти...' :
+                    (user.try_log_in ? 'Авторизация на сервере CouchDB...' : 'Загрузка из IndexedDB...')}
                   page={{text: doc_ram_loaded ? 'Индексы в памяти...' : (user.logged_in ? 'Почти готово...' : 'Получение данных...')}}
                 />
                 :
@@ -236,7 +218,6 @@ class AppView extends Component {
 }
 
 AppView.propTypes = {
-  handleOffline: PropTypes.func.isRequired,
   handleNavigate: PropTypes.func.isRequired,
   handleIfaceState: PropTypes.func.isRequired,
   first_run: PropTypes.bool.isRequired,
