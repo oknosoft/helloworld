@@ -79,7 +79,7 @@ class AppView extends Component {
   handleReset(reset) {
     const {handleNavigate, first_run} = this.props;
     (first_run || reset) ? location.replace('/') : handleNavigate('/');
-  }
+  };
 
   handleDrawerToggle = () => {
     this.setState({mobileOpen: !this.state.mobileOpen});
@@ -195,7 +195,7 @@ class AppView extends Component {
         message={snack && snack.open ? snack.message : 'Требуется перезагрузить страницу после первой синхронизации данных'}
         action={<Button
           color="accent"
-          onClick={snack && snack.open && !snack.reset ? this.handleDialogClose.bind(this, 'snack') : () => this.handleReset(snack.reset)}
+          onClick={snack && snack.open && !snack.reset ? this.handleDialogClose.bind(this, 'snack') : () => this.handleReset(snack && snack.reset)}
         >Выполнить</Button>}
       />,
 
