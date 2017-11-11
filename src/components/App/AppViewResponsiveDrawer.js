@@ -85,6 +85,10 @@ class AppView extends Component {
     this.setState({mobileOpen: !this.state.mobileOpen});
   };
 
+  handleDrawerClose = () => {
+    this.setState({mobileOpen: false});
+  };
+
   renderHome = (routeProps) => {
     const {classes, title, handleNavigate, handleIfaceState} = this.props;
     const {root, hero, content, text, headline, button, logo} = classes;
@@ -129,12 +133,8 @@ class AppView extends Component {
             >
               <MenuIcon/>
             </IconButton>
-            {title !== null && (
-              <Typography className={classes.title} type="title" color="inherit" noWrap>
-                {title || 'Metadata'}
-              </Typography>
-            )}
-            <div className={classes.grow}/>
+
+            <Typography className={classes.title} type="title" color="inherit" noWrap>{title || 'Metadata'}</Typography>
 
             <HeaderButtons
               sync_started={sync_started}
@@ -149,7 +149,7 @@ class AppView extends Component {
         <AppDrawer
           className={classes.drawer}
           disablePermanent={disablePermanent}
-          onRequestClose={this.handleDrawerToggle}
+          onRequestClose={this.handleDrawerClose}
           mobileOpen={this.state.mobileOpen}
           handleNavigate={handleNavigate}
           items={items}
