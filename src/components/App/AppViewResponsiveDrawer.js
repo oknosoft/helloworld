@@ -11,6 +11,7 @@ import {withIfaceAndMeta} from 'metadata-redux';
 //import Tooltip from 'material-ui/Tooltip';
 import Snack from 'metadata-react/App/Snack';       // сообщения в верхней части страницы (например, обновить после первого запуска)
 import Alert from 'metadata-react/App/Alert';       // диалог сообщения пользователю
+import Confirm from 'metadata-react/App/Confirm';   // диалог вопросов пользователю (да, нет)
 import FrmLogin from 'metadata-react/FrmLogin';     // логин и свойства подключения
 import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "необхлдима авторизация"
 import AppDrawer from 'metadata-react/App/AppDrawer';
@@ -96,7 +97,7 @@ class AppView extends Component {
 
   render() {
     const {props, state} = this;
-    const {classes, handleNavigate, location, snack, alert, doc_ram_loaded, title, sync_started, fetch, user, couch_direct, offline, meta_loaded} = props;
+    const {classes, handleNavigate, location, snack, alert, confirm, doc_ram_loaded, title, sync_started, fetch, user, couch_direct, offline, meta_loaded} = props;
     const isHome = location.pathname === '/';
 
     let disablePermanent = false;
@@ -189,7 +190,10 @@ class AppView extends Component {
       />,
 
       // диалог сообщений пользователю
-      alert && alert.open && <Alert key="alert" alert={alert} handleClose={this.handleAlertClose}/>
+      alert && alert.open && <Alert key="alert" open text={alert.text} title={alert.title} handleOk={this.handleAlertClose}/>,
+
+      // диалог вопросов пользователю (да, нет)
+      confirm && confirm.open && <Confirm key="confirm" open text={confirm.text} title={confirm.title} handleOk={confirm.handleOk} handleCancel={confirm.handleCancel}/>,
     ];
   }
 }
