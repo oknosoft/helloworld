@@ -151,9 +151,10 @@ class AppView extends Component {
           title="Metadata hello"
         />
         {
-          // основной контент
+          // основной контент или заставка загрузки или приглашение к авторизации
           meta_loaded && state.need_user && ((!user.try_log_in && !user.logged_in) || (couch_direct && offline)) ?
             <NeedAuth
+              key="auth"
               handleNavigate={handleNavigate}
               handleIfaceState={props.handleIfaceState}
               title={title}
