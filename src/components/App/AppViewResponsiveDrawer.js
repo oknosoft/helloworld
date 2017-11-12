@@ -5,18 +5,16 @@ import Typography from 'material-ui/Typography';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-//import Tooltip from 'material-ui/Tooltip';
 import MenuIcon from 'material-ui-icons/Menu';
 import {Switch, Route} from 'react-router';
 import {withIfaceAndMeta} from 'metadata-redux';
-import Button from 'material-ui/Button';
-import Snackbar from 'material-ui/Snackbar';        // сообщения в верхней части страницы (например, обновить после первого запуска)
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
-} from 'material-ui/Dialog';                        // диалог сообщения пользователю
+//import Tooltip from 'material-ui/Tooltip';
+import Snack from 'metadata-react/App/Snack';       // сообщения в верхней части страницы (например, обновить после первого запуска)
+import Alert from 'metadata-react/App/Alert';       // диалог сообщения пользователю
+import FrmLogin from 'metadata-react/FrmLogin';     // логин и свойства подключения
+import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "необхлдима авторизация"
+import AppDrawer from 'metadata-react/App/AppDrawer';
+import HeaderButtons from 'metadata-react/Header/HeaderButtons';
 
 import items from '../../pages';                    // массив элементов меню
 import DumbScreen from '../DumbScreen';             // заставка "загрузка занных"
@@ -24,13 +22,8 @@ import DataRoute from '../DataRoute';               // вложенный мар
 import MarkdownRoute from '../MarkdownRoute';       // вложенный маршрутизатор страниц с Markdown, 404 живёт внутри Route
 import HomeView from '../../pages/Home';            // домашняя страница
 import MetaTreePage from '../MetaTreePage';         // дерево метаданных
-import FrmLogin from 'metadata-react/FrmLogin';     // логин и свойства подключения
 import Settings from '../Settings';                 // страница настроек приложения
 import {item_props} from '../../pages';             // метод для вычисления need_meta, need_user для location.pathname
-
-import NeedAuth from 'metadata-react/App/NeedAuth';
-import AppDrawer from 'metadata-react/App/AppDrawer';
-import HeaderButtons from 'metadata-react/Header/HeaderButtons';
 
 import withStyles from './styles';
 
@@ -79,7 +72,7 @@ class AppView extends Component {
   handleReset(reset) {
     const {handleNavigate, first_run} = this.props;
     (first_run || reset) ? location.replace('/') : handleNavigate('/');
-  };
+  }
 
   handleDrawerToggle = () => {
     this.setState({mobileOpen: !this.state.mobileOpen});
@@ -188,33 +181,15 @@ class AppView extends Component {
       </div>,
 
       // всплывающтй snackbar оповещений пользователя
-      ((snack && snack.open) || (props.first_run && doc_ram_loaded)) && <Snackbar
+      ((snack && snack.open) || (props.first_run && doc_ram_loaded)) &&
+      <Snack
         key="snack"
-        anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-        open
-        message={snack && snack.open ? snack.message : 'Требуется перезагрузить страницу после первой синхронизации данных'}
-        action={<Button
-          color="accent"
-          onClick={snack && snack.open && !snack.reset ? this.handleDialogClose.bind(this, 'snack') : () => this.handleReset(snack && snack.reset)}
-        >Выполнить</Button>}
+        snack={snack}
+        handleClose={snack && snack.open && !snack.reset ? this.handleDialogClose.bind(this, 'snack') : () => this.handleReset(snack && snack.reset)}
       />,
 
       // диалог сообщений пользователю
-      alert && alert.open && <Dialog key="alert" open onRequestClose={this.handleAlertClose}>
-        <DialogTitle>
-          {alert.title}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {alert.text}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleAlertClose} color="primary">
-            Ок
-          </Button>
-        </DialogActions>
-      </Dialog>
+      alert && alert.open && <Alert key="alert" alert={alert} handleClose={this.handleAlertClose}/>
     ];
   }
 }

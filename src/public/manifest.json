@@ -19,6 +19,6 @@
     "sizes": "256x64"
   }],
   "scope": "/",
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "standalone"
 }
