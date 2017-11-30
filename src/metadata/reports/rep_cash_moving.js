@@ -156,8 +156,8 @@ export default function ($p) {
       return this.prepare(scheme)
         .then(() => {
 
-          // TODO фильтруем по отбору с учетом разыменования и видов сравнения
-          // TODO не забываем про методы $p.utils._find_rows и $p.CchProperties.check_compare, $p.CchProperties.check_condition (из windowbuilder)
+          // фильтруем результат с учетом разыменования и видов сравнения
+          scheme.filter(data, '', true);
 
           // сворачиваем результат и сохраняем его в data._rows
           const dims = scheme.dims();
@@ -268,6 +268,7 @@ export default function ($p) {
 
     /**
      * Выполняет приведение типов в группировках и ссылочных полях после alasql
+     * TODO: переместить в компоновку
      */
     cast(rows, level, dims, dim, meta) {
       if(!meta){
