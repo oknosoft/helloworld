@@ -247,8 +247,16 @@ export default function ($p) {
               }
             }
 
-            data._rows.push(levels[0]);
             data._rows._count = index;
+            if(grouping[0]){
+              for(const level of levels[0].children){
+                data._rows.push(level);
+              }
+              data._rows._count -= 1;
+            }
+            else{
+              data._rows.push(levels[0]);
+            }
 
             // TODO для ссылочных полей надо выполнить приведение типов, т.к в alasql возвращает guid`s вместо объектов
             this.cast(data._rows, 0, dims);
@@ -283,9 +291,9 @@ export default function ($p) {
             row[dim] = meta[dim].type.is_ref ? {presentation: 'Σ'} : 'Σ';
           }
           else{
-            const gdim = dims[level - 1];
-            const mgr = this._manager.value_mgr(row, gdim, meta[gdim].type);
-            const val = utils.is_data_mgr(mgr) ? mgr.get(row[gdim]) : row[gdim];
+            const gdim = dims[level];
+            const mgr = gdim && this._manager.value_mgr(row, gdim, meta[gdim].type);
+            const val = mgr && utils.is_data_mgr(mgr) ? mgr.get(row[gdim]) : row[gdim];
             row[dim] = this._manager.value_mgr(row, dim, meta[dim].type) ?
               (
                 utils.is_data_obj(val) ? val : {presentation: val instanceof Date ? utils.moment(val).format(utils.moment._masks[meta[gdim].type.date_part]) : val }
