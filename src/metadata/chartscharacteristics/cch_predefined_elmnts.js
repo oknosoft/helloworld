@@ -8,12 +8,12 @@
 
 export default function ($p) {
 
-  const {job_prm, adapters, cch, utils, md} = $p;
+  const {job_prm, adapters, cch: {predefined_elmnts: _mgr}, utils, md} = $p;
 
   // Подписываемся на событие окончания загрузки локальных данных
   adapters.pouch.once('pouch_doc_ram_loaded', () => {
     // читаем элементы из pouchdb и создаём свойства
-    cch.predefined_elmnts.pouch_find_rows({_raw: true, _top: 500, _skip: 0})
+    _mgr.adapter.find_rows(_mgr, {_raw: true, _top: 500, _skip: 0})
       .then(function (rows) {
 
         var parents = {};
@@ -82,8 +82,6 @@ export default function ($p) {
         }, 100);
       });
   });
-
-  const _mgr = cch.predefined_elmnts;
 
 
   /**
