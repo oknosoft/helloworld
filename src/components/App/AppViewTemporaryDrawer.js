@@ -132,7 +132,7 @@ class AppView extends Component {
       />,
 
       // диалог сообщений пользователю
-      alert && alert.open && <Dialog key="alert" open onRequestClose={this.handleAlertClose}>
+      alert && alert.open && <Dialog key="alert" open onClose={this.handleAlertClose}>
         <DialogTitle>
           {alert.title}
         </DialogTitle>
