@@ -6,7 +6,7 @@
  */
 module.exports = function settings(prm) {
 
-  if(!prm){
+  if(!prm2){
     prm = {};
   };
 
