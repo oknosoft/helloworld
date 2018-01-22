@@ -138,6 +138,7 @@ export default function ($p) {
      */
     calculate() {
       const {data, scheme, _manager} = this;
+      // eslint-disable-next-line
       const _columns = scheme.rx_columns({
         mode: 'ts',
         fields: _manager.metadata('data').fields,
