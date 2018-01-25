@@ -118,7 +118,7 @@ class AppView extends Component {
         <AppBar className={appBarClassName}>
           <Toolbar disableGutters>
             <IconButton
-              color="contrast"
+              color="inherit"
               aria-label="open drawer"
               onClick={this.handleDrawerToggle}
               className={navIconClassName}
