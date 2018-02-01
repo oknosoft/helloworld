@@ -1,6 +1,6 @@
 {
   "name": "helloworld",
-  "version": "2.0.16-beta.47",
+  "version": "2.0.16-beta.48",
   "description": "Hello world for metadata.js",
   "repository": {
     "type": "git",
@@ -27,12 +27,12 @@
   },
   "homepage": "https://hello.oknosoft.ru/",
   "dependencies": {
-    "metadata-abstract-ui": "^2.0.16-beta.47",
-    "metadata-core": "^2.0.16-beta.47",
-    "metadata-external": "^2.0.16-beta.47",
-    "metadata-pouchdb": "^2.0.16-beta.47",
-    "metadata-react": "^2.0.16-beta.47",
-    "metadata-redux": "^2.0.16-beta.47"
+    "metadata-abstract-ui": "2.0.16-beta.48",
+    "metadata-core": "2.0.16-beta.48",
+    "metadata-external": "2.0.16-beta.48",
+    "metadata-pouchdb": "2.0.16-beta.48",
+    "metadata-react": "2.0.16-beta.48",
+    "metadata-redux": "2.0.16-beta.48"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -49,10 +49,10 @@
     "eslint-config-react-app": "^2.1.0",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-flowtype": "^2.41.0",
+    "eslint-plugin-flowtype": "^2.42.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.5.1",
+    "eslint-plugin-react": "^7.6.1",
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "^1.1.6",
     "fs-extra": "^4.0.3",
