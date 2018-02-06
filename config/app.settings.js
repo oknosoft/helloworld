@@ -25,7 +25,7 @@ module.exports = function settings(prm) {
 
     // расположение couchdb для сайта (редирект настроен в nginx)
     // если couchdb выполняется на том же сервере, что и nginx, можно указать "//localhost:5984/",
-    couch_path: "/couchdb/" + lsprefix,
+    couch_path: "http://localhost:5984/" + lsprefix,
 
     // расположение couchdb для nodejs (компиляция метаданных)
     couch_local: "http://cou200:5984/" + lsprefix,
