@@ -35,7 +35,7 @@ function PageHome(props) {
             <Typography type="subheading" component="h2" color="inherit" className={classes.headline}>
               Каркас приложения на metadata.js<br/> для демонстрации базовых возможностей фреймворка
             </Typography>
-            <Button className={classes.button} raised onClick={() => handleNavigate('/help')}>Начать</Button>
+            <Button className={classes.button} variant="raised" onClick={() => handleNavigate('/help')}>Начать</Button>
           </div>
         </div>
       </div>
