@@ -29,7 +29,7 @@ $p.wsql.init(settings);
 export function init(dispatch) {
 
   // плагин pouchdb-authentication подключаем асинхронно
-  return import('pouchdb-authentication/dist/pouchdb.authentication.min')
+  return import('pouchdb-authentication')
 
     // читаем скрипт инициализации метаданных, полученный в результате выполнения meta:prebuild
     .then(() => import('./init'))
