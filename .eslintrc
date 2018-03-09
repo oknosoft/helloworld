@@ -46,7 +46,6 @@
     "react/prop-types": 1,
     "react/display-name": 1,
     "generator-star-spacing": 0,
-    "jsx-a11y/href-no-hash": 0,
-    "babel/generator-star-spacing": 1
+    "jsx-a11y/href-no-hash": 0
   }
 }
