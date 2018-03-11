@@ -6,11 +6,12 @@
  */
 module.exports = function settings(prm) {
 
-  if(!prm){
+  if(!prm) {
     prm = {};
   };
-
+  
   var lsprefix = 'hw_';
+  var couch_path = 'http://fl211:5984/' + lsprefix;
 
   return Object.assign(prm, {
 
@@ -19,16 +20,16 @@ module.exports = function settings(prm) {
 
     // гостевые пользователи для демо-режима
     guests: [{
-      username: "Гость",
-      password: "hQI7OhIGlVeOWi8="
+      username: 'Гость',
+      password: 'hQI7OhIGlVeOWi8='
     }],
 
     // расположение couchdb для сайта (редирект настроен в nginx)
     // если couchdb выполняется на том же сервере, что и nginx, можно указать "//localhost:5984/",
     couch_path: "/couchdb/" + lsprefix,
 
-    // расположение couchdb для nodejs (компиляция метаданных)
-    couch_local: "http://cou200:5984/" + lsprefix,
+    // расположение couchdb для nodejs
+    couch_local: process.env.COUCH_LOCAL || couch_path,
 
     // если указать режим couch_direct здесь (не важно, true или false),
     // будет использовано это значение, а не константа из localStorage
