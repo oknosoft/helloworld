@@ -1,6 +1,6 @@
 {
   "name": "helloworld",
-  "version": "2.0.16-beta.53",
+  "version": "2.0.16-beta.54",
   "description": "Hello world for metadata.js",
   "repository": {
     "type": "git",
@@ -27,12 +27,12 @@
   },
   "homepage": "https://hello.oknosoft.ru/",
   "dependencies": {
-    "metadata-abstract-ui": "2.0.16-beta.53",
-    "metadata-core": "2.0.16-beta.53",
-    "metadata-external": "2.0.16-beta.53",
-    "metadata-pouchdb": "2.0.16-beta.53",
-    "metadata-react": "2.0.16-beta.53",
-    "metadata-redux": "2.0.16-beta.53"
+    "metadata-abstract-ui": "2.0.16-beta.54",
+    "metadata-core": "2.0.16-beta.54",
+    "metadata-external": "2.0.16-beta.54",
+    "metadata-pouchdb": "2.0.16-beta.54",
+    "metadata-react": "2.0.16-beta.54",
+    "metadata-redux": "2.0.16-beta.54"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
