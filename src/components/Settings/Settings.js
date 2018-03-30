@@ -25,7 +25,7 @@ function Settings(props) {
 
   return <Paper className={classes.root} elevation={4}>
       <Helmet title={ltitle} />
-      <Typography type="title" style={{paddingTop: 16}}>Подключение к базе данных</Typography>
+      <Typography variant="title" style={{paddingTop: 16}}>Подключение к базе данных</Typography>
       <CnnSettings {...props} />
     </Paper>;
 

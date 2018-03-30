@@ -2,7 +2,7 @@
  * ### Дополнительные методы ПВХ Предопределенные элементы
  * Предопределенные элементы - аналог констант для хранения ссылочных и списочных настроек приложения
  *
- * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2017
+ * &copy; Evgeniy Malyarov http://www.oknosoft.ru 2014-2018
  * @module cch_predefined_elmnts
  */
 
@@ -36,7 +36,7 @@ export default function ($p) {
               _mgr = $p[tnames[0]][tnames[1]];
             }
 
-            if(row.list == -1) {
+            if(row.list === -1) {
 
               job_prm[parents[row.parent]].__define(row.synonym, {
                 value: (() => {
@@ -74,7 +74,8 @@ export default function ($p) {
 
               job_prm[parents[row.parent]].__define(row.synonym, {
                 value: _mgr ? _mgr.get(row.value, false, false) : row.value,
-                configurable: true
+                configurable: true,
+                enumerable: true
               });
             }
 
@@ -103,7 +104,7 @@ export default function ($p) {
   $p.CchPredefined_elmnts.prototype.__define({
 
     value: {
-      get: function () {
+      get() {
 
         const mf = this.type;
         const res = this._obj ? this._obj.value : '';
@@ -111,7 +112,7 @@ export default function ($p) {
         if(this._obj.is_folder) {
           return '';
         }
-        if(typeof res == 'object') {
+        if(typeof res === 'object') {
           return res;
         }
         else if(mf.is_ref) {
@@ -141,7 +142,7 @@ export default function ($p) {
         else if(mf.digits) {
           return utils.fix_number(this._obj.value, !mf.hasOwnProperty('str_len'));
         }
-        else if(mf.types[0] == 'boolean') {
+        else if(mf.types[0] === 'boolean') {
           return utils.fix_boolean(this._obj.value);
         }
         else {
@@ -151,7 +152,7 @@ export default function ($p) {
         return this.characteristic.clr;
       },
 
-      set: function (v) {
+      set(v) {
 
         if(this._obj.value === v) {
           return;
