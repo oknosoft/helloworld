@@ -12,6 +12,9 @@ import {init} from './metadata';
 // метод инициализации хранилища состояния приложения
 import configureStore, {history} from './redux';
 
+// диспетчер состояния интерфейса
+import {dispatchIface} from 'metadata-redux';
+
 // метод для вычисления need_meta, need_user для location.pathname
 import {item_props} from './pages';
 
@@ -28,7 +31,9 @@ import theme from './styles/muiTheme';
 import RootView from 'metadata-react/App/RootView';
 
 // создаём redux-store
-const store = configureStore();
+export const store = configureStore();
+
+export const {handleIfaceState} = dispatchIface(store.dispatch);
 
 
 class RootProvider extends Component {
