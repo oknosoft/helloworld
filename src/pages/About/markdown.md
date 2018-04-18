@@ -14,14 +14,14 @@ Hello world - это веб-приложение на базе [Metadata.js](htt
 - [Nginx](http://nginx.org/ru/), высокопроизводительный HTTP-сервер
 
 #### Управление данными в памяти браузера
-- [Metadata.js](http://www.oknosoft.ru/metadata/), движок ссылочной типизации для браузера и Node.js
+- [Metadata.js](https://github.com/oknosoft/metadata.js/tree/develop/packages), движок ссылочной типизации для браузера и Node.js
 - [PouchDB](https://pouchdb.com/), клиентская NoSQL база данных с поддержкой автономной работы и репликации с CouchDB
 - [AlaSQL](https://github.com/agershun/alasql), SQL-интерфейс к массивам javascript в памяти браузера и Node.js
 - [Aes](http://www.movable-type.co.uk/scripts/aes.html), библиотека шифрования/дешифрования строк
-- [Redux](https://github.com/reactjs/redux), диспетчер состояния веб-приложения        
+- [Redux](https://github.com/reactjs/redux), диспетчер состояния веб-приложения
 
 #### UI библиотеки и компоненты интерфейса
-- [Material-ui](http://www.material-ui.com/), компоненты React UI в стиле Google`s material design
+- [Material-ui](https://material-ui-next.com/), компоненты React UI в стиле Google`s material design
 - [React virtualized](https://github.com/bvaughn/react-virtualized), компоненты React для динамических списков
 - [React data grid](https://github.com/adazzle/react-data-grid), React компонент табличной части
 - [Moment.js](http://momentjs.com/), библиотека форматирования интервалов и дат
