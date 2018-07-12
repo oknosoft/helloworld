@@ -16,7 +16,7 @@ import configureStore, {history} from './redux';
 import {dispatchIface} from 'metadata-redux';
 
 // метод для вычисления need_meta, need_user для location.pathname
-import {item_props} from './pages';
+import {item_props} from './components/App/menu_items';
 
 // заставка "загрузка занных"
 //import DumbScreen from './components/DumbScreen';
@@ -38,7 +38,7 @@ export const {handleIfaceState} = dispatchIface(store.dispatch);
 
 class RootProvider extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     init(store.dispatch).catch($p && $p.record_log);
   }
 

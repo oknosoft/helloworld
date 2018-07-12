@@ -4,21 +4,18 @@ export default function (theme) {
       flex: '1 0 100%',
     },
     hero: {
-      minHeight: '100vh', // Makes the hero full height until we get some more content.
+      minHeight: '90vh', // Makes the hero full height until we get some more content.
       flex: '0 0 auto',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor:
-        theme.palette.type === 'light' ? theme.palette.primary[500] : theme.palette.primary[800],
-      color: theme.palette.getContrastText(theme.palette.primary[500]),
+      backgroundColor: theme.palette.grey[100],
     },
     content: {
-      paddingTop: theme.spacing.unit * 4,
-      paddingBottom: theme.spacing.unit * 4,
+      paddingTop: theme.spacing.unit * 2,
+      paddingBottom: theme.spacing.unit * 2,
       [theme.breakpoints.up('sm')]: {
-        paddingTop: theme.spacing.unit * 8,
-        paddingBottom: theme.spacing.unit * 8,
+        paddingBottom: theme.spacing.unit * 4,
       },
     },
     text: {

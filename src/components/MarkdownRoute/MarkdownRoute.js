@@ -4,13 +4,13 @@ import {Switch, Route} from 'react-router';
 
 
 // 404
-import NotFound from '../../pages/NotFound';
+import NotFound from '../NotFound';
 
 // информация о программе
-import About from '../../pages/About';
+import About from '../About';
 
 // Справка
-import Readme from '../../pages/Readme';
+import Readme from '../Readme';
 
 
 export default function MarkdownRoute() {

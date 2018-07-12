@@ -88,8 +88,14 @@ export function item_props(path) {
   if(!path){
     path = location.pathname;
   }
+  if(path.endsWith('/')) {
+    path = path.substr(0, path.length - 1);
+  }
   // здесь можно переопределить нужность meta и авторизованности для корневой страницы
   let res = with_recursion(path, items);
+  if(!res && path.indexOf('/') !== -1) {
+    res = with_recursion(path.substr(0, path.lastIndexOf('/')), items);
+  }
   if(!res && path.match(/\/(doc|cat|ireg|cch|rep)\./)){
     res = {need_meta: true, need_user: true};
   }

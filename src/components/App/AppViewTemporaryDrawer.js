@@ -3,25 +3,25 @@ import PropTypes from 'prop-types';
 
 import {Switch, Route} from 'react-router';
 import {withNavigateAndMeta} from 'metadata-redux';
-import Button from 'material-ui/Button';
-import Snackbar from 'material-ui/Snackbar';        // сообщения в верхней части страницы (например, обновить после первого запуска)
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';        // сообщения в верхней части страницы (например, обновить после первого запуска)
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle
-} from 'material-ui/Dialog';                        // диалог сообщения пользователю
+} from '@material-ui/core/Dialog';                        // диалог сообщения пользователю
 
 import Header from 'metadata-react/Header';         // AppBar и AppDrawer с навигацией
-import items from '../../pages';                    // массив элементов меню
+import items from './menu_items';                    // массив элементов меню
 import DumbScreen from '../DumbScreen';             // заставка "загрузка занных"
 import DataRoute from '../DataRoute';               // вложенный маршрутизатор страниц с данными
 import MarkdownRoute from '../MarkdownRoute';       // вложенный маршрутизатор страниц с Markdown, 404 живёт внутри Route
-import HomeView from '../../pages/Home';            // домашняя страница
+import HomeView from '../Home';            // домашняя страница
 import MetaTreePage from '../MetaTreePage';         // дерево метаданных
 import FrmLogin from 'metadata-react/FrmLogin';     // логин и свойства подключения
 import Settings from '../Settings';                 // страница настроек приложения
-import {item_props} from '../../pages';             // метод для вычисления need_meta, need_user для location.pathname
+import {item_props} from './menu_items';             // метод для вычисления need_meta, need_user для location.pathname
 
 // основной layout
 class AppView extends Component {
@@ -65,10 +65,10 @@ class AppView extends Component {
     }
 
     // если есть сохранённый пароль и online, пытаемся авторизоваться
-    if(meta_loaded && !user.logged_in && user.has_login && !user.try_log_in && !offline) {
-      props.handleLogin();
-      res = false;
-    }
+    // if(meta_loaded && !user.logged_in && user.has_login && !user.try_log_in && !offline) {
+    //   props.handleLogin();
+    //   res = false;
+    // }
 
     // если это первый запуск или couch_direct и offline, переходим на страницу login
     if(meta_loaded && res && need_user && ((data_empty === true && !user.try_log_in && !user.logged_in) || (couch_direct && offline))) {

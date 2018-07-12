@@ -57,6 +57,10 @@ export default function ($p) {
         items: [
           {
             element: 'DataField',
+            fld: 'doc_amount',
+          },
+          {
+            element: 'DataField',
             fld: 'cash_flow_article',
             fullWidth: true,
           },
