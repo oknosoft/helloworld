@@ -11,7 +11,7 @@ module.exports = function settings(prm) {
   };
   
   var lsprefix = 'hw_';
-  var couch_path = 'http://fl211:5984/' + lsprefix;
+  var couch_path = 'http://cou221:5984/' + lsprefix;
 
   return Object.assign(prm, {
 

@@ -14,12 +14,19 @@
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "plugins": [
-    "babel",
     "react"
   ],
+  "settings": {
+    "react": {
+      "pragma": "React",  // Pragma to use, default to "React"
+      "version": "16.0", // React version, default to the latest React stable release
+    },
+  },
   "globals": {
     "$p": true,
     "global": true,
+    "moment": true,
+    "alasql": true,
     "process": true,
     "__DEV__"      : false,
     "__PROD__"     : false,
@@ -36,7 +43,7 @@
     "semi": [1, "always"],
     "semi-spacing": [1, {"before": false, "after": true}],
     "no-case-declarations": 1,
-    "no-console": 1,
+    "no-console": 0,
     "no-extra-semi": 1,
     "no-unexpected-multiline": 1,
     "no-useless-escape": 1,

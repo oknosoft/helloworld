@@ -4,7 +4,7 @@ import IconDoc from '@material-ui/icons/EventNote';
 import IconInfo from '@material-ui/icons/Info';
 import IconHelp from '@material-ui/icons/Help';
 import IconPerson from '@material-ui/icons/Person';
-import IconSettings from 'metadata-react/styles/Setting';
+import IconSettings from '@material-ui/icons/Settings';
 // import IconDrafts from '@material-ui/icons/Drafts';
 // import IconList from '@material-ui/icons/List';
 

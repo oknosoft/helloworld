@@ -1,13 +1,9 @@
-// шрифты и стили подгрузим асинхронно
-import('metadata-react/styles/react-data-grid.css');
-import('font-awesome/css/font-awesome.min.css');
 
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 
-// скрипт инициализации структуры метаданных и модификаторы
-import {init} from './metadata';
 
 // метод инициализации хранилища состояния приложения
 import configureStore, {history} from './redux';
@@ -30,16 +26,31 @@ import theme from './styles/muiTheme';
 // типовой RootView, в котором подключается Router и основной макет приложения
 import RootView from 'metadata-react/App/RootView';
 
+// sw для оффлайна и прочих дел
+import * as serviceWorker from './serviceWorker';
+//import {ifaceActions} from 'metadata-redux';
+
 // создаём redux-store
 export const store = configureStore();
 
 export const {handleIfaceState} = dispatchIface(store.dispatch);
 
 
-class RootProvider extends Component {
+class RootProvider extends React.Component {
 
   componentDidMount() {
-    init(store.dispatch).catch($p && $p.record_log);
+    // font-awesome, roboto и стили metadata подгрузим асинхронно
+    import('metadata-react/styles/roboto/font.css');
+    import('metadata-react/styles/react-data-grid.css');
+    import('font-awesome/css/font-awesome.min.css');
+
+    // скрипт инициализации структуры метаданных и модификаторы
+    import('./metadata')
+      .then((module) => module.init(store));
+  }
+
+  getChildContext() {
+    return {store};
   }
 
   render() {
@@ -54,7 +65,8 @@ class RootProvider extends Component {
   }
 }
 
-render(
-  <RootProvider/>,
-  document.getElementById('root'),
-);
+RootProvider.childContextTypes = {
+  store: PropTypes.object,
+}
+
+render(<RootProvider/>, document.getElementById('root'));
