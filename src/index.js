@@ -4,24 +4,18 @@ import PropTypes from 'prop-types';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 
-
 // метод инициализации хранилища состояния приложения
 import configureStore, {history} from './redux';
 
 // диспетчер состояния интерфейса
 import {dispatchIface} from 'metadata-redux';
 
-// метод для вычисления need_meta, need_user для location.pathname
-import {item_props} from './components/App/menu_items';
-
 // заставка "загрузка занных"
-//import DumbScreen from './components/DumbScreen';
+//import DumbScreen from './components/App/DumbScreen';
 
-// корневыой контейнер приложения
-import AppView from './components/App';
+// корневыой контейнер приложения, тема и метод для вычисления need_meta, need_user для location.pathname
+import AppView, {muiTheme, item_props} from './components/App';
 
-// дополняем-переопределяем тему оформления
-import theme from './styles/muiTheme';
 
 // типовой RootView, в котором подключается Router и основной макет приложения
 import RootView from 'metadata-react/App/RootView';
@@ -33,6 +27,7 @@ import * as serviceWorker from './serviceWorker';
 // создаём redux-store
 export const store = configureStore();
 
+// метод для установки state интерфейса
 export const {handleIfaceState} = dispatchIface(store.dispatch);
 
 
@@ -58,7 +53,7 @@ class RootProvider extends React.Component {
       <RootView
         history={history}
         item_props={item_props}
-        theme={theme}
+        theme={muiTheme}
         AppView={AppView}
       />
     </Provider>;
@@ -67,6 +62,12 @@ class RootProvider extends React.Component {
 
 RootProvider.childContextTypes = {
   store: PropTypes.object,
-}
+};
 
 render(<RootProvider/>, document.getElementById('root'));
+
+serviceWorker.register({
+  onUpdate() {
+    $p && $p.record_log('Доступен новый контент, обновите страницу');
+  }
+});

@@ -12,15 +12,15 @@ export default function (theme) {
       backgroundColor: theme.palette.grey[100],
     },
     content: {
-      paddingTop: theme.spacing.unit * 2,
-      paddingBottom: theme.spacing.unit * 2,
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
       [theme.breakpoints.up('sm')]: {
-        paddingBottom: theme.spacing.unit * 4,
+        paddingBottom: theme.spacing(4),
       },
     },
     text: {
-      paddingLeft: theme.spacing.unit * 4,
-      paddingRight: theme.spacing.unit * 4,
+      paddingLeft: theme.spacing(4),
+      paddingRight: theme.spacing(4),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -31,7 +31,7 @@ export default function (theme) {
       textAlign: 'center',
     },
     button: {
-      marginTop: theme.spacing.unit * 3,
+      marginTop: theme.spacing(3),
     },
     logo: {
       margin: '20px 0',

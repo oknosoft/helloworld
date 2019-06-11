@@ -1,19 +1,12 @@
-import withStyles from '@material-ui/core/styles/withStyles';
+import {withStyles} from '@material-ui/styles';
 
 const styles = theme => ({
   '@global': {
-    html: {
-      background: theme.palette.background.default,
-      WebkitFontSmoothing: 'antialiased', // Antialiasing.
-      MozOsxFontSmoothing: 'grayscale', // Antialiasing.
-      boxSizing: 'border-box',
-    },
+    html: {},
     '*, *:before, *:after': {
       boxSizing: 'inherit',
     },
-    body: {
-      margin: 0,
-    },
+    body: {},
   },
   root: {
     //display: 'flex',
@@ -22,9 +15,10 @@ const styles = theme => ({
     width: '100%',
   },
   title: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(),
     flex: '1 1 auto',
     fontSize: '1.1rem',
+    fontWeight: 400,
   },
   appBar: {
     transition: theme.transitions.create('width'),
@@ -41,6 +35,9 @@ const styles = theme => ({
     [theme.breakpoints.up('lg')]: {
       width: 280,
     },
+    // '& h6': {
+    //   fontWeight: 400,
+    // },
   },
   navIconHide: {
     [theme.breakpoints.up('lg')]: {

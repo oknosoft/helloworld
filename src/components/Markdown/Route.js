@@ -4,19 +4,19 @@ import {Switch, Route} from 'react-router';
 
 
 // 404
-import NotFound from '../NotFound';
+import NotFound from './NotFound';
 
 // информация о программе
-import About from '../About';
+import About from './About';
 
 // Справка
-import Readme from '../Readme';
+import Help from './Help';
 
 
 export default function MarkdownRoute() {
   return <Switch>
     <Route path="/about" component={About}/>
-    <Route path="/help" component={Readme}/>
+    <Route path="/help" component={Help}/>
     <Route component={NotFound}/>
   </Switch>;
 }

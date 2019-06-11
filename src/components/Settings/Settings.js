@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Helmet from 'react-helmet';
 import CnnSettings from 'metadata-react/FrmLogin/CnnSettings';
-import compose from 'recompose/compose';
+import {compose} from 'redux';
 import withStyles from 'metadata-react/styles/paper600';
 import {withIface, withPrm} from 'metadata-redux';
 

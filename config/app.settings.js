@@ -4,11 +4,10 @@
  *
  * @param prm {Object} - в свойствах этого объекта определяем параметры работы программы
  */
-module.exports = function settings(prm) {
 
-  if(!prm) {
-    prm = {};
-  };
+const is_node = typeof process !== 'undefined' && process.versions && process.versions.node;
+
+module.exports = function settings(prm = {}) {
   
   var lsprefix = 'hw_';
   var couch_path = 'http://cou221:5984/' + lsprefix;
@@ -36,9 +35,7 @@ module.exports = function settings(prm) {
     //couch_direct: true,
 
     // фильтр для репликации с CouchDB не используем
-    pouch_filter: {
-      meta: 'auth/meta',
-    },
+    pouch_filter: {},
 
     // по умолчанию, обращаемся к зоне 1
     zone: 1,
@@ -62,6 +59,12 @@ module.exports = function settings(prm) {
     // карты google не используем
     use_google_geo: '',
 
+  }, is_node && {
+    // авторизация couchdb
+    user_node: {
+      username: process.env.DBUSER || 'admin',
+      password: process.env.DBPWD || 'password',
+    }
   });
 
 };

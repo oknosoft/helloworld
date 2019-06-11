@@ -6,7 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-//import Tooltip from '@material-ui/core/Tooltip';
 import Snack from 'metadata-react/App/Snack';       // сообщения в верхней части страницы (например, обновить после первого запуска)
 import Alert from 'metadata-react/App/Alert';       // диалог сообщения пользователю
 import Confirm from 'metadata-react/App/Confirm';   // диалог вопросов пользователю (да, нет)
@@ -14,20 +13,20 @@ import FrmLogin from 'metadata-react/FrmLogin';     // логин и свойс�
 import NeedAuth from 'metadata-react/App/NeedAuth'; // страница "необхлдима авторизация"
 import AppDrawer from 'metadata-react/App/AppDrawer';
 import HeaderButtons from 'metadata-react/Header/HeaderButtons';
+import {withIfaceAndMeta} from 'metadata-redux';
+import withWindowSize from 'metadata-react/WindowSize';
 
-import DumbScreen from '../DumbScreen';             // заставка "загрузка занных"
-import DataRoute from '../DataRoute';               // вложенный маршрутизатор страниц с данными
-import MarkdownRoute from '../MarkdownRoute';       // вложенный маршрутизатор страниц с Markdown, 404 живёт внутри Route
+import DumbScreen from './DumbScreen';             // заставка "загрузка занных"
+import DataRoute from './DataRoute';               // вложенный маршрутизатор страниц с данными
+import MarkdownRoute from '../Markdown/Route';       // вложенный маршрутизатор страниц с Markdown, 404 живёт внутри Route
 import HomeView from '../Home';            // домашняя страница
-import MetaTreePage from '../MetaTreePage';         // дерево метаданных
 import Settings from '../Settings';                 // страница настроек приложения
 
-import {withIfaceAndMeta} from 'metadata-redux';
-import withStyles from './styles';
-import withWindowSize from 'metadata-react/WindowSize';
-import compose from 'recompose/compose';
 
-import items, {item_props} from './menu_items';      // массив элементов меню и метод для вычисления need_meta, need_user по location.pathname
+import withStyles from './styles';
+import {compose} from 'redux';
+
+import items, {item_props, stitle} from './menu_items'; // массив элементов меню и метод для вычисления need_meta, need_user по location.pathname
 
 // основной layout
 class AppView extends Component {
@@ -117,7 +116,7 @@ class AppView extends Component {
       }
 
       let need_auth = meta_loaded && state.need_user && ((!user.try_log_in && !user.logged_in) || (couch_direct && offline));
-      if(need_auth && !couch_direct && $p.current_user && $p.current_user.name == user.name) {
+      if(need_auth && !couch_direct && props.complete_loaded && $p.current_user && $p.current_user.name == user.name) {
         need_auth = false;
       }
 
@@ -154,7 +153,6 @@ class AppView extends Component {
           <Switch key="switch">
             <Route exact path="/" render={this.renderHome}/>
             <Route path="/:area(doc|cat|ireg|cch|rep).:name" render={(props) => wraper(DataRoute, props)}/>
-            <Route path="/meta" render={(props) => wraper(MetaTreePage, props)}/>
             <Route path="/login" render={(props) => wraper(FrmLogin, props)}/>
             <Route path="/settings" render={(props) => wraper(Settings, props)}/>
             <Route render={(props) => wraper(MarkdownRoute, props)}/>
@@ -211,7 +209,7 @@ class AppView extends Component {
           handleNavigate={handleNavigate}
           items={items}
           isHome={isHome}
-          title="Metadata hello"
+          title={stitle}
         />
 
         {

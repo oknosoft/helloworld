@@ -2,15 +2,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import withStyles from '@material-ui/core/styles/withStyles';
+import {withStyles} from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Helmet from 'react-helmet';
 import AppFooter from './Footer';
 import styles from './styles';
-
-const ltitle = 'Демо metadata.js';
-const htitle = 'Metadata hello world';
+import {stitle, ltitle} from '../App/menu_items';
 
 function PageHome(props) {
   const {classes, handleNavigate, title} = props;
@@ -25,13 +23,13 @@ function PageHome(props) {
 
   return (
     <div className={classes.root}>
-      <Helmet title={htitle}/>
+      <Helmet title={stitle}/>
 
       <div className={classes.hero}>
         <div className={classes.content}>
 
           <div className={classes.text}>
-            <Typography variant="h4" component="h1" color="inherit" noWrap style={{marginBottom: 24}}>Metadata hello world</Typography>
+            <Typography variant="h4" component="h1" color="inherit" noWrap style={{marginBottom: 24}}>{ltitle}</Typography>
             <Typography variant="subtitle1" component="h2" color="inherit" className={classes.headline}>
               Каркас приложения на metadata.js<br/> для демонстрации базовых возможностей фреймворка
             </Typography>

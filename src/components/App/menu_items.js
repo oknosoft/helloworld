@@ -8,6 +8,10 @@ import IconSettings from '@material-ui/icons/Settings';
 // import IconDrafts from '@material-ui/icons/Drafts';
 // import IconList from '@material-ui/icons/List';
 
+export const stitle = 'Metadata hello';
+export const ltitle = 'Демо metadata.js';
+export const description = 'Демо-приложение на metadata.js';
+
 const items = [
   {
     text: 'Документы',

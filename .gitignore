@@ -4,6 +4,7 @@ build
 /.eslintcache
 /tmp
 coverage
+/scripts/stats.json
 
 # Private config files
 config/superlogin.config.server.js
