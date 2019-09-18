@@ -50,6 +50,9 @@ $p.wsql.init((prm) => {
   // расположение couchdb
   prm.couch_path = config.couch_local;
 
+  prm.use_meta = config.use_meta;
+
+
 }, ($p) => {
 
   const db = new MetaEngine.classes.PouchDB(config.couch_local + 'meta',
@@ -58,29 +61,27 @@ $p.wsql.init((prm) => {
       skip_setup: true,
     });
 
-  let _m;
-
   debug(`Читаем описание метаданных из CouchDB ${config.couch_local}`);
   return db.info()
     .then((info) => {
     debug(`Подключение к ${info.host}`);
-    return db.get('meta')
+    return db.allDocs({
+      include_docs: true,
+      attachments: true,
+      startkey: 'meta',
+      endkey: 'meta\ufff0',
+    });
   })
     .catch((err) => {
-    debug('Не удалось получить объект meta из CouchDB\nПроверьте логин, пароль и строку подключения');
-    debug(err);
-    process.exit(1);
-  })
-    .then((doc) => {
-      _m = doc;
-      doc = null;
-      return db.get('meta_patch')
-        .catch((err) => ({}))
-        .then((doc) => doc);
+      debug('Не удалось получить объект meta из CouchDB\nПроверьте логин, пароль и строку подключения');
+      debug(err);
+      process.exit(1);
     })
-    .then((doc) => {
-      $p.utils._patch(_m, doc);
-      doc = null;
+    .then(({rows}) => {
+      const _m = {};
+      for(const {doc} of rows) {
+        $p.utils._patch(_m, doc);
+      }
       delete _m._id;
       delete _m._rev;
 
@@ -189,7 +190,9 @@ function obj_constructor_text(_m, category, name, categoties) {
     try {
       extModule = require(filename);
     }
-    catch(err) {}
+    catch(err) {
+      debug(err);
+    }
   };
 
   const extender = extModule && extModule[fn_name] && extModule[fn_name].toString();
