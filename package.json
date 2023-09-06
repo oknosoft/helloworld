@@ -1,0 +1,62 @@
+{
+  "name": "@oknosoft/helloworld",
+  "description": "Каркас web-приложения на метадате",
+  "version": "3.0.0",
+  "private": true,
+  "author": "Evgeniy Malyarov <info@oknosoft.ru> (http://www.oknosoft.ru)",
+  "license": "MIT",
+  "engines": {
+    "node": "^20.2",
+    "yarn": "^1.22"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11",
+    "@emotion/styled": "^11.11",
+    "@fontsource/roboto": "^5.0",
+    "@mui/icons-material": "^5.14",
+    "@mui/material": "^5.14",
+    "@mui/styles": "^5.14",
+    "metadata": "github:oknosoft/metadata.js#94d020b000e803e82a04155cc2321f405e79050b",
+    "react-helmet": "^6.1",
+    "react-highlight-words": "^0.20",
+    "react-number-format": "^5.3",
+    "react-router-dom": "6.15"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22",
+    "@babel/preset-env": "^7.22",
+    "@babel/preset-react": "^7.22",
+    "babel-loader": "^9.1",
+    "react": "^18.2",
+    "react-dom": "^18.2",
+    "typescript": "^5.2",
+    "webpack": "^5.88",
+    "webpack-cli": "^5.1",
+    "webpack-dev-server": "^4.15"
+  },
+  "peerDependecies": {
+  },
+  "scripts": {
+    "run:dev": "webpack serve -c config/webpack.dev.js",
+    "build:meta": "node ./scripts/core/build.js",
+    "build:prod": "node ./scripts/core/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oknosoft/helloworld.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oknosoft/metadata.js/issues"
+  },
+  "homepage": "https://oknosoft.ru/metadata",
+  "keywords": [
+    "metadata",
+    "browser data engine",
+    "spa offline",
+    "offline framework",
+    "offline first",
+    "replication",
+    "метадата",
+    "метадата 1с"
+  ]
+}

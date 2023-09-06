@@ -1,0 +1,33 @@
+
+# Editor files
+.idea
+.vscode
+.nyc_output
+
+# TODO
+.github
+
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# Exclude compiled files
+/build
+/scripts/stats.json
+*.map
+
+# misc
+/.eslintcache
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.eslintcache
+/config/test.env
+/tmp
+
+*.log*
+yarn.lock
