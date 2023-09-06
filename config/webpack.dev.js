@@ -3,18 +3,18 @@ const webpack = require("webpack");
 
 module.exports = {
   mode: process.env.NODE_ENV || "development",  // production
-  entry: "./example/index.jsx",                 // входная точка - исходный файл
+  entry: "./src/index.jsx",                   // входная точка - исходный файл
   output:{
-    path: path.resolve(__dirname, "./"),        // путь к каталогу выходных файлов - папка public
-    publicPath: "/example/",
+    path: path.resolve(__dirname, "../build"),  // путь к каталогу выходных файлов - папка public
+    publicPath: "/build/",
     filename: "bundle.js"                       // название создаваемого файла
   },
   devServer: {
     historyApiFallback: true,
     static: {
-      directory: path.join(__dirname, "./"),
+      directory: path.join(__dirname, "../build"),
     },
-    port: 8081,
+    port: 8031,
     open: true
   },
   devtool: false,
@@ -27,11 +27,19 @@ module.exports = {
       {
         test: /\.jsx?$/,                      // определяем тип файлов
         exclude: /(node_modules)/,            // исключаем из обработки папку node_modules
-        loader: "babel-loader",               // определяем загрузчик
+        loader: 'babel-loader',               // определяем загрузчик
         options:{
-          presets:[ "@babel/preset-react"]    // используемые плагины
+          presets: ['@babel/preset-react']    // используемые плагины
         }
-      }
+      },
+      {
+        test: /\.md$/,
+        loader: 'raw-loader',
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ]
   }
 }

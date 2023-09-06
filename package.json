@@ -15,27 +15,31 @@
     "@fontsource/roboto": "^5.0",
     "@mui/icons-material": "^5.14",
     "@mui/material": "^5.14",
-    "@mui/styles": "^5.14",
-    "metadata": "github:oknosoft/metadata.js#94d020b000e803e82a04155cc2321f405e79050b",
+    "@oknosoft/metadata": "github:oknosoft/metadata.js#048c1608cd836d0b31fba1c01d10c862908af689",
+    "marked": "^8.0",
+    "pouchdb-utils": "^8.0.1",
     "react-helmet": "^6.1",
-    "react-highlight-words": "^0.20",
     "react-number-format": "^5.3",
-    "react-router-dom": "6.15"
+    "react-router-dom": "6.15",
+    "url-join": "^5.0",
+    "url-parse": "^1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.22",
     "@babel/preset-env": "^7.22",
     "@babel/preset-react": "^7.22",
     "babel-loader": "^9.1",
+    "css-loader": "^6.8",
+    "raw-loader": "^4.0",
     "react": "^18.2",
     "react-dom": "^18.2",
+    "style-loader": "^3.3.3",
     "typescript": "^5.2",
     "webpack": "^5.88",
     "webpack-cli": "^5.1",
     "webpack-dev-server": "^4.15"
   },
-  "peerDependecies": {
-  },
+  "peerDependecies": {},
   "scripts": {
     "run:dev": "webpack serve -c config/webpack.dev.js",
     "build:meta": "node ./scripts/core/build.js",

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import MarkdownDocs from 'metadata-ui/Markdown/MarkdownDocs';
+import MarkdownDocs from '../../packages/ui/Markdown/MarkdownDocs';
 import {useMatches } from 'react-router-dom';
 import {useTitleContext} from '../App';
 

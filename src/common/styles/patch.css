@@ -1,0 +1,22 @@
+.rdg.fill-grid {
+  block-size: 100%;
+  overflow-y: scroll;
+}
+.rdg.small-grid {
+  block-size: 300px;
+}
+.rdg.big-grid {
+  block-size: 600px;
+}
+
+@layer rdg.TextEditor {
+  .tlmcuo07-0-0-beta-37 {
+    appearance: auto;
+  }
+}
+
+@layer rdg.HeaderRow {
+  .h197vzie7-0-0-beta-37 {
+    font-weight: 400
+  }
+}
