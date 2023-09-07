@@ -1,10 +1,15 @@
 import MetaEngine from '@oknosoft/metadata/packages/core/src';
 import settings from '../../../config/app.settings';
+import {meta, classes} from '../../meta';
 
 const $p = global.$p = new MetaEngine();
 
 // параметры сеанса инициализируем сразу
 $p.jobPrm.init(settings);
+// создаём структуру метаданных
+$p.md.init(meta);
+// создаём менеджеры данных
+$p.md.createManagers(classes);
 
 export function init(handleIfaceState) {
 

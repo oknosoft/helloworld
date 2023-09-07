@@ -3,7 +3,7 @@ const webpack = require("webpack");
 
 module.exports = {
   mode: process.env.NODE_ENV || "development",  // production
-  entry: "./src/index.jsx",                   // входная точка - исходный файл
+  entry: "./src/index.js",                      // входная точка - исходный файл
   output:{
     path: path.resolve(__dirname, "../build"),  // путь к каталогу выходных файлов - папка public
     publicPath: "/build/",

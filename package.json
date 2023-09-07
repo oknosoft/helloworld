@@ -17,6 +17,7 @@
     "@mui/material": "^5.14",
     "@oknosoft/metadata": "github:oknosoft/metadata.js#048c1608cd836d0b31fba1c01d10c862908af689",
     "marked": "^8.0",
+    "marked-base-url": "^1.0.7",
     "pouchdb-utils": "^8.0.1",
     "react-helmet": "^6.1",
     "react-number-format": "^5.3",
@@ -30,6 +31,7 @@
     "@babel/preset-react": "^7.22",
     "babel-loader": "^9.1",
     "css-loader": "^6.8",
+    "md5-file": "^5.0.0",
     "raw-loader": "^4.0",
     "react": "^18.2",
     "react-dom": "^18.2",
@@ -42,6 +44,7 @@
   "peerDependecies": {},
   "scripts": {
     "run:dev": "webpack serve -c config/webpack.dev.js",
+    "lib:link": "node ./scripts/link.js",
     "build:meta": "node ./scripts/core/build.js",
     "build:prod": "node ./scripts/core/build.js"
   },
