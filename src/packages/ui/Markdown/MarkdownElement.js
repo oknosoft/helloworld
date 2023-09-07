@@ -4,6 +4,7 @@ import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import {useNavigate} from 'react-router-dom';
 import {marked} from 'marked';
+import {baseUrl as pluginBaseUrl} from 'marked-base-url';
 
 import cn from 'clsx';
 import styles from './styles';
@@ -30,6 +31,8 @@ export function MarkdownElement(props) {
       }
     }
   }
+
+  marked.use(pluginBaseUrl(opt?.baseUrl || ''));
 
   /* eslint-disable react/no-danger */
   return (
