@@ -14,13 +14,31 @@ module.exports = {
     static: {
       directory: path.join(__dirname, "../build"),
     },
+    proxy: [
+      {
+        context: ['/couchdb', '/adm'],
+        target: process.env.PROXY,
+        secure: false,
+        //pathRewrite: { '^/api': '' },
+        // bypass(req, res, proxyOptions) {
+        //   if (req.headers.accept.indexOf('html') !== -1) {
+        //     console.log('Skipping proxy for browser request.');
+        //     return '/index.html';
+        //   }
+        // },
+      },
+    ],
     port: 8031,
     open: true
   },
   devtool: false,
   plugins: [new webpack.SourceMapDevToolPlugin({})],
   resolve: {
-    fallback: { "crypto": false }
+    fallback: {
+      crypto: false,
+      levelup: false,
+      "pouchdb-adapter-memory": false,
+    }
   },
   module:{
     rules:[                                   //загрузчик для jsx

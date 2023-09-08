@@ -38,11 +38,7 @@ export function abonentInit({setAbonent, setProvider, pfilter}) {
   }
   setAbonent([abonent ? abonents.by_id(abonent) : abonents.get(), abonents.find_rows({})]);
 
-  let provider = '';
-  provider = pouch.props._auth_provider || '';
-  if(!provider) {
-    provider = jobPrm.get('auth_provider');
-  }
+  let provider = jobPrm.get('auth_provider');
   const providers = Object.keys(providersDesc)
     .filter((value) => !pfilter || pfilter(value))
     .map((value) => ({name: providersDesc[value].name, value}));

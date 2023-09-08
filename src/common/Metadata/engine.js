@@ -1,6 +1,11 @@
 import MetaEngine from '@oknosoft/metadata/packages/core/src';
+import pluginPouchdb from '@oknosoft/metadata/packages/pouchdb/src';
 import settings from '../../../config/app.settings';
 import {meta, classes} from '../../meta';
+
+// подключаем плагины к MetaEngine
+MetaEngine
+  .plugin(pluginPouchdb);
 
 const $p = global.$p = new MetaEngine();
 
