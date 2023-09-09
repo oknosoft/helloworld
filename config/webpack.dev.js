@@ -19,6 +19,7 @@ module.exports = {
         context: ['/couchdb', '/adm'],
         target: process.env.PROXY,
         secure: false,
+        xfwd: true,
         //pathRewrite: { '^/api': '' },
         // bypass(req, res, proxyOptions) {
         //   if (req.headers.accept.indexOf('html') !== -1) {

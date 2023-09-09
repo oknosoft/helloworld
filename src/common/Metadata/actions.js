@@ -4,7 +4,7 @@
  * Created by Evgeniy Malyarov on 14.02.2021.
  */
 
-import {load_ram} from '../../packages/superlogin-proxy';
+import {load_common} from '../../packages/superlogin-proxy';
 
 export const init_state = {
   meta_loaded: false,
@@ -61,6 +61,9 @@ export function actions(handleIfaceState) {
       import('@fontsource/roboto/700.css')
         //.then(() => import('react-data-grid/lib/styles.css'))
         .then(() => import('../styles/patch.css'));
+    })
+    .then(() => {
+      return load_common($p, ['cat.abonents', 'cat.work_center_kinds', 'cat.work_centers']);
     })
     .then(() => {
       const {classes: {PouchDB}, adapters: {pouch}, jobPrm, md, ui, cat: {users}} = $p;

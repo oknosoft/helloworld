@@ -36,7 +36,7 @@ export function abonentInit({setAbonent, setProvider, pfilter}) {
   if(!abonent) {
     abonent = parseInt(jobPrm.zone, 10);
   }
-  setAbonent([abonent ? abonents.by_id(abonent) : abonents.get(), abonents.find_rows({})]);
+  setAbonent([abonents.byId(abonent) || abonents.get(), abonents.find_rows({})]);
 
   let provider = jobPrm.get('auth_provider');
   const providers = Object.keys(providersDesc)

@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
     errorElement: <RootWithDrawer />,
     children: [
       {path: "/", element: Wraper(Home)},
-      {path: "store", element: pageRoute},
+      {path: "production", element: pageRoute},
       {path: "about", element: pageRoute},
       {path: "help/*", element: Wraper(Help)},
       {path: "login", element: loginRoute},

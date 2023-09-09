@@ -28,6 +28,8 @@ export const meta= {
   cachable: "ram"
 };
 
+export const exclude = ['cat.divisions'];
+
 export function classes({cat, classes, symbols}, exclude)  {
   const {CatObj} = classes;
   const {get, set} = symbols;
@@ -38,10 +40,6 @@ export function classes({cat, classes, symbols}, exclude)  {
   }
   classes.CatDivisions = CatDivisions;
 
-  // оставляем возможность дополнить-переопределить
-  // если пользователь попросил не спешить с созданием менеджера - не спешим
-  if(!exclude.includes('cat.divisions')) {
-    cat.create('divisions');
-  }
+  cat.create('divisions');
 }
 

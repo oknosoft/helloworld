@@ -66,8 +66,8 @@ function stream_load(md, pouch) {
 
   function load(part) {
     const data = JSON.parse(part);
-    const mgr = md.mgr_by_class_name(data.name);
-    mgr && mgr.load_array(data.rows, true);
+    const mgr = md.mgr(data.name);
+    mgr?.load(data.rows, true);
     page.docs_written += data.rows.length;
     page.page++;
     pouch.emit('pouch_data_page', page);

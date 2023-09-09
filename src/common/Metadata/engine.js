@@ -1,7 +1,7 @@
 import MetaEngine from '@oknosoft/metadata/packages/core/src';
 import pluginPouchdb from '@oknosoft/metadata/packages/pouchdb/src';
 import settings from '../../../config/app.settings';
-import {meta, classes} from '../../meta';
+import {meta, classes, exclude} from '../../meta';
 
 // подключаем плагины к MetaEngine
 MetaEngine
@@ -14,7 +14,7 @@ $p.jobPrm.init(settings);
 // создаём структуру метаданных
 $p.md.init(meta);
 // создаём менеджеры данных
-$p.md.createManagers(classes);
+$p.md.createManagers(classes, exclude);
 
 export function init(handleIfaceState) {
 
