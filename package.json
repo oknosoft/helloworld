@@ -15,7 +15,7 @@
     "@fontsource/roboto": "^5.0",
     "@mui/icons-material": "^5.14",
     "@mui/material": "^5.14",
-    "@oknosoft/metadata": "github:oknosoft/metadata.js#ca6aeaaaaca10a32a8e6e3ac0a46dfc3fb307d44",
+    "@oknosoft/metadata": "github:oknosoft/metadata.js#2d7f24618370f1a2e1ae6b8d572d6cb1a618b483",
     "marked": "^8.0",
     "marked-base-url": "^1.0.7",
     "pouchdb-adapter-http": "^8.0.1",
