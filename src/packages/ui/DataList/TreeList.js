@@ -1,7 +1,7 @@
 import React from 'react';
 import {useTheme} from '@mui/material/styles';
 import {Resize, ResizeHorizon} from 'metadata-ui/Resize';
-import {Content, Relative} from '../../../common/App/styled';
+import {Content, Relative} from '../../../_common/App/styled';
 import Tree, {buildTree} from './Tree';
 import List from './List';
 import Toolbar from './Toolbar';

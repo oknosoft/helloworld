@@ -1,7 +1,7 @@
 import React from 'react';
 import List from './List';
 import Toolbar from './Toolbar';
-import {Content, Relative} from '../../../common/App/styled';
+import {Content, Relative} from '../../../_common/App/styled';
 
 const sort = $p.utils.sort('name');
 export default function FlatList(props) {

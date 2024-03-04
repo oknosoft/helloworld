@@ -29,7 +29,7 @@ module.exports = {
         // },
       },
     ],
-    port: 8031,
+    port: process.env.PORT,
     open: true
   },
   devtool: false,

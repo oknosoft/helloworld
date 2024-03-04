@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Toolbar, HtmlTooltip} from '../../../common/App/styled';
+import {Toolbar, HtmlTooltip} from '../../../_common/App/styled';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
