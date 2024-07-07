@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from 'react-dom/client';
-import Loading from './_common/App/Loading';
+import Loading from './aggregate/App/Loading';
 
-const App = React.lazy(() => import('./_common/App'));
-const Metadata = React.lazy(() => import('./_common/Metadata'));
+const App = React.lazy(() => import('./aggregate/App'));
+const Metadata = React.lazy(() => import('./aggregate/Metadata'));
 
 const elm = document.getElementById('root');
 const initialText = elm.innerHTML;

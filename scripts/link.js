@@ -17,6 +17,11 @@ const repos = [
     dir: '',
     dirFilter: /(^packages|core|pouchdb)/
   },
+  {
+    local: '@oknosoft/ui',
+    remote: '..\\metadata-ui\\dist\\',
+    dir: '',
+  },
 ];
 
 // for(const local of Object.keys(dependencies).filter(v => /^metadata-/.test(v))) {

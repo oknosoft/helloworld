@@ -1,5 +1,5 @@
-import MetaEngine from '@oknosoft/metadata/packages/core/src';
-import pluginPouchdb from '@oknosoft/metadata/packages/pouchdb/src';
+import MetaEngine from '@oknosoft/metadata/core/src';
+import pluginPouchdb from '@oknosoft/metadata/pouchdb/src';
 import settings from '../../../config/app.settings';
 import {meta, classes, exclude} from '../../meta';
 

@@ -1,0 +1,21 @@
+{
+  "lang": "ru",
+  "name": "Метадата: hello world",
+  "short_name": "Hello world",
+  "description": "Демо-приложение на метадате",
+  "icons": [
+    {
+      "src": "./imgs/fav-okn144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "#ffffff",
+  "splash_screens": [{
+    "src": "./imgs/splash.png",
+    "sizes": "256x64"
+  }],
+  "scope": "/",
+  "start_url": "/",
+  "display": "standalone"
+}

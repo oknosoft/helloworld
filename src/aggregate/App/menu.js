@@ -16,7 +16,7 @@ import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 //import IconDrafts from '@mui/icons-material/Drafts';
 //import IconList from '@mui/icons-material/List';
 
-export const description = 'Заказ дилера';
+export const description = 'Метадата: hello world';
 
 const items = [
   {
