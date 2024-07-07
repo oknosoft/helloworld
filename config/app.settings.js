@@ -7,7 +7,7 @@
  */
 
 const isNode = typeof process === "undefined" ? false : process.versions?.node;
-const lsPrefix = 'wb_';
+const lsPrefix = 'hw_';
 
 function settings(prm = {}) {
 
@@ -24,10 +24,11 @@ function settings(prm = {}) {
     // расположение couchdb для nodejs
     couch_local: (isNode && process.env.COUCHLOCAL) || `http://cou221:5984/${lsPrefix}`,
 
-    // расположение couchdb для браузера
-    get couch_path() {
-      return isNode ? this.couch_local : `/couchdb/${lsPrefix}`;
-    },
+    // используем локальные данные
+    idb: true,
+
+    // используем репликацию с couchdb
+    replicate: false,
 
     // по умолчанию, обращаемся к зоне 1
     zone: 0,

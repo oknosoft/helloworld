@@ -1,5 +1,5 @@
 
-import catClasses from './cat/meta'
+import catClasses from './catalogs/meta'
 
 const plugins = [...catClasses];
 

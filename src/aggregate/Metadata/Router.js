@@ -4,8 +4,8 @@ import {useLoadingContext} from '../Metadata';
 import {Wraper} from '../App/Wraper';
 
 const FrmLogin = React.lazy(() => import('../FrmLogin'));
-const CatRouter = React.lazy(() => import('../../cat/Router'));
-const DocRouter = React.lazy(() => import('../../doc/Router'));
+const CatRouter = React.lazy(() => import('../../catalogs/Router'));
+const DocRouter = React.lazy(() => import('../../documents/Router'));
 const loginRoute = Wraper(FrmLogin);
 const catRoute = Wraper(CatRouter);
 const docRoute = Wraper(DocRouter);
@@ -15,6 +15,6 @@ export default function DataRoute() {
   return complete_loaded ? <Routes>
     <Route path="doc/*" element={docRoute}/>
     <Route path="cat/*" element={catRoute} />
-    <Route path="cch/*" element={catRoute} />
+    <Route path="rep/*" element={catRoute} />
   </Routes> : loginRoute;
 }

@@ -15,7 +15,7 @@
     "@fontsource/roboto": "^5.0",
     "@mui/icons-material": "^5.15",
     "@mui/material": "^5.15",
-    "@oknosoft/metadata": "github:oknosoft/metadata.js#6f12efd082231ac99760073e63215de2974d1063",
+    "@oknosoft/metadata": "github:oknosoft/metadata.js#4a394dce8d9a2a49a5889e6e2f59263a6b07bc58",
     "@oknosoft/ui": "github:oknosoft/metadata-ui#43d40493e3e5ea41774bc305c7b615eabb5f0f96",
     "font-awesome": "4.7.0",
     "hammerjs": "^2.0",

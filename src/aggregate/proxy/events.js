@@ -13,7 +13,7 @@ export function event_src({wsql, md, utils, adapters: {pouch}, cat}) {
   const onDoc = ({data}) => {
     const doc = JSON.parse(data);
     const paths = location.pathname.substring(1).split('/');
-    if(doc.class_name === 'doc.calc_order') {
+    if(doc.class_name === 'documents.calc_order') {
       // текущий заказ не перезаписываем
       if(paths[0] === 'builder') {
         const ox = cat.characteristics.by_ref[paths[1]];

@@ -5,7 +5,7 @@ import {useLoadingContext} from '../Metadata';
 import {useTitleContext} from '../App';
 import {Padding, Content} from '../App/styled';
 
-const title = {title: 'Метадата: hello world', appTitle: <Typography variant="h6" noWrap>Заказ дилера</Typography>};
+const title = {title: 'Метадата: hello world', appTitle: <Typography variant="h6" noWrap>Метадата: hello world</Typography>};
 export default function Login({pfilter}) {
   const {setTitle} = useTitleContext();
   const {ifaceState: {complete_loaded}} = useLoadingContext();

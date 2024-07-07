@@ -22,7 +22,7 @@ module.exports = {
     proxy: [
       {
         context: ['/couchdb', '/adm', '/auth'],
-        target: process.env.PROXY,
+        target: process.env.PROXY || 'https://hello.oknosoft.ru/',
         secure: false,
         xfwd: true,
         //pathRewrite: { '^/api': '' },

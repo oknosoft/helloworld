@@ -17,52 +17,51 @@ const page = {
   }
 };
 
-export function load_ram({adapters: {pouch}, md}, types) {
-  const {props} = pouch;
+export function load_ram({adapters, jobPrm, md}, types) {
   const headers = new Headers();
   if(types) {
     headers.set('types', types.join(','));
   }
-  const zone = sessionStorage.getItem('zone') || props.zone;
-  return pouch.fetch(`/couchdb/mdm/${zone}/${props._suffix}`, {headers})
-    .then(stream_load(md, pouch))
+  const zone = sessionStorage.getItem('zone') || jobPrm.zone;
+  return adapters.fetch(`/couchdb/mdm/${zone}/${jobPrm._suffix || '0000'}`, {headers})
+    .then(stream_load(md, adapters))
     .then(() => {
-      props._data_loaded = true;
-      pouch.emit('pouch_data_loaded');
+      jobPrm._data_loaded = true;
+      adapters.emit('pouch_data_loaded');
     })
     .then(() => {
-      props._doc_ram_loading = true;
-      pouch.emit('pouch_doc_ram_start');
+      jobPrm._doc_ram_loading = true;
+      adapters.emit('pouch_doc_ram_start');
     })
     .then(() => {
-      props._doc_ram_loading = false;
-      props._doc_ram_loaded = true;
-      pouch.emit('pouch_doc_ram_loaded');
+      jobPrm._doc_ram_loading = false;
+      jobPrm._doc_ram_loaded = true;
+      adapters.emit('pouch_doc_ram_loaded');
     });
 }
 
 // загружает данные, которые не зависят от отдела абонента
-export function load_common({adapters: {pouch}, md, msg}, types) {
+export function load_common({adapters, jobPrm, md, msg}, types) {
   const headers = new Headers();
   if(types) {
     headers.set('types', types.join(','));
   }
-  const zone = sessionStorage.getItem('zone') || pouch.props.zone;
-  return pouch.fetch(`/couchdb/mdm/${zone}/common`, {headers})
-    .then(stream_load(md, pouch))
+  const zone = sessionStorage.getItem('zone') || jobPrm.get('zone');
+  return adapters.fetch(`/couchdb/mdm/${zone}/common`, {headers})
+    .then(stream_load(md, adapters))
     .catch((err) => {
-      pouch.emit('user_log_fault', {message: 'custom', text: err.message.includes('406') ? err.message : msg.error_proxy});
+      adapters.emit('user_log_fault', {message: 'custom', text: err.message.includes('406') ? err.message : msg.error_proxy});
       return err;
     })
     .then((err) => {
-      pouch.emit('pouch_no_data', 'no_ram');
+      adapters.emit('pouch_no_data', 'no_ram');
       if(err instanceof Error) {
         throw err;
       }
     });
 }
 
-function stream_load(md, pouch) {
+function stream_load(md, adapters) {
 
   function load(part) {
     const data = JSON.parse(part);
@@ -70,7 +69,7 @@ function stream_load(md, pouch) {
     mgr?.load(data.rows, true);
     page.docs_written += data.rows.length;
     page.page++;
-    pouch.emit('pouch_data_page', page);
+    adapters.emit('pouch_data_page', page);
   }
 
   return async function stream_load(res) {
@@ -86,7 +85,7 @@ function stream_load(md, pouch) {
     }
 
     page.add(JSON.parse(headers.get('manifest')));
-    page.page && pouch.emit('pouch_load_start', page);
+    page.page && adapters.emit('pouch_load_start', page);
 
     let chunks = '', tmp;
 

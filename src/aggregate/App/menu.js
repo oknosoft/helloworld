@@ -6,8 +6,9 @@ import SafetyDividerIcon from '@mui/icons-material/SafetyDivider';
 import StoreIcon from '@mui/icons-material/Store';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import IconHelp from '@mui/icons-material/Help';
-import FactoryIcon from '@mui/icons-material/Factory';
-import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+//import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 //import IconDownload from '@mui/icons-material/CloudDownload';
 //import IconAccessibility from '@mui/icons-material/AccessibilityNew';
 //import IconChart from '@mui/icons-material/InsertChart';
@@ -20,15 +21,15 @@ export const description = 'Метадата: hello world';
 
 const items = [
   {
-    text: 'Расчёты-заказы',
-    icon: <BusinessCenterIcon/>,
-    path: '/doc/calc_order',
+    text: 'Движение денег',
+    icon: <CurrencyExchangeIcon/>,
+    path: '/doc/cash_moving',
   },
   {
-    text: 'Производство',
-    icon: <FactoryIcon/>,
-    path: '/production',
-    aliases: ['/manufacture', '/manufacturing'],
+    text: 'Отчет ДДС',
+    icon: <AssessmentOutlinedIcon/>,
+    path: '/rep/cash_moving',
+    aliases: ['/report', '/dds'],
   },
   {
     divider: true,

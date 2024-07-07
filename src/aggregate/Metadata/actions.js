@@ -4,7 +4,7 @@
  * Created by Evgeniy Malyarov on 14.02.2021.
  */
 
-import {load_common} from '../../packages/superlogin-proxy';
+import {load_common} from '../proxy';
 
 export const init_state = {
   meta_loaded: false,
@@ -62,9 +62,7 @@ export function actions(handleIfaceState) {
         //.then(() => import('react-data-grid/lib/styles.css'))
         .then(() => import('../styles/patch.css'));
     })
-    .then(() => {
-      return load_common($p, ['cat.abonents', 'cat.work_center_kinds', 'cat.work_centers']);
-    })
+    .then(() => $p.adapters.pouch.init())
     .then(() => {
       const {classes: {PouchDB}, adapters: {pouch}, jobPrm, md, ui, cat: {users}} = $p;
       handleIfaceState({common_loaded: true});
@@ -102,8 +100,8 @@ export function actions(handleIfaceState) {
                 })
                   .on('change', (change) => {
                     // информируем слушателей текущего сеанса об изменениях
-                    if(change.doc.obj_delivery_state !== 'Шаблон') {
-                      pouch.load_changes({docs: [change.doc]});
+                    if(change.documents.obj_delivery_state !== 'Шаблон') {
+                      pouch.load_changes({docs: [change.documents]});
                       pouch.emit('ram_change', change);
                     }
                   })

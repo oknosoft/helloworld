@@ -7,7 +7,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createBrowserRouter} from 'react-router-dom';
+import {createBrowserRouter, Navigate} from 'react-router-dom';
 import {Wraper} from './Wraper';
 import RootWithDrawer from './RootWithDrawer';
 
@@ -25,8 +25,7 @@ export const router = createBrowserRouter([
     element: <RootWithDrawer />,
     errorElement: <RootWithDrawer />,
     children: [
-      {path: "/", element: Wraper(Home)},
-      {path: "production", element: pageRoute},
+      {path: "/", element: <Navigate to="/doc/cash_moving" replace={true} />},
       {path: "about", element: pageRoute},
       {path: "help/*", element: Wraper(Help)},
       {path: "login", element: loginRoute},
