@@ -1,7 +1,7 @@
 
 import React from 'react';
+import ReactDOM from 'react-dom/client';
 import PropTypes from 'prop-types';
-import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 
 // метод инициализации хранилища состояния приложения
@@ -64,10 +64,13 @@ RootProvider.childContextTypes = {
   store: PropTypes.object,
 };
 
-render(<RootProvider/>, document.getElementById('root'));
+const elm = document.getElementById('root');
+const initialText = elm.innerHTML;
+const root = ReactDOM.createRoot(elm);
+root.render(<RootProvider/>);
 
 serviceWorker.register({
   onUpdate() {
-    $p && $p.record_log('Доступен новый контент, обновите страницу');
+    alert('Доступен новый контент, обновите страницу');
   }
 });
