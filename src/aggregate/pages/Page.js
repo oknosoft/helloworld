@@ -1,8 +1,8 @@
 
 import React from 'react';
-import MarkdownDocs from '../../packages/ui/Markdown/MarkdownDocs';
+import MarkdownDocs from '@oknosoft/ui/dist/Markdown/MarkdownDocs';
 import {useMatches } from 'react-router-dom';
-import {useTitleContext} from '../App';
+import {useTitleContext} from '@oknosoft/ui/dist/App/titleContext';
 
 export default function Page(props) {
   const {description, title, setTitle} = useTitleContext();

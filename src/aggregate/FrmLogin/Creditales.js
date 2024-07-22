@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {directLogins} from './providers';
-import Text from '../../packages/ui/DataField/Text';
+import Text from '@oknosoft/ui/dist/DataField/Text';
 
 const prevent = (e) => {
   e.preventDefault();

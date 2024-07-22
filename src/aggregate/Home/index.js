@@ -2,8 +2,8 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import {useNavigate} from 'react-router-dom';
 import {useLoadingContext} from '../Metadata';
-import {useTitleContext} from '../App';
-import {Padding, Content} from '../App/styled';
+import {useTitleContext} from '@oknosoft/ui/dist/App/titleContext';
+import {Padding, Content} from '@oknosoft/ui/dist/App/styled';
 
 const title = {title: 'Метадата: hello world', appTitle: <Typography variant="h6" noWrap>Метадата: hello world</Typography>};
 export default function Login({pfilter}) {

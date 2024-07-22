@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import Loading from '../App/Loading';
+import Loading from '@oknosoft/ui/dist/App/Loading';
 
 export default function ({user, page}) {
   if(user.try_log_in) {

@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {useLoadingContext} from '../Metadata';
 import Drawer from './Drawer';
 import ErrorBoundary from './ErrorBoundary';
-import {Main, AppBar, Space, Root} from './styled';
+import {Main, AppBar, Space, Root} from '@oknosoft/ui/dist/App/styled';
 
 export default function RootWithDrawer(props) {
 
@@ -15,21 +15,21 @@ export default function RootWithDrawer(props) {
     boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%)',
   };
 
-  const {handleIfaceState, ifaceState: {menu_open}} = useLoadingContext();
+  const {handleIfaceState, ifaceState: {drawerOpen}} = useLoadingContext();
 
   const handleDrawerOpen = () => {
-    handleIfaceState({menu_open: true});
+    handleIfaceState({drawerOpen: true});
   };
 
   const handleDrawerClose = () => {
-    handleIfaceState({menu_open: false});
+    handleIfaceState({drawerOpen: false});
   };
 
   return <Root>
     <CssBaseline />
-    <AppBar menu_open={menu_open} handleDrawerOpen={handleDrawerOpen} sxColor={sxColor}/>
-    <Drawer menu_open={menu_open} theme={theme} handleDrawerClose={handleDrawerClose} sxColor={sxColor}/>
-    <Main open={menu_open}>
+    <AppBar drawerOpen={drawerOpen} handleDrawerOpen={handleDrawerOpen} sxColor={sxColor}/>
+    <Drawer drawerOpen={drawerOpen} theme={theme} handleDrawerClose={handleDrawerClose} sxColor={sxColor}/>
+    <Main open={drawerOpen}>
       <Space />
       <ErrorBoundary />
     </Main>

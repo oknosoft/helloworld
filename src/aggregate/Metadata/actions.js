@@ -4,7 +4,8 @@
  * Created by Evgeniy Malyarov on 14.02.2021.
  */
 
-import {load_common} from '../proxy';
+// import {load_common} from '../proxy';
+import {prepare} from '../proxy/idb';
 
 export const init_state = {
   meta_loaded: false,
@@ -16,7 +17,7 @@ export const init_state = {
   page: {},
   offline: false,
   title: 'Окнософт',
-  menu_open: window.innerWidth > 960,
+  drawerOpen: window.innerWidth > 960,
   error: null,
   user: {
     logged_in: false,
@@ -59,13 +60,15 @@ export function actions(handleIfaceState) {
       import('@fontsource/roboto/400.css');
       import('@fontsource/roboto/500.css');
       import('@fontsource/roboto/700.css')
-        //.then(() => import('react-data-grid/lib/styles.css'))
+        .then(() => import('react-data-grid/lib/styles.css'))
         .then(() => import('../styles/patch.css'));
     })
-    .then(() => $p.adapters.pouch.init())
+    .then(() => $p.adapters.pouch.init())   // создаём базы
+    .then(() => prepare($p))                // наполняем начальными данными
+    .then(() => $p.adapters.pouch.loadRam())// читаем данные в озу
     .then(() => {
-      const {classes: {PouchDB}, adapters: {pouch}, jobPrm, md, ui, cat: {users}} = $p;
-      handleIfaceState({common_loaded: true});
+      //const {classes: {PouchDB}, adapters: {pouch}, jobPrm, md, ui, cat: {users}} = $p;
+      handleIfaceState({common_loaded: true, complete_loaded: true});
 
       /*
 
@@ -113,13 +116,13 @@ export function actions(handleIfaceState) {
         }
       });
 
-      */
-
-
       md.once('predefined_elmnts_inited', () => {
         let res = Promise.resolve();
         res.then(() => pouch.emit('pouch_complete_loaded'));
       });
+
+      */
+
 
     });
 }

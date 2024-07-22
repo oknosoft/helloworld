@@ -15,7 +15,7 @@ const repos = [
     local: '@oknosoft/metadata',
     remote: '..\\metadata-v3\\',
     dir: '',
-    dirFilter: /(^core|pouchdb)/
+    dirFilter: /(^core|pouchdb|src)/
   },
   {
     local: '@oknosoft/ui',

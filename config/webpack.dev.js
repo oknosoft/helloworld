@@ -14,7 +14,9 @@ module.exports = {
     assetModuleFilename: 'static/media/[name].[hash][ext]',
   },
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: '/index.html'
+    },
     static: {
       directory: path.join(__dirname, "../build"),
       watch: false,
@@ -42,9 +44,9 @@ module.exports = {
   devtool: false,
   plugins: [
     new webpack.SourceMapDevToolPlugin({}),
-    new HtmlWebpackPlugin({
-      template: "public/index.html"
-    }),
+    //new HtmlWebpackPlugin({
+    //  template: "public/index.html"
+    //}),
     // new WorkboxPlugin.GenerateSW({
     //   // these options encourage the ServiceWorkers to get in there fast
     //   // and not allow any straggling "old" SWs to hang around

@@ -3,13 +3,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
-import Autocomplete from '../../packages/ui/DataField/Autocomplete';
+import Autocomplete from '@oknosoft/ui/dist/DataField/Autocomplete';
 import Provider from './Provider';
 import Creditales from './Creditales';
 import Progress from './Progress';
 import {LoginRoot} from './Root';
 import {abonentInit, abonentDeps} from './initLogin';
-import {useTitleContext} from '../App';
+import {useTitleContext} from '@oknosoft/ui/dist/App/titleContext';
 import {useLoadingContext} from '../Metadata';
 
 const title = {title: 'Авторизация', appTitle: <Typography variant="h6" noWrap>Авторизация</Typography>};

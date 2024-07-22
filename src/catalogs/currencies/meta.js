@@ -12,7 +12,6 @@ export const meta= {
   groupHierarchy: true,
   mainPresentation: "name",
   codeLength: 3,
-  id: "cr",
   fields: {
     name_full: {
       synonym: "Наименование валюты",
@@ -74,6 +73,7 @@ export const meta= {
     }
   },
   tabulars: {},
+  id: "cr",
   cachable: "ram"
 };
 

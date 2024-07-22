@@ -10,13 +10,19 @@
 }
 
 @layer rdg.TextEditor {
-  .tlmcuo07-0-0-beta-37 {
+  .tlmcuo07-0-0-beta-44 {
     appearance: auto;
+  }
+  select, input {
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding-inline: 8px;
   }
 }
 
 @layer rdg.HeaderRow {
-  .h197vzie7-0-0-beta-37 {
+  .cj343x07-0-0-beta-44 {
     font-weight: 400
   }
 }

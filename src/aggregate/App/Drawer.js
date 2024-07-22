@@ -11,10 +11,10 @@ import ListItemText from '@mui/material/ListItemText';
 import IconHome from '@mui/icons-material/Home';
 import {useNavigate} from 'react-router-dom';
 
-import {drawerWidth, disablePermanent, DrawerHeader} from './styled';
+import {drawerWidth, disablePermanent, DrawerHeader} from '@oknosoft/ui/dist/App/styled';
 import menuItems from '../App/menu';
 
-const DrawerLeft = ({menu_open, sxColor, handleDrawerClose}) => {
+const DrawerLeft = ({drawerOpen, sxColor, handleDrawerClose}) => {
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const DrawerLeft = ({menu_open, sxColor, handleDrawerClose}) => {
     }}
     variant={disablePermanent ? 'temporary' : 'persistent'}
     anchor="left"
-    open={menu_open}
+    open={drawerOpen}
   >
     <DrawerHeader sx={{...sxColor, boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 7%)'}}>
       <ListItem sx={{flex: 1}} disablePadding onClick={() => {

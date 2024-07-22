@@ -1,5 +1,5 @@
 import React from 'react';
-import Autocomplete from '../../packages/ui/DataField/Autocomplete';
+import Autocomplete from '@oknosoft/ui/dist/DataField/Autocomplete';
 
 export default function Provider({value='couchdb', providerChange, options}) {
   value = options.find(({value: v}) => v === value) || null;

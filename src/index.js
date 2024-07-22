@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from 'react-dom/client';
-import Loading from './aggregate/App/Loading';
+import Loading from '@oknosoft/ui/dist/App/Loading';
 
 const App = React.lazy(() => import('./aggregate/App'));
 const Metadata = React.lazy(() => import('./aggregate/Metadata'));

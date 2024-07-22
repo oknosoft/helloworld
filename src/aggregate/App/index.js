@@ -1,7 +1,7 @@
 
 import AppView from './AppView';
-import {useTitleContext} from './titleContext';
-import {useBackdropContext} from './backdropContext';
+import {useTitleContext} from '@oknosoft/ui/dist/App/titleContext';
+import {useBackdropContext} from '@oknosoft/ui/dist/App/backdropContext';
 
 export default AppView;
 export {useTitleContext, useBackdropContext};

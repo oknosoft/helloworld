@@ -5,10 +5,10 @@ import Snackbar from '@mui/material/Snackbar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Helmet from 'react-helmet';
 import {router} from './Router';
-import Loading from './Loading';
+import Loading from '@oknosoft/ui/dist/App/Loading';
+import {initialTitle, TitleContext} from '@oknosoft/ui/dist/App/titleContext';
 
-import {initialTitle, TitleContext} from './titleContext';
-import {BackdropContext} from './backdropContext';
+import {BackdropContext} from '@oknosoft/ui/dist/App/backdropContext';
 const bsx = { color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 };
 
 export default function AppView(props) {
@@ -21,6 +21,7 @@ export default function AppView(props) {
   const setTitle = React.useMemo(() => (newState) => {
     setTitleState(prevState => ({...prevState, ...newState}));
   }, []);
+  initialTitle.setTitle = setTitle;
 
   const [setBackdrop, setSnack, snackClose, setConfirm, setConfirmClose] = React.useMemo(() => [
     (newOpen) => {

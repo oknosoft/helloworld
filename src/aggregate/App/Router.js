@@ -27,6 +27,7 @@ export const router = createBrowserRouter([
     children: [
       {path: "/", element: <Navigate to="/doc/cash_moving" replace={true} />},
       {path: "about", element: pageRoute},
+      {path: "settings", element: pageRoute},
       {path: "help/*", element: Wraper(Help)},
       {path: "login", element: loginRoute},
       {path: "profile", element: loginRoute},

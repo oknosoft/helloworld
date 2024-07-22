@@ -9,7 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {ThemeProvider} from '@mui/material';  // провайдер тема material=ui
 import theme from '../styles/muiTheme';      // тема material=ui
-import Loading from '../App/Loading';
+import Loading from '@oknosoft/ui/dist/App/Loading';
 
 const LoadingContext = React.createContext(null);
 export const useLoadingContext = () => React.useContext(LoadingContext);

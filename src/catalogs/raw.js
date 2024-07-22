@@ -130,7 +130,6 @@ export const meta = {
     groupHierarchy: true,
     mainPresentation: "name",
     codeLength: 9,
-    id: "mpt",
     aliases: ['cash_flow_articles'],
     fields: {
       definition: {
@@ -179,6 +178,7 @@ export const meta = {
       }
     },
     tabulars: {},
+    id: "mpt",
     cachable: "ram"
   },
 };
